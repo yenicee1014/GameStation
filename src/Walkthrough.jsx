@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Search, Bell, Heart, Share2, Bookmark, MessageSquare, MoreHorizontal, ChevronDown, BookOpen, X, ShoppingCart } from 'lucide-react';
 import alipayImage from './assets/Alipay-payme.JPG';
 import wechatImage from './assets/WeChat-payme.JPG';
-import backgroundImage from '../../picture/30th-anniversary-hub-background-mobile-02-en-02oct24.webp';
+import backgroundImage from '../picture/30th-anniversary-hub-background-mobile-02-en-02oct24.webp';
 import './App.css';
 
 // TOC Data structure

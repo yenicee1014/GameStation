@@ -10,10 +10,10 @@ import {
   X
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import backgroundImage from '../../picture/30th-anniversary-hub-background-mobile-02-en-02oct24.webp';
-import ps5Badge from '../../picture/ps5-black-badge-01-en-11sep20.webp';
+import backgroundImage from '../picture/30th-anniversary-hub-background-mobile-02-en-02oct24.webp';
+import ps5Badge from '../picture/ps5-black-badge-01-en-11sep20.webp';
 import { booksData, categoryOptions } from './data';
-import searchIcon from '../../picture/search-icon.svg';
+import searchIcon from '../picture/search-icon.svg';
 import alipayImage from './assets/Alipay-payme.JPG';
 import wechatImage from './assets/WeChat-payme.JPG';
 import './App.css';

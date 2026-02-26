@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Briefcase, Mail, Phone, Globe, MessageCircle, Facebook, PenTool, Layout, Users, MessageSquare, Image, Video, Monitor, Pen } from 'lucide-react';
-import avatar from '../../picture/avatar.JPG';
+import avatar from '../picture/avatar.JPG';
 
 const About = () => {
   return (

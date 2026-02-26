@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 import { Calendar, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { categoryOptions } from './data';
-import backgroundImage from '../../picture/30th-anniversary-hub-background-mobile-02-en-02oct24.webp';
-import avatar from '../../picture/avatar.JPG';
+import backgroundImage from '../picture/30th-anniversary-hub-background-mobile-02-en-02oct24.webp';
+import avatar from '../picture/avatar.JPG';
 
 const Changelog = () => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
