@@ -40,6 +40,7 @@ const baseGames = [
     tag: "10",
     progress: "复刻版",
     category: "动作",
+    date: "2020年06月19日",
     description: "经历杰克逊市的和平生活后，一场暴力冲突打破了宁静。艾莉踏上了一场残酷的报复之旅，追捕肇事者，并面对她行为带来的身体与情感后果。",
     slug: "the-last-of-us-part-2"
   },

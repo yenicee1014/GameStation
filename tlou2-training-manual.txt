@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>最后生还者2 - 训练手册位置图片预览</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0f172a; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px; }
+  h1 { text-align: center; font-size: 1.6em; margin-bottom: 6px; }
+  .subtitle { text-align: center; color: #94a3b8; font-size: 0.9em; margin-bottom: 24px; }
+  .tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab { padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; font-size: 0.95em; font-weight: 600; transition: all 0.2s; }
+  .tab.active-ellie { background: #059669; color: white; }
+  .tab.active-abby { background: #d97706; color: white; }
+  .tab.inactive { background: #1e293b; color: #94a3b8; }
+  .tab.inactive:hover { background: #334155; }
+  .card { background: #1e293b; border-radius: 14px; border: 1px solid #334155; margin-bottom: 20px; overflow: hidden; transition: all 0.3s; }
+  .card:hover { border-color: #475569; }
+  .card-header { padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .card-header:hover { background: #253349; }
+  .card-title { font-size: 1.1em; font-weight: 700; }
+  .card-tag { font-size: 0.75em; background: #334155; padding: 4px 10px; border-radius: 20px; color: #94a3b8; }
+  .card-body { padding: 0 20px 20px; }
+  .card-body.hidden { display: none; }
+  .location-text { color: #94a3b8; font-size: 0.88em; margin-bottom: 4px; line-height: 1.5; }
+  .location-text strong { color: #e2e8f0; }
+  .chapter-badge { display: inline-block; background: #312e81; color: #a5b4fc; padding: 3px 10px; border-radius: 6px; font-size: 0.8em; margin-bottom: 10px; }
+  .skills-list { margin-top: 12px; background: #0f172a; border-radius: 10px; padding: 12px 16px; }
+  .skills-list h4 { font-size: 0.85em; color: #94a3b8; margin-bottom: 8px; }
+  .skill-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #1e293b; font-size: 0.88em; }
+  .skill-item:last-child { border-bottom: none; }
+  .skill-cost { color: #facc15; font-weight: 600; }
+  .img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+  .img-grid img { width: 100%; border-radius: 8px; cursor: pointer; transition: transform 0.2s; border: 2px solid #334155; }
+  .img-grid img:hover { transform: scale(1.02); border-color: #60a5fa; }
+  .single-img img { width: 100%; border-radius: 8px; margin: 14px 0; border: 2px solid #334155; }
+  .arrow { transition: transform 0.3s; font-size: 1.2em; }
+  .arrow.open { transform: rotate(180deg); }
+  .note { background: #1a1a2e; border-left: 4px solid #f59e0b; padding: 10px 14px; border-radius: 0 8px 8px 0; margin-top: 12px; font-size: 0.85em; color: #fbbf24; }
+  .img-caption { text-align: center; color: #64748b; font-size: 0.78em; margin-top: 4px; }
+
+  /* Lightbox */
+  .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 1000; justify-content: center; align-items: center; cursor: zoom-out; }
+  .lightbox.show { display: flex; }
+  .lightbox img { max-width: 95%; max-height: 90vh; border-radius: 8px; }
+  .lightbox-close { position: fixed; top: 16px; right: 20px; color: white; font-size: 2em; cursor: pointer; z-index: 1001; }
+
+  @media (max-width: 600px) {
+    .img-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 1.3em; }
+  }
+</style>
+</head>
+<body>
+
+<h1>📖 最后生还者2 — 训练手册位置图鉴</h1>
+<p class="subtitle">Survival Expert 奖杯前置 · 共 8 本训练手册 · 点击卡片展开详情 · 点击图片放大</p>
+
+<div class="tabs">
+  <button class="tab active-ellie" onclick="showTab('ellie')" id="tab-ellie">🎸 艾莉 (4本)</button>
+  <button class="tab inactive" onclick="showTab('abby')" id="tab-abby">💪 艾比 (4本)</button>
+</div>
+
+<!-- ELLIE SECTION -->
+<div id="section-ellie">
+
+  <!-- Manual 1 -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div>
+        <div class="card-title">📘 #1 制作训练手册 (Crafting)</div>
+      </div>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="card-body hidden">
+      <span class="chapter-badge">📍 第9章：市中心 (Downtown) — 西雅图第1天</span>
+      <p class="location-text">
+        <strong>位置1（法院）：</strong>前往市中心法院（地图上6th Ave与Madison St交叉口）。进入法院后下楼，打碎玻璃进入电梯旁的房间，书架上即可找到。<br>
+        <strong>位置2（高架桥）：</strong>前往东北方向的断桥，爬上消防车，抛下水管后荡到翻倒的卡车内。
+      </p>
+      <div class="img-grid">
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-1.jpg" alt="制作训练手册位置1" onclick="openLightbox(this.src)">
+          <p class="img-caption">高架桥位置 - 翻倒卡车附近</p>
+        </div>
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-1-2.jpg" alt="制作训练手册位置2" onclick="openLightbox(this.src)">
+          <p class="img-caption">在翻倒卡车内找到手册</p>
+        </div>
+      </div>
+      <div class="skills-list">
+        <h4>🔓 解锁技能树：制作 (Crafting) — 总计 170💊</h4>
+        <div class="skill-item"><span>制作近战升级</span><span class="skill-cost">20💊</span></div>
+        <div class="skill-item"><span>制作加速</span><span class="skill-cost">40💊</span></div>
+        <div class="skill-item"><span>制作烟雾弹</span><span class="skill-cost">30💊</span></div>
+        <div class="skill-item"><span>制作改良医疗包</span><span class="skill-cost">40💊</span></div>
+        <div class="skill-item"><span>制作更多烟雾弹</span><span class="skill-cost">40💊</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manual 2 -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div>
+        <div class="card-title">📗 #2 潜行训练手册 (Stealth)</div>
+      </div>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="card-body hidden">
+      <span class="chapter-badge">📍 第11章：国会山 (Capitol Hill) — 西雅图第1天</span>
+      <p class="location-text">
+        <strong>位置：</strong>从汽车旅馆跳下后，沿左边走到加油站对面的书店。进入书店后，在收银台附近的打字机旁边找到训练手册。
+      </p>
+      <div class="img-grid">
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-2-1.jpg" alt="潜行训练手册位置1" onclick="openLightbox(this.src)">
+          <p class="img-caption">书店外观 - 加油站对面</p>
+        </div>
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-2-2.jpg" alt="潜行训练手册位置2" onclick="openLightbox(this.src)">
+          <p class="img-caption">收银台旁的打字机处</p>
+        </div>
+      </div>
+      <div class="skills-list">
+        <h4>🔓 解锁技能树：潜行 (Stealth) — 总计 210💊</h4>
+        <div class="skill-item"><span>制作消音器</span><span class="skill-cost">20💊</span></div>
+        <div class="skill-item"><span>聆听模式清晰度</span><span class="skill-cost">40💊</span></div>
+        <div class="skill-item"><span>俯卧动作加速</span><span class="skill-cost">50💊</span></div>
+        <div class="skill-item"><span>改良消音器</span><span class="skill-cost">40💊</span></div>
+        <div class="skill-item"><span>快速潜行击杀</span><span class="skill-cost">60💊</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manual 3 -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div>
+        <div class="card-title">📙 #3 精度训练手册 (Precision)</div>
+      </div>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="card-body hidden">
+      <span class="chapter-badge">📍 第16章：希尔科列斯特 (Hillcrest) — 西雅图第2天</span>
+      <p class="location-text">
+        <strong>位置：</strong>推完垃圾箱跳进有工作台的建筑后，出来到街道上，进入右侧第一家店"Goldstar Liquor"（金星酒铺）。进入地下室，击杀2只潜行者后，从光线照射的出口上楼，到达育儿室/苗圃，手册在地板上。
+      </p>
+      <div class="img-grid">
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-3-1.jpg" alt="精度训练手册位置1" onclick="openLightbox(this.src)">
+          <p class="img-caption">Goldstar Liquor 酒铺入口</p>
+        </div>
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-3-2.jpg" alt="精度训练手册位置2" onclick="openLightbox(this.src)">
+          <p class="img-caption">地下室出来后在苗圃中找到</p>
+        </div>
+      </div>
+      <div class="skills-list">
+        <h4>🔓 解锁技能树：精度 (Precision) — 总计 180💊</h4>
+        <div class="skill-item"><span>增加稳定瞄准</span><span class="skill-cost">30💊</span></div>
+        <div class="skill-item"><span>瞄准动作加速</span><span class="skill-cost">30💊</span></div>
+        <div class="skill-item"><span>聆听模式范围</span><span class="skill-cost">40💊</span></div>
+        <div class="skill-item"><span>屏气</span><span class="skill-cost">40💊</span></div>
+        <div class="skill-item"><span>制作更多箭矢</span><span class="skill-cost">40💊</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manual 4 -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div>
+        <div class="card-title">📕 #4 爆炸训练手册 (Explosives)</div>
+      </div>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="card-body hidden">
+      <span class="chapter-badge">📍 第18章：赛拉菲特 (The Seraphites) — 西雅图第2天</span>
+      <p class="location-text">
+        <strong>位置：</strong>通过主路上的立交桥下方后（出租车旁），左转到达一栋长公寓楼。在关闭的正门前有一辆停放的卡车。爬上卡车车顶，跳到公寓楼屋顶，从窗户进入。在左侧房间使用工作台时，一名敌人会从背后偷袭。击杀他和同伙后，进入他们冲出的房间找到手册。
+      </p>
+      <div class="img-grid">
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-4-1.jpg" alt="爆炸训练手册位置1" onclick="openLightbox(this.src)">
+          <p class="img-caption">长公寓楼外 - 通过卡车上屋顶</p>
+        </div>
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-4-2.jpg" alt="爆炸训练手册位置2" onclick="openLightbox(this.src)">
+          <p class="img-caption">击杀敌人后在房间内找到</p>
+        </div>
+      </div>
+      <div class="skills-list">
+        <h4>🔓 解锁技能树：爆炸 (Explosives) — 总计 170💊</h4>
+        <div class="skill-item"><span>制作爆炸箭</span><span class="skill-cost">20💊</span></div>
+        <div class="skill-item"><span>改良诡雷</span><span class="skill-cost">20💊</span></div>
+        <div class="skill-item"><span>改良燃烧瓶</span><span class="skill-cost">40💊</span></div>
+        <div class="skill-item"><span>制作更多诡雷</span><span class="skill-cost">50💊</span></div>
+        <div class="skill-item"><span>制作更多爆炸箭</span><span class="skill-cost">40💊</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ABBY SECTION -->
+<div id="section-abby" style="display:none;">
+
+  <!-- Manual 5 -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div>
+        <div class="card-title">📘 #5 秘密行动训练手册 (Covert Ops)</div>
+      </div>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="card-body hidden">
+      <span class="chapter-badge">📍 第25章：步行 (On Foot) — 西雅图第1天</span>
+      <p class="location-text">
+        <strong>位置：</strong>当你需要搬运梯子作为桥梁到达悬挂在天花板上的船时，检查悬挂船的内部即可找到训练手册。
+      </p>
+      <div class="img-grid">
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-5-1.jpg" alt="秘密行动手册位置1" onclick="openLightbox(this.src)">
+          <p class="img-caption">用梯子搭桥到悬挂的船</p>
+        </div>
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-5-2.jpg" alt="秘密行动手册位置2" onclick="openLightbox(this.src)">
+          <p class="img-caption">在悬挂船内部找到手册</p>
+        </div>
+      </div>
+      <div class="skills-list">
+        <h4>🔓 解锁技能树：秘密行动 (Covert Ops) — 总计 200💊</h4>
+        <div class="skill-item"><span>制作小刀</span><span class="skill-cost">20💊</span></div>
+        <div class="skill-item"><span>聆听模式移动速度 I</span><span class="skill-cost">40💊</span></div>
+        <div class="skill-item"><span>抓住敌人后的移动速度</span><span class="skill-cost">50💊</span></div>
+        <div class="skill-item"><span>俯卧动作加速</span><span class="skill-cost">40💊</span></div>
+        <div class="skill-item"><span>制作更多小刀</span><span class="skill-cost">50💊</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manual 6 -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div>
+        <div class="card-title">📗 #6 近距离训练手册 (Close Quarters)</div>
+      </div>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="card-body hidden">
+      <span class="chapter-badge">📍 第28章：敌对领土 (Hostile Territory) — 西雅图第1天</span>
+      <p class="location-text">
+        <strong>位置：</strong>章节开始后翻过围栏与Manny分开，看到"Spicy Dumpling"店后继续向前下楼。在进入"Tang Fabrics & Imports"之前，从左侧的破窗户爬进去即可找到训练手册。
+      </p>
+      <div class="img-grid">
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-6-1.jpg" alt="近距离手册位置1" onclick="openLightbox(this.src)">
+          <p class="img-caption">Spicy Dumpling店附近</p>
+        </div>
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-6-2.jpg" alt="近距离手册位置2" onclick="openLightbox(this.src)">
+          <p class="img-caption">从破窗户爬入找到手册</p>
+        </div>
+      </div>
+      <div class="skills-list">
+        <h4>🔓 解锁技能树：近距离 (Close Quarters) — 总计 210💊</h4>
+        <div class="skill-item"><span>冲力</span><span class="skill-cost">40💊</span></div>
+        <div class="skill-item"><span>制作改良医疗包</span><span class="skill-cost">50💊</span></div>
+        <div class="skill-item"><span>增加稳定瞄准</span><span class="skill-cost">20💊</span></div>
+        <div class="skill-item"><span>医疗包加速</span><span class="skill-cost">50💊</span></div>
+        <div class="skill-item"><span>冲力持续时间</span><span class="skill-cost">50💊</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manual 7 -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div>
+        <div class="card-title">📙 #7 枪械训练手册 (Firearms)</div>
+      </div>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="card-body hidden">
+      <span class="chapter-badge">📍 第30章：森林 (The Forest) — 西雅图第1天</span>
+      <p class="location-text">
+        <strong>位置：</strong>打完拿鹤嘴锄的大个子女Boss后，进入下一栋建筑"La Rosa's Auto Shop"（汽车修理店）。进入右侧走廊后立即右转进入侧办公室，训练手册在桌子上。
+      </p>
+      <div class="img-grid">
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-7-1.jpg" alt="枪械手册位置1" onclick="openLightbox(this.src)">
+          <p class="img-caption">La Rosa's Auto Shop 入口</p>
+        </div>
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-7-2.jpg" alt="枪械手册位置2" onclick="openLightbox(this.src)">
+          <p class="img-caption">侧办公室桌上找到手册</p>
+        </div>
+      </div>
+      <div class="skills-list">
+        <h4>🔓 解锁技能树：枪械 (Firearms) — 总计 180💊</h4>
+        <div class="skill-item"><span>制作燃烧弹</span><span class="skill-cost">20💊</span></div>
+        <div class="skill-item"><span>制作猎枪子弹</span><span class="skill-cost">20💊</span></div>
+        <div class="skill-item"><span>瞄准动作加速</span><span class="skill-cost">40💊</span></div>
+        <div class="skill-item"><span>制作更多猎枪子弹</span><span class="skill-cost">50💊</span></div>
+        <div class="skill-item"><span>制作更多燃烧弹</span><span class="skill-cost">50💊</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manual 8 -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div>
+        <div class="card-title">📕 #8 军械训练手册 (Ordnance)</div>
+      </div>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="card-body hidden">
+      <span class="chapter-badge">📍 第31章：海岸 (The Coast) — 西雅图第1天</span>
+      <p class="location-text">
+        <strong>位置：</strong>在船的顶层甲板，船长室（有方向盘的地方）的保险箱内。<br>
+        <strong>保险箱密码：90-77-01</strong>
+      </p>
+      <div class="img-grid">
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-8-1.jpg" alt="军械手册位置1" onclick="openLightbox(this.src)">
+          <p class="img-caption">船顶层甲板的船长室</p>
+        </div>
+        <div>
+          <img src="https://www.powerpyx.com/wp-content/uploads/the-last-of-us-2-training-manual-location-8-2.jpg" alt="军械手册位置2" onclick="openLightbox(this.src)">
+          <p class="img-caption">保险箱密码 90-77-01</p>
+        </div>
+      </div>
+      <div class="skills-list">
+        <h4>🔓 解锁技能树：军械 (Ordnance) — 总计 170💊</h4>
+        <div class="skill-item"><span>制作加速</span><span class="skill-cost">20💊</span></div>
+        <div class="skill-item"><span>改良近战武器升级</span><span class="skill-cost">40💊</span></div>
+        <div class="skill-item"><span>改良爆破筒</span><span class="skill-cost">30💊</span></div>
+        <div class="skill-item"><span>改良消音器</span><span class="skill-cost">40💊</span></div>
+        <div class="skill-item"><span>制作更多爆破筒</span><span class="skill-cost">40💊</span></div>
+      </div>
+      <div class="note">
+        💡 <strong>备用位置：</strong>如果你错过了某本训练手册，游戏会在后续位置自动补刷。例如第38章「The Island」开头的卡车后方也会有备用刷新点。
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+  <img id="lightbox-img" src="" alt="放大预览">
+</div>
+
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.arrow');
+  body.classList.toggle('hidden');
+  arrow.classList.toggle('open');
+}
+
+function showTab(tab) {
+  const ellie = document.getElementById('section-ellie');
+  const abby = document.getElementById('section-abby');
+  const tabEllie = document.getElementById('tab-ellie');
+  const tabAbby = document.getElementById('tab-abby');
+  if (tab === 'ellie') {
+    ellie.style.display = 'block';
+    abby.style.display = 'none';
+    tabEllie.className = 'tab active-ellie';
+    tabAbby.className = 'tab inactive';
+  } else {
+    ellie.style.display = 'none';
+    abby.style.display = 'block';
+    tabAbby.className = 'tab active-abby';
+    tabEllie.className = 'tab inactive';
+  }
+}
+
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('show');
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('show');
+}
+</script>
+
+</body>
+</html>

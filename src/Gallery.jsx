@@ -26,6 +26,8 @@ if (typeof window !== 'undefined') {
 
 
 
+import plasticTexture from './assets/plastic-texture.png';
+
 // 将 3D CSS 提取为字符串，避免在预览环境中直接使用 <style> 引起错误
 const globalStyles = `
   :root {
@@ -663,9 +665,12 @@ export default function Gallery() {
                         >
                           完整图文攻略
                         </Link>
-                        <button className="flex-1 py-3 bg-transparent border-2 border-gray-900 text-gray-900 font-bold uppercase tracking-widest text-sm hover:bg-gray-100 transition-colors rounded-sm">
+                        <Link 
+                          to={`/${selectedBook.slug || selectedBook.title.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-')}/trophies`}
+                          className="flex-1 py-3 bg-transparent border-2 border-gray-900 text-gray-900 font-bold uppercase tracking-widest text-sm hover:bg-gray-100 transition-colors rounded-sm flex items-center justify-center"
+                        >
                           全奖杯列表
-                        </button>
+                        </Link>
                       </div>
                       <a 
                          href="https://www.playstation.com" 
@@ -691,7 +696,7 @@ export default function Gallery() {
                  <div className="cover-back absolute inset-0 bg-[#003b8a] rounded-l-[4px] rounded-br-sm overflow-hidden flex flex-col justify-center items-center border border-white/10 shadow-inner">
                    
                    {/* 背景：PS5 蓝色半透明塑料外壳质感 */}
-                   <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/plastic.png')] opacity-30 mix-blend-overlay pointer-events-none"></div>
+                   <div className="absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none" style={{ backgroundImage: `url(${plasticTexture})` }}></div>
                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-black/20 pointer-events-none"></div>
                    
                    {/* 游戏光盘 (Disc) */}

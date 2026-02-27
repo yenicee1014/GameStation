@@ -1,21 +1,49 @@
 import { useParams, Link } from 'react-router-dom';
 import { booksData, categoryOptions } from './data';
 import { useState, useEffect } from 'react';
-import { Search, Bell, Heart, Share2, Bookmark, MessageSquare, MoreHorizontal, ChevronDown, BookOpen, X, ShoppingCart } from 'lucide-react';
+import { Search, Heart, Share2, Bookmark, ChevronDown, BookOpen, X, ShoppingCart, ExternalLink } from 'lucide-react';
 import alipayImage from './assets/Alipay-payme.JPG';
 import wechatImage from './assets/WeChat-payme.JPG';
 import backgroundImage from '../picture/30th-anniversary-hub-background-mobile-02-en-02oct24.webp';
+import tlou2Banner from '../picture/page1-game-walkthrough/tlou2/The-Last-of-Us-part-2-remastered-hub-hero-banner-desktop-01-en-27nov23.webp';
+import tlou2Ps5Cover from '../picture/page1-game-walkthrough/tlou2/The-Last-Of-Us-Part-II-Remastered-PlayStation-5_901e04c9-bac6-4560-8c2b-705307058fc3.fc2bbde84f012348309a30046a71564a.jpg';
+import naughtyDogLogo from '../picture/page1-game-walkthrough/tlou2/NaughtyDog_64x64.png';
+import tlou2StealthShot from '../picture/page1-game-walkthrough/tlou2/tips-for-playing-as-ellie-with-the-stalkers-in-the-office-v0-mg9m8ug9t4cd1.webp';
+import tlou2ResourcesShot from '../picture/page1-game-walkthrough/tlou2/tlou2-resources.jpg';
+import tlou2EllieSeattle from '../picture/page1-game-walkthrough/tlou2/Ellie-in-seattle.jpeg';
+import tlou2AgilityShot from '../picture/page1-game-walkthrough/tlou2/08_0.jpg.webp';
+import tlou2DodgeShot from '../picture/page1-game-walkthrough/tlou2/dodge.jpg';
+import tlou2ProneShot from '../picture/page1-game-walkthrough/tlou2/Last-of-Us-Part-2-Ellie-Stealth-Feature.jpg';
+import tlou2BrickShot from '../picture/page1-game-walkthrough/tlou2/ellie-holding-a-brick-in-the-last-of-us-part-ii.jpg';
+import tlou2BottleShot from '../picture/page1-game-walkthrough/tlou2/ellie-holding-a-throwable-bottle-in-the-last-of-us-part-ii.jpg';
+import tlou2CraftShot from '../picture/page1-game-walkthrough/tlou2/The-Last-of-Us-2-How-to-Heal-Health-Kit.jpg';
+import tlou2LookUpShot from '../picture/page1-game-walkthrough/tlou2/card.jpg';
+import tlou2HighContrastShot from '../picture/page1-game-walkthrough/tlou2/ High Contrast Display.webp';
+import Tlou2TrophyList from './components/Tlou2TrophyList';
 import './App.css';
 
 // TOC Data structure
 const tocItems = [
-  { id: 'section-1', title: '前言', level: 1 },
-  { id: 'section-2', title: '1. 游戏基础与操作指南', level: 1 },
-  { id: 'section-2-1', title: '1.1 战斗系统详解', level: 2 },
-  { id: 'section-3', title: '2. 全流程图文攻略', level: 1 },
-  { id: 'section-3-1', title: `第一章：序幕`, level: 2 },
-  { id: 'section-4', title: '3. 全收集品位置一览', level: 1 },
-  { id: 'section-5', title: '4. 白金奖杯获取指南', level: 1 },
+  { id: 'section-intro', title: '前言与导读', level: 1 },
+  { id: 'section-1', title: '1. 基础操作与生存技巧', level: 1 },
+  { id: 'section-1-1', title: '1.1 战斗技巧', level: 2 },
+  { id: 'section-1-2', title: '1.2 探索技巧', level: 2 },
+  { id: 'section-2', title: '2. 全章节流程攻略', level: 1 },
+  { id: 'section-3', title: '3. 战斗与探索指南', level: 1 },
+  { id: 'section-4', title: '4. 保险箱与密码全解', level: 1 },
+  { id: 'section-5', title: '5. 全收集品位置指南', level: 1 },
+  { id: 'section-6', title: '6. 白金路线图', level: 1 },
+  { id: 'section-6-1', title: '6.1 章节选择与存档要点', level: 2 },
+  { id: 'section-7', title: '7. 收集与升级重点', level: 1 },
+  { id: 'section-8', title: '8. 奖杯总览', level: 1 },
+  { id: 'section-9', title: '9. 奖杯详细攻略', level: 1 },
+  { id: 'section-9-1', title: '9.1 白金与金杯', level: 2 },
+  { id: 'section-9-2', title: '9.2 银杯', level: 2 },
+  { id: 'section-9-3', title: '9.3 铜杯', level: 2 },
+  { id: 'section-9-4', title: '9.4 绝地与永久死亡追加', level: 2 },
+  { id: 'section-9-5', title: '9.5 No Return 追加', level: 2 },
+  { id: 'section-9-6', title: '9.6 复刻版额外奖杯', level: 2 },
+  { id: 'section-10', title: '10. 版本与DLC说明', level: 1 },
 ];
 
 export default function Walkthrough() {
@@ -198,35 +226,38 @@ export default function Walkthrough() {
           
 
           {/* Article Column */}
-          <article className="flex-1 min-w-0 bg-white rounded-lg shadow-sspai p-8 md:p-12 md:pb-16 transition-shadow">
+          <article className="flex-1 min-w-0 bg-white rounded-lg shadow-sspai p-8 md:p-12 md:pb-16 transition-shadow text-black">
              {/* Banner */}
              <div className="w-full aspect-[2/1] rounded-lg overflow-hidden mb-8 shadow-inner bg-gray-100 relative group">
-               <img src={game.imgUrl} alt={game.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-               <div className="absolute top-4 left-4">
-                  <span className="bg-sspai-red text-white px-2 py-1 text-xs font-bold rounded shadow-sm tracking-wide">Matrix 精选</span>
-               </div>
+               <img 
+                 src={game.slug === 'the-last-of-us-part-2' ? tlou2Banner : game.imgUrl} 
+                 alt={game.title} 
+                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+               />
+ 
              </div>
              
              {/* Title */}
-             <h1 className="text-3xl md:text-[40px] font-bold mb-6 leading-[1.2] text-[#292525] tracking-tight">
-               {game.title} 完整图文攻略：从入门到精通的白金之路
+             <h1 className="text-3xl md:text-[40px] font-bold mb-6 leading-[1.2] text-black tracking-tight">
+               {game.title} 完整图文攻略
+               <span className="block text-2xl md:text-3xl text-gray-500 mt-2 font-normal">从入门到精通的白金之路</span>
              </h1>
              
              {/* Meta */}
              <div className="flex items-center justify-between mb-10 pb-8 border-b border-gray-100">
                <div className="flex items-center gap-4">
                  <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-100 shadow-sm cursor-pointer hover:ring-2 hover:ring-sspai-red/20 transition-all">
-                   <img src={game.imgUrl} alt={game.author} className="w-full h-full object-cover" />
+                   <img src={game.slug === 'the-last-of-us-part-2' ? naughtyDogLogo : game.imgUrl} alt={game.author} className="w-full h-full object-cover" />
                  </div>
                  <div className="flex flex-col justify-center">
                    <div className="flex items-center gap-2">
-                     <span className="font-bold text-[15px] text-gray-900 hover:text-sspai-red cursor-pointer transition-colors">{game.author}</span>
-                     <span className="px-1.5 py-[1px] bg-[#f0f0f0] text-gray-500 text-[10px] font-bold rounded uppercase tracking-wider">PRO</span>
+                     <span className="font-bold text-[15px] text-black hover:text-sspai-red cursor-pointer transition-colors">{game.author}</span>
+                     <span className="px-1.5 py-[1px] bg-[#f0f0f0] text-gray-500 text-[10px] font-bold rounded uppercase tracking-wider">官方</span>
                    </div>
                    <div className="text-xs text-gray-400 mt-0.5 flex items-center gap-3 font-medium">
-                     <span>2026年02月26日</span>
-                     <span>阅读 15分钟</span>
-                   </div>
+                    <span>{game.date || '2026年02月26日'}</span>
+                    <span>阅读 15分钟</span>
+                  </div>
                  </div>
                </div>
                
@@ -244,14 +275,649 @@ export default function Walkthrough() {
              </div>
              
              {/* Content Body */}
-             <div className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-[#292525] prose-headings:tracking-tight prose-p:text-black prose-p:leading-[1.8] prose-p:mb-6 prose-a:text-sspai-red prose-a:no-underline prose-a:border-b prose-a:border-sspai-red/30 hover:prose-a:border-sspai-red hover:prose-a:bg-red-50/50 prose-a:transition-all prose-img:rounded-lg prose-img:shadow-sm prose-blockquote:border-l-4 prose-blockquote:border-sspai-red prose-blockquote:bg-gray-50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r prose-blockquote:not-italic prose-blockquote:text-black prose-li:text-black prose-strong:text-[#292525] prose-strong:font-bold">
+             <div className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-black prose-headings:tracking-tight prose-p:text-black prose-p:leading-[1.8] prose-p:mb-6 prose-a:text-sspai-red prose-a:no-underline prose-a:border-b prose-a:border-sspai-red/30 hover:prose-a:border-sspai-red hover:prose-a:bg-red-50/50 prose-a:transition-all prose-img:rounded-lg prose-img:shadow-sm prose-blockquote:border-l-4 prose-blockquote:border-sspai-red prose-blockquote:bg-gray-50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r prose-blockquote:not-italic prose-blockquote:text-black prose-li:text-black prose-strong:text-black prose-strong:font-bold">
                
-               <p className="lead text-[18px] text-black mb-10 font-serif italic pl-2 border-l-4 border-gray-200">
-                 {game.description}
-               </p>
+               {game.slug === 'the-last-of-us-part-2' ? (
+                 <>
+                   {/* TLOU2 Specific Content - Optimized Layout */}
+                    <div className="mb-12">
+                      <div className="flex flex-col md:flex-row gap-6 mb-10 items-stretch">
+                         {/* Cover Image */}
+                         <div className="w-full md:w-[320px] lg:w-[360px] flex-shrink-0 flex flex-col">
+                           <div className="relative flex-1 rounded-xl overflow-hidden shadow-xl border border-gray-200 bg-white">
+                             <img src={tlou2Ps5Cover} alt="PS5 Official Disc Cover" className="absolute inset-0 w-full h-full object-contain p-1" />
+                           </div>
+                           <p className="text-xs text-center text-gray-400 mt-3 font-medium">📀 PS5 官方光盘封面 | 来源: PlayStation</p>
+                         </div>
+                         
+                         {/* Basic Info Table */}
+                         <div className="flex-1 flex flex-col">
+                           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col h-full">
+                             <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-4">
+                               <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                                 <span className="text-2xl">📋</span> 基础信息
+                               </h3>
+                               <span className="px-2 py-1 bg-gray-100 text-gray-500 text-xs font-bold rounded uppercase tracking-wider">游戏档案</span>
+                             </div>
+                             
+                             <div className="flex-1 grid grid-cols-1 content-center gap-1">
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
+                                   <span className="w-5 text-center">🏢</span> 开发商
+                                 </span>
+                                 <span className="font-semibold text-gray-900">顽皮狗 (Naughty Dog)</span>
+                               </div>
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
+                                   <span className="w-5 text-center">📦</span> 发行商
+                                 </span>
+                                 <span className="font-semibold text-gray-900">索尼互动娱乐 (SIE)</span>
+                               </div>
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
+                                   <span className="w-5 text-center">📅</span> 发售日期
+                                 </span>
+                                 <span className="font-semibold text-gray-900">2020-06-19</span>
+                               </div>
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
+                                   <span className="w-5 text-center">🎯</span> 游戏类型
+                                 </span>
+                                 <span className="font-semibold text-gray-900">动作冒险 / 生存恐怖</span>
+                               </div>
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
+                                   <span className="w-5 text-center">🕹️</span> 对应平台
+                                 </span>
+                                 <span className="font-semibold text-gray-900">PS5 / PS4</span>
+                               </div>
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
+                                   <span className="w-5 text-center">👥</span> 游玩人数
+                                 </span>
+                                 <span className="font-semibold text-gray-900">1人</span>
+                               </div>
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
+                                   <span className="w-5 text-center">💰</span> 参考价格
+                                 </span>
+                                 <span className="font-bold text-sspai-red text-base">HK$ 398.00</span>
+                               </div>
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
+                                   <span className="w-5 text-center">🌐</span> 语言支持
+                                 </span>
+                                 <span className="font-semibold text-gray-900 text-right max-w-[50%] leading-tight">简繁中字 / 英文语音</span>
+                               </div>
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors last:border-0">
+                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
+                                   <span className="w-5 text-center">⭐</span> 年龄分级
+                                 </span>
+                                 <div className="flex items-center gap-2">
+                                   <span className="px-1.5 py-0.5 border border-gray-300 rounded text-[10px] font-bold text-gray-500">ESRB M</span>
+                                   <span className="font-semibold text-gray-900">17+ / 18+</span>
+                                 </div>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                      </div>
+
+                     <h2 className="text-2xl mt-8 mb-6 flex items-center gap-2 group cursor-pointer text-black">
+                        <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 w-6 text-center font-normal">#</span>
+                        📖 游戏简介
+                     </h2>
+                     <p className="lead text-[17px] text-gray-800 leading-relaxed mb-8">
+                       《最后生还者 2》（The Last of Us Part II）是由顽皮狗（Naughty Dog）工作室开发，索尼互动娱乐发行的动作冒险游戏。故事发生在初代游戏结束后的五年，艾莉和乔尔定居在怀俄明州的杰克逊市。然而，一场突如其来的暴力冲突打破了这里的宁静。为了追捕肇事者，艾莉踏上了一场横跨西雅图的残酷报复之旅。
+                       <br/><br/>
+                       作为一款备受瞩目的续作，本作在叙事、画面表现和游戏机制上都达到了PS4时代的巅峰。玩家将在充满感染者和敌对幸存者的末世废墟中求生，体验扣人心弦的剧情与紧张刺激的战斗。复刻版（Remastered）更针对PS5主机进行了全面强化，带来了4K画质、更短的加载时间以及全新的“No Return”肉鸽生存模式。
+                     </p>
+
+                     <h2 className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                        <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                        🎯 核心特色
+                     </h2>
+                     <div className="grid md:grid-cols-3 gap-6 mb-10">
+                        <div className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                          <h4 className="font-bold text-lg mb-2 text-sspai-red">次世代叙事体验</h4>
+                          <p className="text-sm text-gray-600 m-0">
+                            通过双主角视角，深入探讨复仇、原谅与人性。电影级的过场动画与无缝衔接的实机游玩，带来沉浸感极强的叙事体验。
+                          </p>
+                        </div>
+                        <div className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                          <h4 className="font-bold text-lg mb-2 text-sspai-red">进化的战斗系统</h4>
+                          <p className="text-sm text-gray-600 m-0">
+                            新增闪避、跳跃与俯卧机制，配合更加智能的AI敌人。玩家需要灵活利用环境潜行或正面对抗，每一场战斗都充满变数。
+                          </p>
+                        </div>
+                        <div className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                          <h4 className="font-bold text-lg mb-2 text-sspai-red">No Return 模式</h4>
+                          <p className="text-sm text-gray-600 m-0">
+                            PS5版独占的Roguelike生存模式。选择不同的角色与流派，在随机生成的关卡中挑战极限，体验纯粹的战斗乐趣。
+                          </p>
+                        </div>
+                     </div>
+
+                     <h2 className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                        <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                        📊 媒体评分
+                     </h2>
+                     <div className="overflow-x-auto mb-10">
+                        <table className="w-full text-left border-collapse bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200">
+                          <thead className="bg-gray-50 text-gray-700 text-sm uppercase tracking-wider">
+                            <tr>
+                              <th className="px-6 py-3 border-b border-gray-200 font-bold">媒体 / 平台</th>
+                              <th className="px-6 py-3 border-b border-gray-200 font-bold">评分</th>
+                              <th className="px-6 py-3 border-b border-gray-200 font-bold">简评</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-gray-100 text-[15px]">
+                            <tr>
+                              <td className="px-6 py-4 font-medium">Metacritic (均分)</td>
+                              <td className="px-6 py-4 text-green-600 font-bold">93/100</td>
+                              <td className="px-6 py-4 text-gray-500 italic">"PS4 世代的绝唱，技术与艺术的完美结合。"</td>
+                            </tr>
+                            <tr>
+                              <td className="px-6 py-4 font-medium">IGN</td>
+                              <td className="px-6 py-4 text-sspai-red font-bold">10/10</td>
+                              <td className="px-6 py-4 text-gray-500">"大师之作 (Masterpiece)。在各个层面上都进化了初代的体验。"</td>
+                            </tr>
+                            <tr>
+                              <td className="px-6 py-4 font-medium">GameSpot</td>
+                              <td className="px-6 py-4 font-bold">8/10</td>
+                              <td className="px-6 py-4 text-gray-500">"虽然部分情节令人难受，但它依然是一部美丽且令人心碎的作品。"</td>
+                            </tr>
+                            <tr>
+                              <td className="px-6 py-4 font-medium">Famitsu (Fami通)</td>
+                              <td className="px-6 py-4 font-bold">39/40</td>
+                              <td className="px-6 py-4 text-gray-500">"荣获白金殿堂评价，在此类游戏中无可挑剔。"</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                     </div>
+
+                     <h2 className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                        <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                        🎬 官方游戏截图
+                     </h2>
+                     <div className="space-y-8 mb-10">
+                        <figure>
+                          <img src={tlou2EllieSeattle} alt="The Last of Us Part II Gameplay" className="w-full rounded-lg shadow-md" />
+                          <figcaption className="text-center text-sm text-gray-400 mt-2">艾莉在西雅图的探索之旅 | 来源: PlayStation 官方</figcaption>
+                        </figure>
+
+                     </div>
+
+                     
+                     <div className="text-xs text-gray-400 border-t border-gray-100 pt-4">
+                       📌 数据更新于：2026-02-27 | 以上信息汇总自 PlayStation 官网及多家权威媒体，请以官方最新公告为准。
+                     </div>
+                   </div>
+                   
+                   <div className="bg-[#fffbfb] border border-[#ffebeb] rounded-lg p-6 my-10 relative overflow-hidden">
+                     <div className="absolute top-0 left-0 w-1 h-full bg-sspai-red"></div>
+                     <h4 className="font-bold mb-3 text-sspai-red flex items-center gap-2 text-base">
+                        <span>💡</span> 通用技巧
+                     </h4>
+                     <div className="text-[15px] text-black m-0 leading-relaxed space-y-4">
+                       <div>
+                         <strong className="block mb-1">✔ 开启“高对比度显示” (High Contrast Display)</strong>
+                         <p className="m-0">建议开启此功能。按下触摸板（原文是 G 键，针对 PC 版或特定设置，主机版通常在辅助功能里设置手势）可以高亮显示物品，让收集品变得非常显眼，极易发现。</p>
+                       </div>
+                       
+                       <div>
+                         <strong className="block mb-1">✔ 如果追求稳妥的通关路线</strong>
+                         <p className="m-0">建议第一周目在“超轻 (Very Light)”难度下完成“永久死亡 (Permadeath)”模式，第二周目再挑战“绝地+ (Grounded+)”难度。</p>
+                       </div>
+
+                       <div>
+                         <strong className="block mb-1">✔ 如果追求速度</strong>
+                         <p className="m-0">可以尝试一次性同时完成两个高难度奖杯（绝地+ 和 永久死亡），然后在“新游戏+ (NG+)”中补齐遗漏的奖杯。</p>
+                       </div>
+
+                       <div>
+                         <strong className="block mb-1">✔ 关于永久死亡 (Permadeath) 模式</strong>
+                         <p className="m-0">建议将设置设定为<strong>“按章节 (Per Chapter)”</strong>，而不是“按幕 (Act)”或“整部游戏 (Whole Game)”。这样容错率最高。</p>
+                       </div>
+
+                       <div>
+                         <strong className="block mb-1">✔ 增强聆听模式 (Enhanced Listen mode)</strong>
+                         <p className="m-0">开启此功能后，聆听模式不仅能侦测敌人，还能为您扫描并“标记 (Ping)”附近的物品，非常实用。</p>
+                       </div>
+
+                       <div>
+                         <strong className="block mb-1">✔ 收集品追踪 (Collectible Tracking)</strong>
+                         <p className="m-0">前往 <strong>选项 &gt; HUD &gt; 通知 &gt; 收集品追踪</strong> 开启此功能。这样当您捡起收集品时会有提示，方便确认哪些已收集，哪些可能错过了。</p>
+                       </div>
+
+                       <div>
+                         <strong className="block mb-1">✔ 收集品统计</strong>
+                         <p className="m-0">如果您缺少某个收集品但不知道是在哪一章漏掉的，只需进入<strong>“章节选择”</strong>，系统会显示每一章各类收集品的总数以及您当前的收集进度。您也可以直接通过章节选择进入特定关卡快速补齐。</p>
+                       </div>
+
+                       <div>
+                         <h5 className="font-bold text-base mb-2">📦 收集品概览</h5>
+                         <p className="mb-2">《最后生还者 第二部 重制版》的剧情模式中大约有 <strong>286</strong> 个收集品：</p>
+                         <ul className="list-disc pl-5 space-y-1">
+                           <li>📜 <strong>127</strong> 个 遗物 (Artifacts)</li>
+                           <li>📓 <strong>20</strong> 个 日记 (Journal Entries)</li>
+                           <li>🃏 <strong>48</strong> 张 交易卡牌 (Trading Cards)</li>
+                           <li>🪙 <strong>32</strong> 枚 硬币 (Coins)</li>
+                           <li>🔧 <strong>25</strong> 个 工作台 (Workbenches)</li>
+                           <li>🔐 <strong>14</strong> 个 保险箱 (Safes)</li>
+                           <li>🔫 <strong>12</strong> 件 武器 (Weapons)</li>
+                           <li>📘 <strong>8</strong> 本 培训手册 (Training Manuals)</li>
+                           <li>🔫 <strong>4</strong> 个 枪套 (Upgrade Holsters)</li>
+                           <li>以及 <strong>奇异遗物 (Strange Artifact)</strong> 和 <strong>刻字戒指 (Engraved Ring)</strong></li>
+                         </ul>
+                         <p className="mt-2">工程量确实不小，这也是为什么我强烈推荐开启<strong>“高对比度显示”</strong>的原因，找起东西来会轻松很多。</p>
+                       </div>
+
+                       <div>
+                         <h5 className="font-bold text-base mb-2">⚠️ 重要提示：关于培训手册</h5>
+                         <p className="mb-2">还有一点需要补充，我很确定<strong>培训手册 (Training Manuals)</strong> 有多个不同的刷新点。这意味着您找到它们的时间点可能与攻略一致，也可能比攻略早或晚。</p>
+                         <p className="mb-2">我知道它们通常会刷新在相同的章节里，但具体位置可能不同。</p>
+                         <p className="mb-2"><strong>关键点：</strong> 如果您按照攻略走到指定位置却没看到手册，请不要慌张，可以去查阅其他视频或指南，看看该章节其他的刷新点在哪里。</p>
+                         <p className="m-0">在我完成这篇指南后，我可能会把其他刷新点也补加上去，但在我们开始游玩时，请务必把这一点记在心里。</p>
+                       </div>
+                     </div>
+                   </div>
+                   
+                  <h2 id="section-1" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                     一、基础操作与生存技巧
+                  </h2>
+                  <p>
+                    本作核心是潜行与资源管理，建议从最低难度开始熟悉系统，再逐步加快通关节奏。
+                  </p>
+                  <figure className="my-8">
+                    <img src={tlou2StealthShot} alt="潜行与侦察" className="w-full rounded-lg shadow-md" />
+                    <figcaption className="text-center text-sm text-gray-400 mt-3 font-medium">
+                      潜行与侦察是推进与收集的核心
+                    </figcaption>
+                  </figure>
+                  
+                  {/* REPLACED CONTENT START */}
+                  <h3 id="section-1-1" className="text-xl mt-8 mb-4 font-bold text-gray-800">1.1 战斗技巧</h3>
+                  <p>
+                    虽然战斗机制与前作相似，但《最后生还者 2》中的敌人 AI 更加智能，且艾莉的武器库也更加丰富。
+                  </p>
+                  
+                  <div className="space-y-12 my-8">
+                    {/* Item 1 */}
+                    <div>
+                       <h4 className="text-lg font-bold mb-2 text-gray-900">灵活机动</h4>
+                       <p className="text-gray-600 leading-relaxed">
+                         艾莉体型小巧，可以钻入狭窄缝隙或趴在草丛中。利用这些优势快速脱离战斗或重新寻找有利位置。
+                       </p>
+                       <figure className="my-4">
+                           <img src={tlou2ProneShot} alt="灵活机动" className="w-full rounded-lg shadow-sm" />
+                           <figcaption className="text-center text-sm text-gray-400 mt-2 font-medium">
+                             利用环境快速转移位置
+                           </figcaption>
+                        </figure>
+                    </div>
+
+                    {/* Item 2 */}
+                    <div>
+                       <h4 className="text-lg font-bold mb-2 text-gray-900">闪避是关键</h4>
+                       <p className="text-gray-600 leading-relaxed">
+                         本作新增的闪避键（L1）至关重要。观察敌人的攻击前摇，适时闪避并发动反击。
+                       </p>
+                       <figure className="my-4">
+                           <img src={tlou2DodgeShot} alt="闪避机制" className="w-full rounded-lg shadow-sm" />
+                           <figcaption className="text-center text-sm text-gray-400 mt-2 font-medium">
+                             精准闪避创造反击机会
+                           </figcaption>
+                        </figure>
+                    </div>
+
+                    {/* Item 3 */}
+                    <div>
+                       <h4 className="text-lg font-bold mb-2 text-gray-900">利用环境</h4>
+                       <p className="text-gray-600 leading-relaxed">
+                         场景中充满了可投掷的砖块和酒瓶。先手眩晕敌人，再接上一击必杀，是节省弹药的好方法。
+                       </p>
+                       <figure className="my-4">
+                           <img src={tlou2BrickShot} alt="环境互动" className="w-full rounded-lg shadow-sm" />
+                           <figcaption className="text-center text-sm text-gray-400 mt-2 font-medium">
+                             利用投掷物控制战局
+                           </figcaption>
+                        </figure>
+                    </div>
+
+                    {/* Item 4 */}
+                    <div>
+                       <h4 className="text-lg font-bold mb-2 text-gray-900">制作与资源</h4>
+                       <p className="text-gray-600 leading-relaxed">
+                         不要等到战斗中才开始制作。时刻保持医疗包、燃烧瓶和消音器的库存充足。
+                       </p>
+                       <figure className="my-4">
+                          <img src={tlou2CraftShot} alt="制作与资源" className="w-full rounded-lg shadow-sm" />
+                          <figcaption className="text-center text-sm text-gray-400 mt-2 font-medium">
+                            合理规划资源使用
+                          </figcaption>
+                       </figure>
+                    </div>
+                  </div>
+
+                  <h3 id="section-1-2" className="text-xl mt-8 mb-4 font-bold text-gray-800">1.2 探索技巧</h3>
+                   <div className="space-y-12 my-8">
+                     {/* Item 1 */}
+                     <div>
+                        <h4 className="text-lg font-bold mb-2 text-gray-900">打碎玻璃</h4>
+                        <p className="text-gray-600 leading-relaxed">
+                          很多房间看似封闭，其实可以通过打破窗户或陈列柜进入。注意玻璃破碎的声音可能会吸引敌人。
+                        </p>
+                        <figure className="my-4">
+                           <img src={tlou2BottleShot} alt="打碎玻璃" className="w-full rounded-lg shadow-sm" />
+                           <figcaption className="text-center text-sm text-gray-400 mt-2 font-medium">
+                             通过破碎玻璃寻找隐藏路径
+                           </figcaption>
+                        </figure>
+                     </div>
+ 
+                     {/* Item 2 */}
+                     <div>
+                        <h4 className="text-lg font-bold mb-2 text-gray-900">检查高处</h4>
+                        <p className="text-gray-600 leading-relaxed">
+                          抬头看看。有些收集品藏在树上、灯柱上或高处的架子上。
+                        </p>
+                        <figure className="my-4">
+                          <img src={tlou2LookUpShot} alt="检查高处" className="w-full rounded-lg shadow-sm" />
+                          <figcaption className="text-center text-sm text-gray-400 mt-2 font-medium">
+                             留意藏在架子上的搜集品
+                           </figcaption>
+                       </figure>
+                     </div>
+ 
+                     {/* Item 3 */}
+                     <div>
+                        <h4 className="text-lg font-bold mb-2 text-gray-900">辅助功能</h4>
+                        <p className="text-gray-600 leading-relaxed">
+                          开启「强化聆听模式」和「高对比度显示」可以帮助你快速发现场景中的可互动道具体和收集品，极大提升探索效率。
+                        </p>
+                        <figure className="my-4">
+                          <img src={tlou2HighContrastShot} alt="辅助功能" className="w-full rounded-lg shadow-sm" />
+                          <figcaption className="text-center text-sm text-gray-400 mt-2 font-medium">
+                            高对比度模式下的探索视图
+                          </figcaption>
+                       </figure>
+                     </div>
+                   </div>
+                  {/* REPLACED CONTENT END */}
+
+                  <h2 id="section-2" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                     <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                     二、全章节流程攻略
+                  </h2>
+                  <p>
+                    本作流程分为多个章节，涵盖了杰克逊、西雅图（三天）以及后续的圣塔巴巴拉。以下是主要章节的流程概览。
+                  </p>
+                  
+                  <h3 className="text-xl mt-8 mb-4 font-bold text-gray-800">第一章：杰克逊</h3>
+                  <ul>
+                    <li><strong>序章 & 梦醒：</strong> 熟悉基本操作，与杰西、蒂娜互动。</li>
+                    <li><strong>眺望点 & 巡逻：</strong> 第一次遭遇感染者，学习潜行与战斗基础。注意暴风雪中的能见度。</li>
+                    <li><strong>尸潮：</strong> 紧张的追逐战，保持奔跑，利用障碍物阻挡感染者。</li>
+                  </ul>
+
+                  <h3 className="text-xl mt-8 mb-4 font-bold text-gray-800">第二章：西雅图 第一天 - 艾莉</h3>
+                  <ul>
+                    <li><strong>大门 & 市中心：</strong> 这是一个半开放区域。你需要寻找汽油来启动发电机。这里包含了大量收集品，建议地毯式搜索。</li>
+                    <li><strong>东布鲁克小学 & 国会山：</strong> 遭遇 WLF 士兵，战斗强度提升。利用草丛和建筑进行潜行。</li>
+                    <li><strong>隧道：</strong> 面对新敌人 跛行者。保持距离，使用燃烧瓶和地雷。</li>
+                  </ul>
+
+                  <h3 className="text-xl mt-8 mb-4 font-bold text-gray-800">第三章：西雅图 第二天 - 艾莉</h3>
+                  <ul>
+                    <li><strong>希尔科列斯特：</strong> 充满 WLF 巡逻队和猎犬。利用消音武器优先解决落单敌人。</li>
+                    <li><strong>赛拉菲特 (疤脸帮)：</strong> 首次遭遇疤脸帮。注意他们的口哨声，利用弓箭进行无声击杀。</li>
+                  </ul>
+
+                  <h3 className="text-xl mt-8 mb-4 font-bold text-gray-800">第四章：西雅图 第三天 - 艾莉</h3>
+                  <ul>
+                    <li><strong>通往水族馆之路 & 水没都市：</strong> 驾驶游艇探索。注意水下的潜行路径和隐藏的补给点。</li>
+                  </ul>
+
+                  <div className="bg-gray-50 p-4 rounded border-l-4 border-gray-400 my-6">
+                    <p className="text-sm text-gray-600 m-0">
+                      *后续章节将切换至另一位主角 艾比，体验不同的战斗风格与剧情视角。艾比 的近战能力更强，且拥有独特的武器和技能树。
+                    </p>
+                  </div>
+
+                  <h2 id="section-3" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                     <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                     三、战斗与探索指南
+                  </h2>
+                  <p>
+                    除了基础操作外，掌握进阶技巧能让你在绝地难度下也能游刃有余。
+                  </p>
+                  <ul>
+                    <li><strong>利用感染者：</strong> 在人类敌人和感染者同时出现的场景，可以投掷砖块引诱感染者攻击人类，坐收渔翁之利。</li>
+                    <li><strong>改装武器：</strong> 优先升级弹夹容量和稳定性。猎枪的伤害升级在对付重甲敌人时非常有效。</li>
+                    <li><strong>不仅是潜行：</strong> 当潜行失败时，不要慌张。迅速切换至霰弹枪或近战武器，利用闪避制造反击机会，或者投掷烟雾弹重新进入潜行状态。</li>
+                  </ul>
+
+                  <h2 id="section-4" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                     <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                     四、保险箱与密码全解
+                  </h2>
+                  <p>
+                    游戏中许多物资被锁在保险箱内，密码通常藏在附近的文档或环境细节中。以下是全保险箱密码一览。
+                  </p>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200">
+                      <thead className="bg-gray-50 text-gray-700 text-sm uppercase">
+                        <tr>
+                          <th className="px-4 py-2 border-b font-bold">章节 / 位置</th>
+                          <th className="px-4 py-2 border-b font-bold">密码</th>
+                          <th className="px-4 py-2 border-b font-bold">提示来源</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100 text-sm">
+                        <tr><td className="px-4 py-2 font-bold" colSpan="3">杰克逊</td></tr>
+                        <tr><td className="px-4 py-2">超市</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">07-20-13</td><td className="px-4 py-2">入职日期</td></tr>
+                        
+                        <tr><td className="px-4 py-2 font-bold" colSpan="3">西雅图 第一天 - 艾莉</td></tr>
+                        <tr><td className="px-4 py-2">银行金库</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">60-23-06</td><td className="px-4 py-2">抢劫计划图纸</td></tr>
+                        <tr><td className="px-4 py-2">西2门</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">04-51</td><td className="px-4 py-2">Checkmate 代码</td></tr>
+                        <tr><td className="px-4 py-2">法院</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">86-07-22</td><td className="px-4 py-2">白板上的数字</td></tr>
+                        <tr><td className="px-4 py-2">国会山</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">55-01-33</td><td className="px-4 py-2">垃圾箱旁的纸条</td></tr>
+                        <tr><td className="px-4 py-2">隧道</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">15243</td><td className="px-4 py-2">苏打水罐上的数字</td></tr>
+
+                        <tr><td className="px-4 py-2 font-bold" colSpan="3">西雅图 第二天 - 艾莉</td></tr>
+                        <tr><td className="px-4 py-2">希尔科列斯特</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">30-82-65</td><td className="px-4 py-2">厨房墙上的日历</td></tr>
+                        <tr><td className="px-4 py-2">赛拉菲特</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">08-10-83</td><td className="px-4 py-2">结婚纪念日</td></tr>
+                        <tr><td className="px-4 py-2">韦斯顿药店</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">38-55-23</td><td className="px-4 py-2">收银台下的纸条</td></tr>
+
+                        <tr><td className="px-4 py-2 font-bold" colSpan="3">西雅图 第三天 - 艾莉</td></tr>
+                        <tr><td className="px-4 py-2">水没都市</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">70-12-64</td><td className="px-4 py-2">被困尸体旁的纸条</td></tr>
+
+                        <tr><td className="px-4 py-2 font-bold" colSpan="3">西雅图 第一天 - 艾比</td></tr>
+                        <tr><td className="px-4 py-2">步行</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">17-38-07</td><td className="px-4 py-2">彩票号码</td></tr>
+                        <tr><td className="px-4 py-2">敌对领土</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">68-96-89</td><td className="px-4 py-2">茉莉花面包店传单</td></tr>
+                        <tr><td className="px-4 py-2">海岸</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">90-77-01</td><td className="px-4 py-2">船长室的纸条</td></tr>
+
+                        <tr><td className="px-4 py-2 font-bold" colSpan="3">西雅图 第二天 - 艾比</td></tr>
+                        <tr><td className="px-4 py-2">捷径</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">30-23-04</td><td className="px-4 py-2">邻居的公寓号码</td></tr>
+                        <tr><td className="px-4 py-2">下降</td><td className="px-4 py-2 font-mono font-bold text-sspai-red">12-18-79</td><td className="px-4 py-2">Wi-Fi 密码</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <h2 id="section-5" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                     <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                     五、全收集品位置指南
+                  </h2>
+                  <p>
+                    本作拥有极其丰富的收集要素，包括文物、集换式卡牌、硬币、日志条目、工作台和保险箱。
+                  </p>
+                  <ul>
+                    <li><strong>集换式卡牌 (Trading Cards)：</strong> 仅出现在 Ellie 的章节中。通常藏在抽屉、架子或隐蔽的角落。</li>
+                    <li><strong>硬币 (Coins)：</strong> 仅出现在 Abby 的章节中。代表了美国的各个州，留意喷泉、收银机或地面。</li>
+                    <li><strong>训练手册 (Training Manuals)：</strong> 极为重要，用于解锁新的技能树。如果错过，游戏通常会在后续位置再次生成。</li>
+                  </ul>
+                  <p>
+                    建议在通关后使用「章节选择」功能，配合游戏内的收集品追踪器来补齐遗漏的物品。
+                  </p>
+
+                  <h2 id="section-6" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                     六、白金路线图
+                   </h2>
+                  <ol>
+                    <li>一周目通关并尽量全收集，重点搜刮补充品与零件。</li>
+                    <li>通关后使用章节选择补遗漏收集与支线奖杯。</li>
+                    <li>新游戏+继续搜刮补充品与零件，补齐全技能与全武器升级。</li>
+                  </ol>
+                  
+                  <h3 id="section-6-1" className="text-xl mt-8 mb-4 font-bold text-gray-800">6.1 章节选择与存档要点</h3>
+                  <ul>
+                    <li>务必在最终章保留手动存档，避免章节选择被锁。</li>
+                    <li>补漏时完成章节后加载最终章手动存档，再继续补其他章节。</li>
+                  </ul>
+
+                  <h2 id="section-7" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                      <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                     七、收集与升级重点
+                   </h2>
+                  <p>
+                    白金关键是全收集与全升级，具体数量可在章节选择中查看进度。
+                  </p>
+                  <ul>
+                    <li><strong>武器：</strong>12 把</li>
+                    <li><strong>训练手册：</strong>8 本</li>
+                    <li><strong>工作台：</strong>25 个</li>
+                    <li><strong>保险箱：</strong>14 个</li>
+                    <li><strong>文物：</strong>127 个</li>
+                    <li><strong>日志：</strong>20 条</li>
+                    <li><strong>集换式卡牌：</strong>48 张</li>
+                    <li><strong>硬币：</strong>32 枚</li>
+                  </ul>
+                  <p>
+                    一周目无法获得足够补充品与零件完成全升级，新游戏+是必须环节。优先解锁与制作相关的技能，能更快完成制作与战斗类奖杯。
+                  </p>
+
+                  <h2 id="section-8" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                     <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                     八、奖杯总览
+                  </h2>
+                  <ul>
+                    <li><strong>白金难度：</strong>2/10</li>
+                    <li><strong>预估时长：</strong>25-30 小时</li>
+                    <li><strong>最少通关次数：</strong>1.5 周目</li>
+                    <li><strong>Missable 奖杯：</strong>无</li>
+                    <li><strong>联机奖杯：</strong>无</li>
+                    <li><strong>已知 Bug：</strong>观光客可能卡杯，重做章节可解决</li>
+                  </ul>
+
+                  <h2 id="section-9" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                     <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                     九、奖杯详细攻略
+                  </h2>
+                  <p>
+                    以下按奖杯界面显示名称与品级编排，逐条给出获取方式。
+                  </p>
+
+                  <h3 id="section-9-1" className="text-xl mt-8 mb-4 font-bold text-gray-800">9.1 白金与金杯</h3>
+                  <ul>
+                    <li><strong>全数尽收：</strong>获得所有奖杯。完成下列全部奖杯后自动解锁。</li>
+                    <li><strong>我必须做的事：</strong>完成剧情故事。任意难度通关即可。</li>
+                    <li><strong>求生专家：</strong>学会所有玩家升级。集齐训练手册并在新游戏+补足补充品即可。</li>
+                    <li><strong>武器大师：</strong>完全升级所有武器。搜刮零件并在工作台升级，新游戏+补齐。</li>
+                    <li><strong>档案保管员：</strong>找到所有文物与日志条目。按章节选择补齐。</li>
+                    <li><strong>大师套装：</strong>找到所有集换式卡牌。艾莉章节专属收集。</li>
+                    <li><strong>硬币收藏家：</strong>找到所有硬币。艾比章节专属收集。</li>
+                    <li><strong>万全准备：</strong>找到所有工作台。通关后可补漏。</li>
+                  </ul>
+
+                  <h3 id="section-9-2" className="text-xl mt-8 mb-4 font-bold text-gray-800">9.2 银杯</h3>
+                  <ul>
+                    <li><strong>机械师：</strong>完全升级一把武器。建议优先手枪或霰弹枪。</li>
+                    <li><strong>专精行家：</strong>学会一个分支的所有玩家升级。任意技能树点满即可。</li>
+                    <li><strong>保险箱大盗：</strong>打开所有保险箱。密码多在附近墙面或文档。</li>
+                    <li><strong>观光客：</strong>西雅图第1天市中心全部地点都进入并探索。</li>
+                    <li><strong>熟练工：</strong>找到所有训练手册。共 8 本。</li>
+                    <li><strong>求生训练：</strong>学会 25 个玩家升级。正常升级流程必得。</li>
+                    <li><strong>枪械专家：</strong>找到所有武器。通关流程可集齐。</li>
+                    <li><strong>实地备战：</strong>找到 12 个工作台。流程中留意即可。</li>
+                  </ul>
+
+                  <h3 id="section-9-3" className="text-xl mt-8 mb-4 font-bold text-gray-800">9.3 铜杯</h3>
+                  <ul>
+                    <li><strong>谋生工具：</strong>制作每一种物品。需要解锁对应配方。</li>
+                    <li><strong>新手工匠：</strong>升级一把武器。第一次工作台即可解锁。</li>
+                    <li><strong>学徒：</strong>学会一个玩家升级。早期补充品即可完成。</li>
+                    <li><strong>新手套牌：</strong>找到 5 张集换式卡牌。</li>
+                    <li><strong>完好如初：</strong>找到 5 枚硬币。</li>
+                    <li><strong>你戴起来很好看：</strong>博物馆章节给同伴戴帽子。</li>
+                    <li><strong>神枪手：</strong>体育场靶场赢过曼尼的射击比赛。</li>
+                    <li><strong>写上我的名字：</strong>水族馆射箭小游戏至少 11 分。</li>
+                    <li><strong>贤者的遗物：</strong>敌对领土找到奇怪遗物。</li>
+                    <li><strong>小处成就大事：</strong>市中心银行金库中找到刻字戒指。</li>
+                  </ul>
+
+                  <h3 id="section-9-4" className="text-xl mt-8 mb-4 font-bold text-gray-800">9.4 绝地与永久死亡追加</h3>
+                  <ul>
+                    <li><strong>掘墓双人：</strong>以绝地难度完成故事。建议二周目继承后挑战。</li>
+                    <li><strong>势不可挡：</strong>开启永久死亡完成故事，推荐选择按章节保存。</li>
+                  </ul>
+
+                  <h3 id="section-9-5" className="text-xl mt-8 mb-4 font-bold text-gray-800">9.5 No Return 追加</h3>
+                  <ul>
+                    <li><strong>混合袋：</strong>突击遭遇战中用 5 种武器击杀。</li>
+                    <li><strong>成为猎人：</strong>猎杀遭遇战中击杀 12 名敌人。</li>
+                    <li><strong>有我罩你：</strong>坚守模式获胜且盟友血量不低于 70。</li>
+                    <li><strong>入室盗窃：</strong>占领模式中不开杀敌打开保险箱。</li>
+                    <li><strong>点名：</strong>用每个角色完成一次通关。</li>
+                    <li><strong>模改高手：</strong>在 No Return 中完成一次带有所有 Mod 的遭遇战。</li>
+                    <li><strong>冒险主义：</strong>一次征途中完成 5 个赌注。</li>
+                    <li><strong>解脱：</strong>击败所有 Boss。</li>
+                    <li><strong>艾莉战队：</strong>完成艾莉阵营全部挑战轨迹。</li>
+                    <li><strong>艾比战队：</strong>完成艾比阵营全部挑战轨迹。</li>
+                    <li><strong>真正的力量：</strong>单场遭遇获得 S 评级。</li>
+                    <li><strong>愿你长寿：</strong>赢得一次每日挑战。</li>
+                    <li><strong>愿你速死：</strong>绝地难度赢得每日挑战。</li>
+                  </ul>
+
+                  <h3 id="section-9-6" className="text-xl mt-8 mb-4 font-bold text-gray-800">9.6 复刻版额外奖杯</h3>
+                  <ul>
+                    <li><strong>这会让你们怀旧吗：</strong>完成 Part I 挑战轨迹。</li>
+                    <li><strong>生物课：</strong>用比尔的泵动霰弹枪击杀巨无霸。</li>
+                    <li><strong>萤火虫女王：</strong>一次遭遇中用玛琳冲锋枪击杀 15 名敌人。</li>
+                    <li><strong>再来一次：</strong>以时间线顺序通关故事。</li>
+                  </ul>
+
+                  <h2 id="section-10" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                     十、版本与DLC说明
+                  </h2>
+                  <ul>
+                    <li><strong>白金仅要求本体奖杯：</strong>No Return 与绝地模式追加奖杯不影响白金。</li>
+                    <li><strong>奖杯名称与条件：</strong>以主机奖杯界面为准，如有更新以官方为准。</li>
+                    <li><strong>攻略来源：</strong>以权威奖杯站与全收集攻略为参考整理。</li>
+                  </ul>
+
+                  <div className="my-8 text-black">
+                    <p className="mb-6 text-black font-medium">
+                      需要逐章节图文路线或奖杯筛选列表，请前往专属奖杯页面查看。
+                    </p>
+                    <Link 
+                     to="/the-last-of-us-part-2/trophies"
+                     className="block w-full text-center py-4 bg-white border-2 border-gray-900 text-gray-900 font-bold uppercase tracking-widest text-sm hover:bg-gray-900 hover:text-white transition-all rounded-sm shadow-sm hover:shadow-md"
+                   >
+                     查看全奖杯列表
+                   </Link>
+                  </div>
+                   
+                   <hr className="my-12 border-gray-100" />
+                 </>
+               ) : (
+                 // Generic content for other games
+                 <>
+                   <p className="lead text-[18px] text-black mb-10 font-serif italic pl-2 border-l-4 border-gray-200">
+                     {game.description}
+                   </p>
                
-               <h2 id="section-1" className="text-2xl mt-12 mb-6 flex items-center gap-2 group cursor-pointer">
-                  <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 w-6 text-center font-normal">#</span>
+               <h2 id="section-intro" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
                   前言
                </h2>
                <p>
@@ -293,8 +959,7 @@ export default function Walkthrough() {
                  </figcaption>
                </figure>
 
-               <h2 id="section-3" className="text-2xl mt-12 mb-6 group cursor-pointer">
-                  <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+               <h2 id="section-2" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
                   二、全流程图文攻略
                </h2>
                <h3 id="section-3-1" className="text-xl mt-8 mb-4 font-bold text-gray-800">第一章：{game.title} 的序幕</h3>
@@ -305,8 +970,7 @@ export default function Walkthrough() {
                  随着剧情的推进，我们将遇到第一个挑战...（此处为攻略正文占位符）
                </p>
                
-               <h2 id="section-4" className="text-2xl mt-12 mb-6 group cursor-pointer">
-                  <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+               <h2 id="section-3" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
                   三、全收集品位置一览
                </h2>
                <p>
@@ -318,15 +982,31 @@ export default function Walkthrough() {
                  <li><strong>隐藏宝箱：</strong>包含强力装备与升级材料。</li>
                </ul>
                
-               <h2 id="section-5" className="text-2xl mt-12 mb-6 group cursor-pointer">
-                  <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+               <h2 id="section-4" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
                   四、白金奖杯获取指南
                </h2>
-               <p>
-                 想要获得白金奖杯，你需要完成所有主线任务、收集所有要素，并达成特定的战斗挑战。部分奖杯具有一定难度，建议在二周目继承存档后尝试。
-               </p>
+               
+               {game.slug === 'the-last-of-us-part-2' ? (
+                 <div className="my-8 text-black">
+                   <p className="mb-6 text-black font-medium">
+                     本作包含大量奖杯挑战，为了方便查阅，我们将详细的奖杯获取指南整理在单独的页面中。点击下方按钮查看完整的白金攻略、绝地难度挑战以及 No Return 模式奖杯。
+                   </p>
+                   <Link 
+                    to="/the-last-of-us-part-2/trophies"
+                    className="block w-full text-center py-4 bg-white border-2 border-gray-900 text-gray-900 font-bold uppercase tracking-widest text-sm hover:bg-gray-900 hover:text-white transition-all rounded-sm shadow-sm hover:shadow-md"
+                  >
+                    查看全奖杯列表
+                  </Link>
+                 </div>
+               ) : (
+                 <p>
+                   想要获得白金奖杯，你需要完成所有主线任务、收集所有要素，并达成特定的战斗挑战。部分奖杯具有一定难度，建议在二周目继承存档后尝试。
+                 </p>
+               )}
 
                <hr className="my-12 border-gray-100" />
+               </>
+             )}
              </div>
           </article>
           
@@ -336,11 +1016,11 @@ export default function Walkthrough() {
              <div className="bg-white rounded-lg p-6 shadow-sspai border border-gray-100 hover:shadow-sspai-hover transition-all group">
                <div className="flex items-center gap-4 mb-4">
                  <div className="w-12 h-12 rounded-full overflow-hidden border border-gray-100 group-hover:ring-2 group-hover:ring-sspai-red/20 transition-all">
-                   <img src={game.imgUrl} alt={game.author} className="w-full h-full object-cover" />
+                   <img src={game.slug === 'the-last-of-us-part-2' ? naughtyDogLogo : game.imgUrl} alt={game.author} className="w-full h-full object-cover" />
                  </div>
                  <div className="flex-1 min-w-0">
                    <h3 className="font-bold text-base text-gray-900 truncate">{game.author}</h3>
-                   <p className="text-xs text-gray-400 font-medium truncate">知名游戏开发商 • 2026年度作者</p>
+                   <p className="text-xs text-gray-400 font-medium truncate">知名游戏开发商</p>
                  </div>
                </div>
                <a 
@@ -354,30 +1034,32 @@ export default function Walkthrough() {
              </div>
 
              {/* TOC */}
-             <div className="bg-white rounded-lg p-6 shadow-sspai border border-gray-100">
+             <div className="bg-white rounded-lg p-6 shadow-sspai border border-gray-100 sticky top-4">
                <h3 className="font-bold text-gray-900 mb-4 pl-1 text-[15px] flex items-center justify-between">
                  目录
-                 <span className="text-xs font-normal text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">{readingProgress}%</span>
+                 <span className="text-xs font-bold text-white bg-sspai-red px-2 py-0.5 rounded-full shadow-sm">{readingProgress}%</span>
                </h3>
-               <nav className="space-y-0.5 relative">
+               <nav className="space-y-1 relative">
                  <div className="absolute left-[7px] top-2 bottom-2 w-[2px] bg-gray-100"></div>
-                 {tocItems.map((item) => (
-                   <a 
-                     key={item.id}
-                     href={`#${item.id}`}
-                     onClick={(e) => scrollToSection(e, item.id)}
-                     className={`
-                       block py-1.5 pr-3 transition-colors relative z-10 rounded-r border-l-2
-                       ${item.level === 1 ? 'pl-6' : 'pl-9 text-[12px]'}
-                       ${activeSection === item.id 
-                         ? 'text-sspai-red font-bold bg-red-50/50 border-sspai-red' 
-                         : 'text-gray-600 hover:text-sspai-red hover:bg-gray-50 border-transparent hover:border-gray-300 font-normal'}
-                       ${item.level === 1 && activeSection !== item.id ? 'text-[13px]' : ''}
-                     `}
-                   >
-                     {item.title}
-                   </a>
-                 ))}
+                 {tocItems.map((item) => {
+                   const isActive = activeSection === item.id;
+                   return (
+                     <a 
+                       key={item.id}
+                       href={`#${item.id}`}
+                       onClick={(e) => scrollToSection(e, item.id)}
+                       className={`
+                         block py-2 pr-3 transition-all relative z-10 rounded-r border-l-[3px]
+                         ${item.level === 1 ? 'pl-6 text-[14px]' : 'pl-9 text-[13px]'}
+                         ${isActive 
+                           ? 'text-sspai-red font-bold bg-red-50/80 border-sspai-red shadow-sm' 
+                           : 'text-gray-500 hover:text-sspai-red hover:bg-gray-50 border-transparent hover:border-gray-200 font-medium'}
+                       `}
+                     >
+                       {item.title}
+                     </a>
+                   );
+                 })}
                </nav>
              </div>
 

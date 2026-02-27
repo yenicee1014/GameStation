@@ -9,6 +9,16 @@ const Changelog = () => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const updates = [
     {
+      version: "0.0.2",
+      date: "2026-02-26",
+      title: "正式上线网站",
+      content: [
+        "Gamestation 正式与大家见面了！",
+        "忙活了一天，弄好了page1游戏的封面，具体的简介还没做。先从美末1上手，弄了一个初版攻略介绍网页，内容还没细化。噢对了，这个域名一年8美金，是我可以承担的价格，先这样吧。"
+      ],
+      tags: ["Release"]
+    },
+    {
       version: "0.0.1",
       date: "2026-02-25",
       title: "开启项目",
@@ -151,7 +161,8 @@ const Changelog = () => {
 
       {/* Footer */}
       <footer className="border-t border-black/10 py-12 text-center text-gray-500 text-sm bg-white/50 backdrop-blur-sm">
-        <p>© 2026 GameStation. Inspired by Intensea.</p>
+        <div>© 2026 Intensea Interactive Entertainment LLC</div>
+        <div className="mt-1">所有内容均受著作权保护。版权所有。</div>
       </footer>
     </div>
   );
