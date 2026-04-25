@@ -1,13 +1,20 @@
 import { useParams, Link } from 'react-router-dom';
 import { booksData, categoryOptions } from './data';
-import { useState, useEffect } from 'react';
-import { Search, Heart, Share2, Bookmark, ChevronDown, BookOpen, X, ShoppingCart, ExternalLink } from 'lucide-react';
-import alipayImage from './assets/Alipay-payme.JPG';
-import wechatImage from './assets/WeChat-payme.JPG';
+import { tlou2GuideData } from './data/tlou2-guide';
+import { bg3GuideData, bg3TocItems } from './data/bg3-guide';
+import { horizonForbiddenWestGuideData, horizonForbiddenWestTocItems } from './data/horizon-forbidden-west-guide';
+import { witcher3GuideData, witcher3TocItems } from './data/witcher3-guide';
+import { useState, useEffect, useMemo } from 'react';
+import { Search, Heart, Share2, Bookmark, ChevronDown, ChevronRight, BookOpen, X, ShoppingCart, ExternalLink, ScrollText, Disc, Hammer, Lock, ShieldAlert, MapPin, Landmark, Box, Radio, Eye, CheckCircle2, Gamepad2, Skull, MessageCircle } from 'lucide-react';
+import Footer from './components/Footer';
 import backgroundImage from '../picture/30th-anniversary-hub-background-mobile-02-en-02oct24.webp';
 import tlou2Banner from '../picture/page1-game-walkthrough/tlou2/The-Last-of-Us-part-2-remastered-hub-hero-banner-desktop-01-en-27nov23.webp';
 import tlou2Ps5Cover from '../picture/page1-game-walkthrough/tlou2/The-Last-Of-Us-Part-II-Remastered-PlayStation-5_901e04c9-bac6-4560-8c2b-705307058fc3.fc2bbde84f012348309a30046a71564a.jpg';
+import horizonCover from '../picture/page1-game-walkthrough/forbidden-west/horizon-forbidden-west-ps5-launch-box-front-en-hk-08dec21.webp';
+import horizonGameplayShot from '../picture/page1-game-walkthrough/forbidden-west/xizhijuejing2.jpeg';
+import guerrillaLogo from '../picture/page1-game-walkthrough/forbidden-west/logo-guerrilla-full.svg';
 import naughtyDogLogo from '../picture/page1-game-walkthrough/tlou2/NaughtyDog_64x64.png';
+import logo from '../picture/logo.svg';
 import tlou2StealthShot from '../picture/page1-game-walkthrough/tlou2/tips-for-playing-as-ellie-with-the-stalkers-in-the-office-v0-mg9m8ug9t4cd1.webp';
 import tlou2ResourcesShot from '../picture/page1-game-walkthrough/tlou2/tlou2-resources.jpg';
 import tlou2EllieSeattle from '../picture/page1-game-walkthrough/tlou2/Ellie-in-seattle.jpeg';
@@ -19,31 +26,34 @@ import tlou2BottleShot from '../picture/page1-game-walkthrough/tlou2/ellie-holdi
 import tlou2CraftShot from '../picture/page1-game-walkthrough/tlou2/The-Last-of-Us-2-How-to-Heal-Health-Kit.jpg';
 import tlou2LookUpShot from '../picture/page1-game-walkthrough/tlou2/card.jpg';
 import tlou2HighContrastShot from '../picture/page1-game-walkthrough/tlou2/ High Contrast Display.webp';
+import tlou2TeamEllie from '../picture/page1-game-walkthrough/tlou2/team Ellie.jpg';
+import tlou2TeamAbby from '../picture/page1-game-walkthrough/tlou2/team abby.jpg';
+import bg3CharacterCreation from '../picture/page1-game-walkthrough/bd3/Bg_000.jpg';
+import bg3PrologueEscape from '../picture/page1-game-walkthrough/bd3/bg2.jpg';
+import bg3Frame from '../picture/page1-game-walkthrough/bd3/bd3-frame.png';
+import bg3Button from '../picture/page1-game-walkthrough/bd3/bg3-Main button.png';
 import Tlou2TrophyList from './components/Tlou2TrophyList';
 import './App.css';
 
-// TOC Data structure
-const tocItems = [
+// Default TOC for TLOU2 (Moved from constant to component logic later, but keeping structure here for now)
+const tlou2TocItems = [
   { id: 'section-intro', title: '前言与导读', level: 1 },
   { id: 'section-1', title: '1. 基础操作与生存技巧', level: 1 },
   { id: 'section-1-1', title: '1.1 战斗技巧', level: 2 },
   { id: 'section-1-2', title: '1.2 探索技巧', level: 2 },
   { id: 'section-2', title: '2. 全章节流程攻略', level: 1 },
-  { id: 'section-3', title: '3. 战斗与探索指南', level: 1 },
-  { id: 'section-4', title: '4. 保险箱与密码全解', level: 1 },
-  { id: 'section-5', title: '5. 全收集品位置指南', level: 1 },
-  { id: 'section-6', title: '6. 白金路线图', level: 1 },
-  { id: 'section-6-1', title: '6.1 章节选择与存档要点', level: 2 },
-  { id: 'section-7', title: '7. 收集与升级重点', level: 1 },
-  { id: 'section-8', title: '8. 奖杯总览', level: 1 },
-  { id: 'section-9', title: '9. 奖杯详细攻略', level: 1 },
-  { id: 'section-9-1', title: '9.1 白金与金杯', level: 2 },
-  { id: 'section-9-2', title: '9.2 银杯', level: 2 },
-  { id: 'section-9-3', title: '9.3 铜杯', level: 2 },
-  { id: 'section-9-4', title: '9.4 绝地与永久死亡追加', level: 2 },
-  { id: 'section-9-5', title: '9.5 No Return 追加', level: 2 },
-  { id: 'section-9-6', title: '9.6 复刻版额外奖杯', level: 2 },
-  { id: 'section-10', title: '10. 版本与DLC说明', level: 1 },
+  { id: 'section-2-1', title: '2.1 杰克逊', level: 2 },
+  { id: 'section-2-2', title: '2.2 西雅图 第一天 - 艾莉', level: 2 },
+  { id: 'section-2-3', title: '2.3 西雅图 第二天 - 艾莉', level: 2 },
+  { id: 'section-2-4', title: '2.4 西雅图 第三天 - 艾莉', level: 2 },
+  { id: 'section-2-5', title: '2.5 公园 - 埃比', level: 2 },
+  { id: 'section-2-6', title: '2.6 西雅图 第一天 - 埃比', level: 2 },
+  { id: 'section-2-7', title: '2.7 西雅图 第二天 - 埃比', level: 2 },
+  { id: 'section-2-8', title: '2.8 西雅图 第三天 - 埃比', level: 2 },
+  { id: 'section-2-9', title: '2.9 圣塔芭芭拉', level: 2 },
+  { id: 'section-3', title: '3. 保险箱与密码全解', level: 1 },
+  { id: 'section-4', title: '4. No Return 模式', level: 1 },
+  { id: 'section-trophy-list', title: '5. 查看全奖杯列表', level: 1 },
 ];
 
 export default function Walkthrough() {
@@ -54,12 +64,178 @@ export default function Walkthrough() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('全部');
-  const [isDonateOpen, setIsDonateOpen] = useState(false);
+  const [expandedSections, setExpandedSections] = useState({});
+  const [isTocOpen, setIsTocOpen] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
+  const [likes, setLikes] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+
+  // Initialize likes from localStorage
+  useEffect(() => {
+    const savedLikes = localStorage.getItem(`tlou2-likes-${slug}`);
+    const hasLiked = localStorage.getItem(`tlou2-has-liked-${slug}`);
+    
+    if (savedLikes) {
+      setLikes(parseInt(savedLikes, 10));
+    } else {
+      // Default starting likes
+      setLikes(68);
+    }
+    
+    if (hasLiked === 'true') {
+      setIsLiked(true);
+    }
+  }, [slug]);
+
+  const handleLike = () => {
+    const newLikes = isLiked ? likes - 1 : likes + 1;
+    setLikes(newLikes);
+    setIsLiked(!isLiked);
+    
+    localStorage.setItem(`tlou2-likes-${slug}`, newLikes.toString());
+    localStorage.setItem(`tlou2-has-liked-${slug}`, (!isLiked).toString());
+  };
+
+  // 生成正式上线后的链接，而不是本地 localhost 链接
+  const getShareUrl = () => {
+    const baseUrl = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1')
+      ? 'https://gamestation.cc' 
+      : window.location.origin;
+    return `${baseUrl}/${slug}`;
+  };
+
+  const handleCopyLink = () => {
+    const url = getShareUrl();
+    navigator.clipboard.writeText(url).then(() => {
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    });
+  };
+
+  const handleWechatShare = () => {
+    window.location.href = 'weixin://';
+    setIsShareOpen(false);
+  };
+
+  const handleWeiboShare = () => {
+    const url = encodeURIComponent(getShareUrl());
+    const title = encodeURIComponent(`${game?.title || '最后生还者 第二部'} 终极攻略指南 ${url}`);
+    window.open(`http://service.weibo.com/share/share.php?url=${url}&title=${title}`, '_blank');
+    setIsShareOpen(false);
+  };
+
+  const handleSystemShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `${game?.title || '最后生还者 第二部'} 终极攻略指南`,
+          text: `来看看这篇超详细的《${game?.title || '最后生还者 第二部'}》攻略指南！`,
+          url: getShareUrl(),
+        });
+      } catch (err) {
+        console.error('Error sharing:', err);
+      }
+    } else {
+      handleCopyLink();
+      alert('您的浏览器不支持系统分享，已为您复制链接。');
+    }
+    setIsShareOpen(false);
+  };
+
+  const handleSaveImage = () => {
+    alert('请使用系统截屏功能保存当前页面。');
+    setIsShareOpen(false);
+  };
+
+  // Determine TOC Items based on game
+  const tocItems = useMemo(() => {
+    if (!game) return [];
+    if (game.slug === 'baldurs-gate-3') return bg3TocItems;
+    if (game.slug === 'the-last-of-us-part-2') return tlou2TocItems;
+    if (game.slug === 'horizon-forbidden-west') return horizonForbiddenWestTocItems;
+    if (game.slug === 'the-witcher-3') return witcher3TocItems;
+    
+    // Default TOC for other games
+    return [
+      { id: 'section-intro', title: '前言', level: 1 },
+      { id: 'section-2', title: '一、游戏基础与操作指南', level: 1 },
+      { id: 'section-2-1', title: '1.1 战斗系统详解', level: 2 },
+      { id: 'section-3', title: '三、全收集品位置一览', level: 1 },
+      { id: 'section-4', title: '四、白金奖杯获取指南', level: 1 },
+    ];
+  }, [game]);
+
+  // 构建树形结构 TOC
+  const tocTree = useMemo(() => {
+    const tree = [];
+    let currentLevel1 = null;
+    let currentLevel2 = null;
+
+    tocItems.forEach(item => {
+      if (item.level === 1) {
+        currentLevel1 = { ...item, children: [] };
+        tree.push(currentLevel1);
+        currentLevel2 = null;
+      } else if (item.level === 2 && currentLevel1) {
+        currentLevel2 = { ...item, children: [] };
+        currentLevel1.children.push(currentLevel2);
+      } else if (item.level === 3 && currentLevel2) {
+        currentLevel2.children.push(item);
+      }
+    });
+
+    return tree;
+  }, [tocItems]);
+
+  // 切换章节展开状态
+  const toggleSection = (e, id, forceState) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setExpandedSections(prev => ({
+      ...prev,
+      [id]: forceState !== undefined ? forceState : !prev[id]
+    }));
+  };
+
+  // 监听 activeSection 变化，自动展开父级
+  useEffect(() => {
+    const parent = tocTree.find(p => 
+      p.id === activeSection || 
+      (p.children && p.children.some(c => c.id === activeSection || (c.children && c.children.some(gc => gc.id === activeSection))))
+    );
+    
+    if (parent) {
+       setExpandedSections(prev => {
+         const newState = { ...prev, [parent.id]: true };
+         
+         // Auto expand Level 2 if needed
+         const child = parent.children?.find(c => 
+            c.id === activeSection || (c.children && c.children.some(gc => gc.id === activeSection))
+         );
+         
+         if (child) {
+             newState[child.id] = true;
+         }
+         
+         return newState;
+       });
+    }
+  }, [activeSection, tocTree]);
+
+  // 获取推荐游戏
+  const recommendedGames = useMemo(() => {
+    if (!game) return [];
+    return [...booksData]
+      .filter(b => b.title !== game.title)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3);
+  }, [game]);
 
   useEffect(() => {
     // Decode URL and find game
     const foundGame = booksData.find(g => {
-        const gameSlug = g.slug || g.title.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+        const gameSlug = g.slug || g.title.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w\-\u4e00-\u9fa5]+/g, '').replace(/\-\-+/g, '-');
         // Match slug either directly or with -walkthrough suffix removed
         return slug === gameSlug || slug === `${gameSlug}-walkthrough`;
     });
@@ -73,7 +249,7 @@ export default function Walkthrough() {
       // 1. Update Reading Progress
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const progress = Math.min(100, Math.max(0, Math.round((scrollTop / docHeight) * 100)));
+      const progress = docHeight > 0 ? Math.min(100, Math.max(0, Math.round((scrollTop / docHeight) * 100))) : 0;
       setReadingProgress(progress);
 
       // 2. Update Active Section
@@ -92,14 +268,25 @@ export default function Walkthrough() {
       // We look for offset <= 0 (meaning it's at or above our reading line)
       // OR the one closest to 0 if all are positive (top of page)
       
-      const passedSections = sectionOffsets.filter(s => s.offset <= 0);
-      
-      if (passedSections.length > 0) {
-        // The last one that passed is the current one
-        currentSection = passedSections[passedSections.length - 1].id;
-      } else if (sectionOffsets.length > 0) {
-        // If none passed (at very top), active is the first one
-        currentSection = sectionOffsets[0].id;
+      // If we are at the very bottom of the page, highlight the last item
+      if ((window.innerHeight + Math.ceil(window.scrollY)) >= document.documentElement.scrollHeight - 10) {
+         // Find the last item that has a corresponding element in DOM
+         for (let i = tocItems.length - 1; i >= 0; i--) {
+            if (document.getElementById(tocItems[i].id)) {
+               currentSection = tocItems[i].id;
+               break;
+            }
+         }
+      } else {
+          const passedSections = sectionOffsets.filter(s => s.offset <= 0);
+          
+          if (passedSections.length > 0) {
+            // The last one that passed is the current one
+            currentSection = passedSections[passedSections.length - 1].id;
+          } else if (sectionOffsets.length > 0) {
+            // If none passed (at very top), active is the first one
+            currentSection = sectionOffsets[0].id;
+          }
       }
 
       if (currentSection !== activeSection) {
@@ -115,6 +302,16 @@ export default function Walkthrough() {
 
   const scrollToSection = (e, id) => {
     e.preventDefault();
+    
+    if (id === 'section-intro') {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+      setActiveSection(id);
+      return;
+    }
+
     const element = document.getElementById(id);
     if (element) {
       // Offset for sticky header (60px) + padding (40px)
@@ -128,6 +325,23 @@ export default function Walkthrough() {
       });
       setActiveSection(id);
     }
+  };
+
+  const renderStats = (stats) => {
+    if (!stats) return null;
+    return (
+      <div className="flex flex-wrap gap-3 mt-2 mb-4 text-xs text-gray-500 font-medium">
+        {stats.artifacts && <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded"><ScrollText size={12} /> 文物: {stats.artifacts}</span>}
+        {stats.tradingCards && <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded"><Disc size={12} /> 卡牌: {stats.tradingCards}</span>}
+        {stats.coins && <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded"><Disc size={12} /> 硬币: {stats.coins}</span>}
+        {stats.journalEntries && <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded"><BookOpen size={12} /> 日志: {stats.journalEntries}</span>}
+        {stats.workbenches && <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded"><Hammer size={12} /> 工作台: {stats.workbenches}</span>}
+        {stats.safes && <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded"><Lock size={12} /> 保险箱: {stats.safes}</span>}
+        {stats.trainingManuals && <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded"><BookOpen size={12} /> 手册: {stats.trainingManuals}</span>}
+        {stats.weapons && <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded"><ShieldAlert size={12} /> 武器: {stats.weapons}</span>}
+        {stats.collectibles && <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded"><Disc size={12} /> 收集品: {stats.collectibles}</span>}
+      </div>
+    );
   };
 
   if (!game) {
@@ -157,7 +371,9 @@ export default function Walkthrough() {
        <header className="site-nav">
         <div className="site-nav__inner">
           <div className="site-nav__left">
-            <Link to="/" className="site-nav__brand">Gamestation</Link>
+            <Link to="/" className="site-nav__brand">
+              <img src={logo} alt="Gamestation" />
+            </Link>
             <nav className="site-nav__links">
               <div className="nav-item" tabIndex={0}>
                 <button
@@ -195,9 +411,17 @@ export default function Walkthrough() {
                 </div>
               </div>
               <Link className="nav-link nav-link--with-icon" to="/changelog">
-                <BookOpen size={14} strokeWidth={2.2} />
-                更新日志
+                <span className="flex items-center gap-2">
+                  <BookOpen size={14} strokeWidth={2.2} />
+                  <span>更新日志</span>
+                </span>
                 <span className="nav-badge">更新</span>
+              </Link>
+              <Link className="nav-link nav-link--with-icon" to="/sponsors">
+                <span className="flex items-center gap-2">
+                  <Heart size={14} strokeWidth={2.2} />
+                  <span>赞助者名单</span>
+                </span>
               </Link>
             </nav>
           </div>
@@ -247,7 +471,7 @@ export default function Walkthrough() {
              <div className="flex items-center justify-between mb-10 pb-8 border-b border-gray-100">
                <div className="flex items-center gap-4">
                  <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-100 shadow-sm cursor-pointer hover:ring-2 hover:ring-sspai-red/20 transition-all">
-                   <img src={game.slug === 'the-last-of-us-part-2' ? naughtyDogLogo : game.imgUrl} alt={game.author} className="w-full h-full object-cover" />
+                   <img src={game.slug === 'the-last-of-us-part-2' ? naughtyDogLogo : game.slug === 'horizon-forbidden-west' ? guerrillaLogo : game.imgUrl} alt={game.author} className="w-full h-full object-cover" />
                  </div>
                  <div className="flex flex-col justify-center">
                    <div className="flex items-center gap-2">
@@ -261,17 +485,6 @@ export default function Walkthrough() {
                  </div>
                </div>
                
-               <div className="flex items-center gap-1 xl:hidden">
-                 <button className="p-2 text-gray-400 hover:text-sspai-red hover:bg-red-50 rounded-full transition-all">
-                    <Heart size={20} />
-                 </button>
-                 <button className="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-full transition-all">
-                    <Bookmark size={20} />
-                 </button>
-                 <button className="p-2 text-gray-400 hover:text-green-500 hover:bg-green-50 rounded-full transition-all">
-                    <Share2 size={20} />
-                 </button>
-               </div>
              </div>
              
              {/* Content Body */}
@@ -282,22 +495,52 @@ export default function Walkthrough() {
                    {/* TLOU2 Specific Content - Optimized Layout */}
                     <div className="mb-12">
                       <div className="flex flex-col md:flex-row gap-6 mb-10 items-stretch">
-                         {/* Cover Image */}
-                         <div className="w-full md:w-[320px] lg:w-[360px] flex-shrink-0 flex flex-col">
-                           <div className="relative flex-1 rounded-xl overflow-hidden shadow-xl border border-gray-200 bg-white">
-                             <img src={tlou2Ps5Cover} alt="PS5 Official Disc Cover" className="absolute inset-0 w-full h-full object-contain p-1" />
-                           </div>
-                           <p className="text-xs text-center text-gray-400 mt-3 font-medium">📀 PS5 官方光盘封面 | 来源: PlayStation</p>
-                         </div>
+                         {/* Cover Image & Purchase */}
+                        <div className="w-full md:w-[320px] lg:w-[360px] flex-shrink-0 flex flex-col gap-4">
+                          
+                          {/* Purchase Card */}
+                          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+                            <h3 className="font-bold text-gray-900 mb-4 text-sm flex items-center gap-2">
+                              <span>🛍️</span> 购买游戏
+                            </h3>
+                            
+                            <div className="flex flex-col gap-4">
+                              <div className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-inner border border-gray-100 bg-white mb-2">
+                                <img src={tlou2Ps5Cover} alt="PS5 Official Disc Cover" className="absolute inset-0 w-full h-full object-contain p-1" />
+                              </div>
+
+                              <div className="flex items-center justify-between">
+                                <div className="flex flex-col">
+                                  <span className="text-xs text-gray-400 line-through">HK$ 568.00</span>
+                                  <span className="text-2xl font-bold text-sspai-red">HK$ 398.00</span>
+                                </div>
+                                <span className="px-2.5 py-1 bg-red-50 text-sspai-red text-xs font-bold rounded">-30%</span>
+                              </div>
+
+                              <a 
+                                href="https://store.playstation.com/zh-hans-hk/product/HP9000-PPSA15512_00-THELASTOFUSPART2" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="w-full py-3 bg-[#00439c] text-white font-bold rounded-full text-sm hover:bg-[#003087] transition-all flex items-center justify-center gap-2 shadow-sm group"
+                              >
+                                <ShoppingCart size={16} className="group-hover:scale-110 transition-transform" />
+                                <span>前往 PS Store 购买</span>
+                              </a>
+                              
+                              <p className="text-[10px] text-gray-300 text-center">
+                                *价格仅供参考，请以商店实际价格为准
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                          
                          {/* Basic Info Table */}
                          <div className="flex-1 flex flex-col">
                            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col h-full">
                              <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-4">
                                <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                                 <span className="text-2xl">📋</span> 基础信息
-                               </h3>
-                               <span className="px-2 py-1 bg-gray-100 text-gray-500 text-xs font-bold rounded uppercase tracking-wider">游戏档案</span>
+                                <span className="text-2xl">📋</span> 游戏档案
+                              </h3>
                              </div>
                              
                              <div className="flex-1 grid grid-cols-1 content-center gap-1">
@@ -374,6 +617,24 @@ export default function Walkthrough() {
                      </p>
 
                      <h2 className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                    <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                    参考信息
+                 </h2>
+                 <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 mb-12">
+                   <p className="text-gray-700 mb-3">
+                     本攻略参考了 Steam 社区的优秀指南，原文链接如下：
+                   </p>
+                   <a 
+                     href="https://steamcommunity.com/sharedfiles/filedetails/?id=3457531085" 
+                     target="_blank" 
+                     rel="noopener noreferrer"
+                     className="text-sspai-red hover:text-red-700 underline break-all"
+                   >
+                     The Last of Us Part 2: In Chapter Order 100% Achievement Walkthrough Guide
+                   </a>
+                 </div>
+
+                 <h2 className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
                         <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
                         🎯 核心特色
                      </h2>
@@ -398,42 +659,26 @@ export default function Walkthrough() {
                         </div>
                      </div>
 
-                     <h2 className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                     <h2 className="text-2xl mt-12 mb-6 group cursor-pointer text-black flex items-center gap-2">
                         <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
-                        📊 媒体评分
+                        <span className="text-2xl">🏆</span> 媒体评分
                      </h2>
-                     <div className="overflow-x-auto mb-10">
-                        <table className="w-full text-left border-collapse bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200">
-                          <thead className="bg-gray-50 text-gray-700 text-sm uppercase tracking-wider">
-                            <tr>
-                              <th className="px-6 py-3 border-b border-gray-200 font-bold">媒体 / 平台</th>
-                              <th className="px-6 py-3 border-b border-gray-200 font-bold">评分</th>
-                              <th className="px-6 py-3 border-b border-gray-200 font-bold">简评</th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-gray-100 text-[15px]">
-                            <tr>
-                              <td className="px-6 py-4 font-medium">Metacritic (均分)</td>
-                              <td className="px-6 py-4 text-green-600 font-bold">93/100</td>
-                              <td className="px-6 py-4 text-gray-500 italic">"PS4 世代的绝唱，技术与艺术的完美结合。"</td>
-                            </tr>
-                            <tr>
-                              <td className="px-6 py-4 font-medium">IGN</td>
-                              <td className="px-6 py-4 text-sspai-red font-bold">10/10</td>
-                              <td className="px-6 py-4 text-gray-500">"大师之作 (Masterpiece)。在各个层面上都进化了初代的体验。"</td>
-                            </tr>
-                            <tr>
-                              <td className="px-6 py-4 font-medium">GameSpot</td>
-                              <td className="px-6 py-4 font-bold">8/10</td>
-                              <td className="px-6 py-4 text-gray-500">"虽然部分情节令人难受，但它依然是一部美丽且令人心碎的作品。"</td>
-                            </tr>
-                            <tr>
-                              <td className="px-6 py-4 font-medium">Famitsu (Fami通)</td>
-                              <td className="px-6 py-4 font-bold">39/40</td>
-                              <td className="px-6 py-4 text-gray-500">"荣获白金殿堂评价，在此类游戏中无可挑剔。"</td>
-                            </tr>
-                          </tbody>
-                        </table>
+                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        <div className="bg-[#bf1313] text-white p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+                          <span className="font-bold text-lg mb-2 opacity-90">IGN</span>
+                          <span className="text-5xl font-black mb-4">10<span className="text-2xl opacity-70">/10</span></span>
+                          <p className="text-xs leading-relaxed opacity-90">"大师之作 (Masterpiece)。在各个层面上都进化了初代的体验。"</p>
+                        </div>
+                        <div className="bg-[#ffcc00] text-black p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+                          <span className="font-bold text-lg mb-2 opacity-70">GameSpot</span>
+                          <span className="text-5xl font-black mb-4">8<span className="text-2xl opacity-50">/10</span></span>
+                          <p className="text-xs leading-relaxed opacity-80">"虽然部分情节令人难受，但它依然是一部美丽且令人心碎的作品。"</p>
+                        </div>
+                        <div className="bg-[#333333] text-white p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+                          <span className="font-bold text-lg mb-2 opacity-90">Metacritic</span>
+                          <span className="text-5xl font-black mb-4 bg-green-600 px-3 py-1 rounded">93</span>
+                          <p className="text-xs leading-relaxed opacity-90">"PS4 世代的绝唱，技术与艺术的完美结合。"</p>
+                        </div>
                      </div>
 
                      <h2 className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
@@ -460,45 +705,45 @@ export default function Walkthrough() {
                         <span>💡</span> 通用技巧
                      </h4>
                      <div className="text-[15px] text-black m-0 leading-relaxed space-y-4">
-                       <div>
-                         <strong className="block mb-1">✔ 开启“高对比度显示” (High Contrast Display)</strong>
-                         <p className="m-0">建议开启此功能。按下触摸板（原文是 G 键，针对 PC 版或特定设置，主机版通常在辅助功能里设置手势）可以高亮显示物品，让收集品变得非常显眼，极易发现。</p>
+                       <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                         <strong className="block mb-1 text-gray-900">✔ 开启“高对比度显示” (High Contrast Display)</strong>
+                         <p className="m-0 text-gray-600 text-sm">建议开启此功能。按下触摸板（原文是 G 键，针对 PC 版或特定设置，主机版通常在辅助功能里设置手势）可以高亮显示物品，让收集品变得非常显眼，极易发现。</p>
                        </div>
                        
-                       <div>
-                         <strong className="block mb-1">✔ 如果追求稳妥的通关路线</strong>
-                         <p className="m-0">建议第一周目在“超轻 (Very Light)”难度下完成“永久死亡 (Permadeath)”模式，第二周目再挑战“绝地+ (Grounded+)”难度。</p>
+                       <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                         <strong className="block mb-1 text-gray-900">✔ 如果追求稳妥的通关路线</strong>
+                         <p className="m-0 text-gray-600 text-sm">建议第一周目在“超轻 (Very Light)”难度下完成“永久死亡 (Permadeath)”模式，第二周目再挑战“绝地+ (Grounded+)”难度。</p>
                        </div>
 
-                       <div>
-                         <strong className="block mb-1">✔ 如果追求速度</strong>
-                         <p className="m-0">可以尝试一次性同时完成两个高难度奖杯（绝地+ 和 永久死亡），然后在“新游戏+ (NG+)”中补齐遗漏的奖杯。</p>
+                       <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                         <strong className="block mb-1 text-gray-900">✔ 如果追求速度</strong>
+                         <p className="m-0 text-gray-600 text-sm">可以尝试一次性同时完成两个高难度奖杯（绝地+ 和 永久死亡），然后在“新游戏+ (NG+)”中补齐遗漏的奖杯。</p>
                        </div>
 
-                       <div>
-                         <strong className="block mb-1">✔ 关于永久死亡 (Permadeath) 模式</strong>
-                         <p className="m-0">建议将设置设定为<strong>“按章节 (Per Chapter)”</strong>，而不是“按幕 (Act)”或“整部游戏 (Whole Game)”。这样容错率最高。</p>
+                       <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                         <strong className="block mb-1 text-gray-900">✔ 关于永久死亡 (Permadeath) 模式</strong>
+                         <p className="m-0 text-gray-600 text-sm">建议将设置设定为<strong>“按章节 (Per Chapter)”</strong>，而不是“按幕 (Act)”或“整部游戏 (Whole Game)”。这样容错率最高。</p>
                        </div>
 
-                       <div>
-                         <strong className="block mb-1">✔ 增强聆听模式 (Enhanced Listen mode)</strong>
-                         <p className="m-0">开启此功能后，聆听模式不仅能侦测敌人，还能为您扫描并“标记 (Ping)”附近的物品，非常实用。</p>
+                       <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                         <strong className="block mb-1 text-gray-900">✔ 增强聆听模式 (Enhanced Listen mode)</strong>
+                         <p className="m-0 text-gray-600 text-sm">开启此功能后，聆听模式不仅能侦测敌人，还能为您扫描并“标记 (Ping)”附近的物品，非常实用。</p>
                        </div>
 
-                       <div>
-                         <strong className="block mb-1">✔ 收集品追踪 (Collectible Tracking)</strong>
-                         <p className="m-0">前往 <strong>选项 &gt; HUD &gt; 通知 &gt; 收集品追踪</strong> 开启此功能。这样当您捡起收集品时会有提示，方便确认哪些已收集，哪些可能错过了。</p>
+                       <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                         <strong className="block mb-1 text-gray-900">✔ 收集品追踪 (Collectible Tracking)</strong>
+                         <p className="m-0 text-gray-600 text-sm">前往 <strong>选项 &gt; HUD &gt; 通知 &gt; 收集品追踪</strong> 开启此功能。这样当您捡起收集品时会有提示，方便确认哪些已收集，哪些可能错过了。</p>
                        </div>
 
-                       <div>
-                         <strong className="block mb-1">✔ 收集品统计</strong>
-                         <p className="m-0">如果您缺少某个收集品但不知道是在哪一章漏掉的，只需进入<strong>“章节选择”</strong>，系统会显示每一章各类收集品的总数以及您当前的收集进度。您也可以直接通过章节选择进入特定关卡快速补齐。</p>
+                       <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                         <strong className="block mb-1 text-gray-900">✔ 收集品统计</strong>
+                         <p className="m-0 text-gray-600 text-sm">如果您缺少某个收集品但不知道是在哪一章漏掉的，只需进入<strong>“章节选择”</strong>，系统会显示每一章各类收集品的总数以及您当前的收集进度。您也可以直接通过章节选择进入特定关卡快速补齐。</p>
                        </div>
 
-                       <div>
-                         <h5 className="font-bold text-base mb-2">📦 收集品概览</h5>
-                         <p className="mb-2">《最后生还者 第二部 重制版》的剧情模式中大约有 <strong>286</strong> 个收集品：</p>
-                         <ul className="list-disc pl-5 space-y-1">
+                       <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                         <h5 className="font-bold text-base mb-2 text-gray-900">📦 收集品概览</h5>
+                         <p className="mb-2 text-gray-600 text-sm">《最后生还者 第二部 重制版》的剧情模式中大约有 <strong>286</strong> 个收集品：</p>
+                         <ul className="list-disc pl-5 space-y-1 text-gray-600 text-sm">
                            <li>📜 <strong>127</strong> 个 遗物 (Artifacts)</li>
                            <li>📓 <strong>20</strong> 个 日记 (Journal Entries)</li>
                            <li>🃏 <strong>48</strong> 张 交易卡牌 (Trading Cards)</li>
@@ -510,15 +755,15 @@ export default function Walkthrough() {
                            <li>🔫 <strong>4</strong> 个 枪套 (Upgrade Holsters)</li>
                            <li>以及 <strong>奇异遗物 (Strange Artifact)</strong> 和 <strong>刻字戒指 (Engraved Ring)</strong></li>
                          </ul>
-                         <p className="mt-2">工程量确实不小，这也是为什么我强烈推荐开启<strong>“高对比度显示”</strong>的原因，找起东西来会轻松很多。</p>
+                         <p className="mt-2 text-gray-600 text-sm">工程量确实不小，这也是为什么我强烈推荐开启<strong>“高对比度显示”</strong>的原因，找起东西来会轻松很多。</p>
                        </div>
 
-                       <div>
-                         <h5 className="font-bold text-base mb-2">⚠️ 重要提示：关于培训手册</h5>
-                         <p className="mb-2">还有一点需要补充，我很确定<strong>培训手册 (Training Manuals)</strong> 有多个不同的刷新点。这意味着您找到它们的时间点可能与攻略一致，也可能比攻略早或晚。</p>
-                         <p className="mb-2">我知道它们通常会刷新在相同的章节里，但具体位置可能不同。</p>
-                         <p className="mb-2"><strong>关键点：</strong> 如果您按照攻略走到指定位置却没看到手册，请不要慌张，可以去查阅其他视频或指南，看看该章节其他的刷新点在哪里。</p>
-                         <p className="m-0">在我完成这篇指南后，我可能会把其他刷新点也补加上去，但在我们开始游玩时，请务必把这一点记在心里。</p>
+                       <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                         <h5 className="font-bold text-base mb-2 text-gray-900">⚠️ 重要提示：关于培训手册</h5>
+                         <p className="mb-2 text-gray-600 text-sm">还有一点需要补充，我很确定<strong>培训手册 (Training Manuals)</strong> 有多个不同的刷新点。这意味着您找到它们的时间点可能与攻略一致，也可能比攻略早或晚。</p>
+                         <p className="mb-2 text-gray-600 text-sm">我知道它们通常会刷新在相同的章节里，但具体位置可能不同。</p>
+                         <p className="mb-2 text-gray-600 text-sm"><strong>关键点：</strong> 如果您按照攻略走到指定位置却没看到手册，请不要慌张，可以去查阅其他视频或指南，看看该章节其他的刷新点在哪里。</p>
+                         <p className="m-0 text-gray-600 text-sm">在我完成这篇指南后，我可能会把其他刷新点也补加上去，但在我们开始游玩时，请务必把这一点记在心里。</p>
                        </div>
                      </div>
                    </div>
@@ -654,30 +899,142 @@ export default function Walkthrough() {
                     本作流程分为多个章节，涵盖了杰克逊、西雅图（三天）以及后续的圣塔巴巴拉。以下是主要章节的流程概览。
                   </p>
                   
-                  <h3 className="text-xl mt-8 mb-4 font-bold text-gray-800">第一章：杰克逊</h3>
-                  <ul>
-                    <li><strong>序章 & 梦醒：</strong> 熟悉基本操作，与杰西、蒂娜互动。</li>
-                    <li><strong>眺望点 & 巡逻：</strong> 第一次遭遇感染者，学习潜行与战斗基础。注意暴风雪中的能见度。</li>
-                    <li><strong>尸潮：</strong> 紧张的追逐战，保持奔跑，利用障碍物阻挡感染者。</li>
-                  </ul>
+                  <h3 id="section-2-1" className="text-xl mt-8 mb-4 font-bold text-gray-800">杰克逊</h3>
 
-                  <h3 className="text-xl mt-8 mb-4 font-bold text-gray-800">第二章：西雅图 第一天 - 艾莉</h3>
-                  <ul>
-                    <li><strong>大门 & 市中心：</strong> 这是一个半开放区域。你需要寻找汽油来启动发电机。这里包含了大量收集品，建议地毯式搜索。</li>
-                    <li><strong>东布鲁克小学 & 国会山：</strong> 遭遇 WLF 士兵，战斗强度提升。利用草丛和建筑进行潜行。</li>
-                    <li><strong>隧道：</strong> 面对新敌人 跛行者。保持距离，使用燃烧瓶和地雷。</li>
-                  </ul>
+                  {/* 详细攻略展开 */}
+                  <div className="space-y-6 mt-8 mb-12">
+                    {tlou2GuideData.find(c => c.id === 'jackson')?.sections.map((section, idx) => (
+                      <div key={idx} className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                        <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                          {section.title}
+                        </h4>
+                        {renderStats(section.stats)}
+                        
+                        <div className="space-y-3">
+                          {section.content.map((item, itemIdx) => (
+                            <div key={itemIdx} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                              {item.type === 'collectible' ? (
+                                <div className="flex gap-3">
+                                  <div className="mt-1 min-w-[16px] flex justify-center">
+                                    <div className="w-2 h-2 rounded-full bg-sspai-red mt-1.5 ring-2 ring-red-50"></div>
+                                  </div>
+                                  <div>
+                                    {item.name && <h5 className="text-gray-900 font-bold text-sm mb-1">{item.name}</h5>}
+                                    <p className="text-gray-600 text-sm leading-relaxed m-0">{item.description}</p>
+                                  </div>
+                                </div>
+                              ) : (
+                                 <p className="text-gray-700 text-sm leading-relaxed m-0 pl-2 border-l-2 border-gray-200 ml-1 py-1">{item.text}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
 
-                  <h3 className="text-xl mt-8 mb-4 font-bold text-gray-800">第三章：西雅图 第二天 - 艾莉</h3>
-                  <ul>
-                    <li><strong>希尔科列斯特：</strong> 充满 WLF 巡逻队和猎犬。利用消音武器优先解决落单敌人。</li>
-                    <li><strong>赛拉菲特 (疤脸帮)：</strong> 首次遭遇疤脸帮。注意他们的口哨声，利用弓箭进行无声击杀。</li>
-                  </ul>
+                  <h3 id="section-2-2" className="text-xl mt-8 mb-4 font-bold text-gray-800">西雅图 第一天 - 艾莉</h3>
+                  
+                  <div className="space-y-6 mt-8 mb-12">
+                    {tlou2GuideData.find(c => c.id === 'seattle-day-1-ellie')?.sections.map((section, idx) => (
+                      <div key={idx} className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                        <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                          {section.title}
+                        </h4>
+                        {renderStats(section.stats)}
+                        
+                        <div className="space-y-3">
+                          {section.content.map((item, itemIdx) => (
+                            <div key={itemIdx} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                              {item.type === 'collectible' ? (
+                                <div className="flex gap-3">
+                                  <div className="mt-1 min-w-[16px] flex justify-center">
+                                    <div className="w-2 h-2 rounded-full bg-sspai-red mt-1.5 ring-2 ring-red-50"></div>
+                                  </div>
+                                  <div>
+                                    {item.name && <h5 className="text-gray-900 font-bold text-sm mb-1">{item.name}</h5>}
+                                    <p className="text-gray-600 text-sm leading-relaxed m-0">{item.description}</p>
+                                  </div>
+                                </div>
+                              ) : (
+                                 <p className="text-gray-700 text-sm leading-relaxed m-0 pl-2 border-l-2 border-gray-200 ml-1 py-1">{item.text}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
 
-                  <h3 className="text-xl mt-8 mb-4 font-bold text-gray-800">第四章：西雅图 第三天 - 艾莉</h3>
-                  <ul>
-                    <li><strong>通往水族馆之路 & 水没都市：</strong> 驾驶游艇探索。注意水下的潜行路径和隐藏的补给点。</li>
-                  </ul>
+                  <h3 id="section-2-3" className="text-xl mt-8 mb-4 font-bold text-gray-800">西雅图 第二天 - 艾莉</h3>
+                  
+                  <div className="space-y-6 mt-8 mb-12">
+                    {tlou2GuideData.find(c => c.id === 'seattle-day-2-ellie')?.sections.map((section, idx) => (
+                      <div key={idx} className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                        <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                          {section.title}
+                        </h4>
+                        {renderStats(section.stats)}
+                        
+                        <div className="space-y-3">
+                          {section.content.map((item, itemIdx) => (
+                            <div key={itemIdx} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                              {item.type === 'collectible' ? (
+                                <div className="flex gap-3">
+                                  <div className="mt-1 min-w-[16px] flex justify-center">
+                                    <div className="w-2 h-2 rounded-full bg-sspai-red mt-1.5 ring-2 ring-red-50"></div>
+                                  </div>
+                                  <div>
+                                    {item.name && <h5 className="text-gray-900 font-bold text-sm mb-1">{item.name}</h5>}
+                                    <p className="text-gray-600 text-sm leading-relaxed m-0">{item.description}</p>
+                                  </div>
+                                </div>
+                              ) : (
+                                 <p className="text-gray-700 text-sm leading-relaxed m-0 pl-2 border-l-2 border-gray-200 ml-1 py-1">{item.text}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <h3 id="section-2-4" className="text-xl mt-8 mb-4 font-bold text-gray-800">西雅图 第三天 - 艾莉</h3>
+                  
+                  <div className="space-y-6 mt-8 mb-12">
+                    {tlou2GuideData.find(c => c.id === 'seattle-day-3-ellie')?.sections.map((section, idx) => (
+                      <div key={idx} className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                        <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                          {section.title}
+                        </h4>
+                        {renderStats(section.stats)}
+                        
+                        <div className="space-y-3">
+                          {section.content.map((item, itemIdx) => (
+                            <div key={itemIdx} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                              {item.type === 'collectible' ? (
+                                <div className="flex gap-3">
+                                  <div className="mt-1 min-w-[16px] flex justify-center">
+                                    <div className="w-2 h-2 rounded-full bg-sspai-red mt-1.5 ring-2 ring-red-50"></div>
+                                  </div>
+                                  <div>
+                                    {item.name && <h5 className="text-gray-900 font-bold text-sm mb-1">{item.name}</h5>}
+                                    <p className="text-gray-600 text-sm leading-relaxed m-0">{item.description}</p>
+                                  </div>
+                                </div>
+                              ) : (
+                                 <p className="text-gray-700 text-sm leading-relaxed m-0 pl-2 border-l-2 border-gray-200 ml-1 py-1">{item.text}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
 
                   <div className="bg-gray-50 p-4 rounded border-l-4 border-gray-400 my-6">
                     <p className="text-sm text-gray-600 m-0">
@@ -685,22 +1042,179 @@ export default function Walkthrough() {
                     </p>
                   </div>
 
+                  <h3 id="section-2-5" className="text-xl mt-8 mb-4 font-bold text-gray-800">公园 - 埃比</h3>
+                  
+                  <div className="space-y-6 mt-8 mb-12">
+                    {tlou2GuideData.find(c => c.id === 'park-abby')?.sections.map((section, idx) => (
+                      <div key={idx} className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                        <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                          {section.title}
+                        </h4>
+                        {renderStats(section.stats)}
+                        
+                        <div className="space-y-3">
+                          {section.content.map((item, itemIdx) => (
+                            <div key={itemIdx} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                              {item.type === 'collectible' ? (
+                                <div className="flex gap-3">
+                                  <div className="mt-1 min-w-[16px] flex justify-center">
+                                    <div className="w-2 h-2 rounded-full bg-sspai-red mt-1.5 ring-2 ring-red-50"></div>
+                                  </div>
+                                  <div>
+                                    {item.name && <h5 className="text-gray-900 font-bold text-sm mb-1">{item.name}</h5>}
+                                    <p className="text-gray-600 text-sm leading-relaxed m-0">{item.description}</p>
+                                  </div>
+                                </div>
+                              ) : (
+                                 <p className="text-gray-700 text-sm leading-relaxed m-0 pl-2 border-l-2 border-gray-200 ml-1 py-1">{item.text}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <h3 id="section-2-6" className="text-xl mt-8 mb-4 font-bold text-gray-800">西雅图 第一天 - 埃比</h3>
+                  
+                  <div className="space-y-6 mt-8 mb-12">
+                    {tlou2GuideData.find(c => c.id === 'seattle-day-1-abby')?.sections.map((section, idx) => (
+                      <div key={idx} className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                        <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                          {section.title}
+                        </h4>
+                        {renderStats(section.stats)}
+                        
+                        <div className="space-y-3">
+                          {section.content.map((item, itemIdx) => (
+                            <div key={itemIdx} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                              {item.type === 'collectible' ? (
+                                <div className="flex gap-3">
+                                  <div className="mt-1 min-w-[16px] flex justify-center">
+                                    <div className="w-2 h-2 rounded-full bg-sspai-red mt-1.5 ring-2 ring-red-50"></div>
+                                  </div>
+                                  <div>
+                                    {item.name && <h5 className="text-gray-900 font-bold text-sm mb-1">{item.name}</h5>}
+                                    <p className="text-gray-600 text-sm leading-relaxed m-0">{item.description}</p>
+                                  </div>
+                                </div>
+                              ) : (
+                                 <p className="text-gray-700 text-sm leading-relaxed m-0 pl-2 border-l-2 border-gray-200 ml-1 py-1">{item.text}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <h3 id="section-2-7" className="text-xl mt-8 mb-4 font-bold text-gray-800">西雅图 第二天 - 埃比</h3>
+                  
+                  <div className="space-y-6 mt-8 mb-12">
+                    {tlou2GuideData.find(c => c.id === 'seattle-day-2-abby')?.sections.map((section, idx) => (
+                      <div key={idx} className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                        <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                          {section.title}
+                        </h4>
+                        {renderStats(section.stats)}
+                        
+                        <div className="space-y-3">
+                          {section.content.map((item, itemIdx) => (
+                            <div key={itemIdx} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                              {item.type === 'collectible' ? (
+                                <div className="flex gap-3">
+                                  <div className="mt-1 min-w-[16px] flex justify-center">
+                                    <div className="w-2 h-2 rounded-full bg-sspai-red mt-1.5 ring-2 ring-red-50"></div>
+                                  </div>
+                                  <div>
+                                    {item.name && <h5 className="text-gray-900 font-bold text-sm mb-1">{item.name}</h5>}
+                                    <p className="text-gray-600 text-sm leading-relaxed m-0">{item.description}</p>
+                                  </div>
+                                </div>
+                              ) : (
+                                 <p className="text-gray-700 text-sm leading-relaxed m-0 pl-2 border-l-2 border-gray-200 ml-1 py-1">{item.text}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <h3 id="section-2-8" className="text-xl mt-8 mb-4 font-bold text-gray-800">西雅图 第三天 - 埃比</h3>
+                  
+                  <div className="space-y-6 mt-8 mb-12">
+                    {tlou2GuideData.find(c => c.id === 'seattle-day-3-abby')?.sections.map((section, idx) => (
+                      <div key={idx} className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                        <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                          {section.title}
+                        </h4>
+                        {renderStats(section.stats)}
+                        
+                        <div className="space-y-3">
+                          {section.content.map((item, itemIdx) => (
+                            <div key={itemIdx} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                              {item.type === 'collectible' ? (
+                                <div className="flex gap-3">
+                                  <div className="mt-1 min-w-[16px] flex justify-center">
+                                    <div className="w-2 h-2 rounded-full bg-sspai-red mt-1.5 ring-2 ring-red-50"></div>
+                                  </div>
+                                  <div>
+                                    {item.name && <h5 className="text-gray-900 font-bold text-sm mb-1">{item.name}</h5>}
+                                    <p className="text-gray-600 text-sm leading-relaxed m-0">{item.description}</p>
+                                  </div>
+                                </div>
+                              ) : (
+                                 <p className="text-gray-700 text-sm leading-relaxed m-0 pl-2 border-l-2 border-gray-200 ml-1 py-1">{item.text}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <h3 id="section-2-9" className="text-xl mt-8 mb-4 font-bold text-gray-800">圣塔芭芭拉</h3>
+                  
+                  <div className="space-y-6 mt-8 mb-12">
+                    {tlou2GuideData.find(c => c.id === 'santa-barbara')?.sections.map((section, idx) => (
+                      <div key={idx} className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                        <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                          {section.title}
+                        </h4>
+                        {renderStats(section.stats)}
+                        
+                        <div className="space-y-3">
+                          {section.content.map((item, itemIdx) => (
+                            <div key={itemIdx} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                              {item.type === 'collectible' ? (
+                                <div className="flex gap-3">
+                                  <div className="mt-1 min-w-[16px] flex justify-center">
+                                    <div className="w-2 h-2 rounded-full bg-sspai-red mt-1.5 ring-2 ring-red-50"></div>
+                                  </div>
+                                  <div>
+                                    {item.name && <h5 className="text-gray-900 font-bold text-sm mb-1">{item.name}</h5>}
+                                    <p className="text-gray-600 text-sm leading-relaxed m-0">{item.description}</p>
+                                  </div>
+                                </div>
+                              ) : (
+                                 <p className="text-gray-700 text-sm leading-relaxed m-0 pl-2 border-l-2 border-gray-200 ml-1 py-1">{item.text}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
                   <h2 id="section-3" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
                      <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
-                     三、战斗与探索指南
-                  </h2>
-                  <p>
-                    除了基础操作外，掌握进阶技巧能让你在绝地难度下也能游刃有余。
-                  </p>
-                  <ul>
-                    <li><strong>利用感染者：</strong> 在人类敌人和感染者同时出现的场景，可以投掷砖块引诱感染者攻击人类，坐收渔翁之利。</li>
-                    <li><strong>改装武器：</strong> 优先升级弹夹容量和稳定性。猎枪的伤害升级在对付重甲敌人时非常有效。</li>
-                    <li><strong>不仅是潜行：</strong> 当潜行失败时，不要慌张。迅速切换至霰弹枪或近战武器，利用闪避制造反击机会，或者投掷烟雾弹重新进入潜行状态。</li>
-                  </ul>
-
-                  <h2 id="section-4" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
-                     <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
-                     四、保险箱与密码全解
+                     三、保险箱与密码全解
                   </h2>
                   <p>
                     游戏中许多物资被锁在保险箱内，密码通常藏在附近的文档或环境细节中。以下是全保险箱密码一览。
@@ -745,157 +1259,233 @@ export default function Walkthrough() {
                     </table>
                   </div>
 
-                  <h2 id="section-5" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                  <h2 id="section-4" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
                      <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
-                     五、全收集品位置指南
+                     四、No Return 模式
                   </h2>
-                  <p>
-                    本作拥有极其丰富的收集要素，包括文物、集换式卡牌、硬币、日志条目、工作台和保险箱。
-                  </p>
-                  <ul>
-                    <li><strong>集换式卡牌 (Trading Cards)：</strong> 仅出现在 Ellie 的章节中。通常藏在抽屉、架子或隐蔽的角落。</li>
-                    <li><strong>硬币 (Coins)：</strong> 仅出现在 Abby 的章节中。代表了美国的各个州，留意喷泉、收银机或地面。</li>
-                    <li><strong>训练手册 (Training Manuals)：</strong> 极为重要，用于解锁新的技能树。如果错过，游戏通常会在后续位置再次生成。</li>
-                  </ul>
-                  <p>
-                    建议在通关后使用「章节选择」功能，配合游戏内的收集品追踪器来补齐遗漏的物品。
-                  </p>
 
-                  <h2 id="section-6" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
-                     六、白金路线图
-                   </h2>
-                  <ol>
-                    <li>一周目通关并尽量全收集，重点搜刮补充品与零件。</li>
-                    <li>通关后使用章节选择补遗漏收集与支线奖杯。</li>
-                    <li>新游戏+继续搜刮补充品与零件，补齐全技能与全武器升级。</li>
-                  </ol>
-                  
-                  <h3 id="section-6-1" className="text-xl mt-8 mb-4 font-bold text-gray-800">6.1 章节选择与存档要点</h3>
-                  <ul>
-                    <li>务必在最终章保留手动存档，避免章节选择被锁。</li>
-                    <li>补漏时完成章节后加载最终章手动存档，再继续补其他章节。</li>
-                  </ul>
+                  {/* Introduction */}
+                  <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 mb-8">
+                    <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                      模式简介
+                    </h4>
 
-                  <h2 id="section-7" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
-                      <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
-                     七、收集与升级重点
-                   </h2>
-                  <p>
-                    白金关键是全收集与全升级，具体数量可在章节选择中查看进度。
-                  </p>
-                  <ul>
-                    <li><strong>武器：</strong>12 把</li>
-                    <li><strong>训练手册：</strong>8 本</li>
-                    <li><strong>工作台：</strong>25 个</li>
-                    <li><strong>保险箱：</strong>14 个</li>
-                    <li><strong>文物：</strong>127 个</li>
-                    <li><strong>日志：</strong>20 条</li>
-                    <li><strong>集换式卡牌：</strong>48 张</li>
-                    <li><strong>硬币：</strong>32 枚</li>
-                  </ul>
-                  <p>
-                    一周目无法获得足够补充品与零件完成全升级，新游戏+是必须环节。优先解锁与制作相关的技能，能更快完成制作与战斗类奖杯。
-                  </p>
+                    <p className="text-gray-600 leading-relaxed">
+                      No Return 是一个 Roguelike 战斗模式，你将面对一系列随机遭遇战，最终挑战 Boss。每一轮完整的游戏包含五场遭遇战，随后是六个可能的 Boss 之一，通常需要 30-40 分钟完成。
+                    </p>
+                  </div>
 
-                  <h2 id="section-8" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                  {/* Run Types */}
+                  <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 mb-8">
+                      <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                      挑战类型
+                    </h4>
+                    <div className="space-y-3">
+                      <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                          <h5 className="font-bold text-gray-900 mb-1">标准挑战 (Standard Runs)</h5>
+                          <p className="text-gray-600 text-sm m-0">从一开始即可游玩。除了你的角色选择外，一切都是随机的。</p>
+                      </div>
+                      <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                          <h5 className="font-bold text-gray-900 mb-1">自定义挑战 (Custom Runs)</h5>
+                          <p className="text-gray-600 text-sm m-0">完成一次标准挑战后解锁。允许你自定义敌人类型、Boss 和模组。值得注意的是，自定义挑战不会禁用奖杯，因此非常适合达成特定目标或成就。</p>
+                      </div>
+                      <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                          <h5 className="font-bold text-gray-900 mb-1">每日挑战 (Daily Runs)</h5>
+                          <p className="text-gray-600 text-sm m-0">完成九次挑战后解锁。这些预设的挑战对所有玩家都是相同的，并且每天更换。无论输赢，每天只能尝试一次。</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Trophy Difficulty & Strategy */}
+                  <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 mb-8">
+                    <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                      奖杯难度与策略
+                    </h4>
+                    <p className="text-gray-600 leading-relaxed mb-4">
+                      大多数奖杯都可以在“超轻 (Very Light)”难度下获得，除了“愿你的死亡迅速降临 (May Your Death Be Swift)”，该奖杯要求在“绝地 (Grounded)”难度下完成一次每日挑战。可能存在一些利用漏洞或速通玩家发现的策略来降低难度，建议关注 YouTube 上的相关攻略。
+                    </p>
+                    <p className="text-gray-600 leading-relaxed">
+                      本指南提供了一条推荐的 100% 完成路线，但你可以根据自己的喜好随意游玩。
+                    </p>
+                  </div>
+
+                  {/* Overall Goal */}
+                  <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 mb-8">
+                    <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                      总体目标
+                    </h4>
+                    <p className="text-gray-600 leading-relaxed mb-4">
+                      主要目标是尽可能多地完成挑战，以解锁成就所需的新模式和角色。
+                    </p>
+                    <p className="text-gray-600 leading-relaxed mb-4">
+                      开始时，你只能使用艾莉和埃比，她们分别属于不同的阵营：
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                      <div className="bg-white p-4 rounded border border-gray-200 shadow-sm text-center hover:border-gray-300 transition-colors overflow-hidden group">
+                          <div className="w-full aspect-video rounded-md overflow-hidden mb-3 shadow-sm">
+                            <img src={tlou2TeamEllie} alt="Team Ellie" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          </div>
+                          <h5 className="font-bold text-gray-900">艾莉阵营 (Team Ellie)</h5>
+                          <p className="text-gray-600 text-sm">4 名可解锁角色</p>
+                      </div>
+                      <div className="bg-white p-4 rounded border border-gray-200 shadow-sm text-center hover:border-gray-300 transition-colors overflow-hidden group">
+                          <div className="w-full aspect-video rounded-md overflow-hidden mb-3 shadow-sm">
+                            <img src={tlou2TeamAbby} alt="Team Abby" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          </div>
+                          <h5 className="font-bold text-gray-900">埃比阵营 (Team Abby)</h5>
+                          <p className="text-gray-600 text-sm">4 名可解锁角色</p>
+                      </div>
+                    </div>
+                    
+                    <h5 className="font-bold text-gray-900 mb-2">如何解锁角色：</h5>
+                    <div className="bg-white p-4 rounded border border-gray-200 shadow-sm mb-6 hover:border-gray-300 transition-colors">
+                        <p className="text-gray-600 text-sm m-0 mb-2">解锁角色的方法很简单：<strong>使用该阵营中最新解锁的角色游玩遭遇战。</strong></p>
+                        <ul className="list-disc pl-5 space-y-1 text-gray-600 text-sm">
+                            <li>例如，使用艾莉完成 2 场遭遇战可解锁狄娜。</li>
+                            <li>接着，使用狄娜完成 3 场遭遇战可解锁杰西，以此类推。</li>
+                            <li>最后的角色需要完成 4 场遭遇战才能解锁。</li>
+                        </ul>
+                    </div>
+
+                    <h5 className="font-bold text-gray-900 mb-2">相关成就：</h5>
+                    <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                        <p className="text-gray-600 text-sm mb-3">这些解锁对于以下成就至关重要：</p>
+                        <ul className="space-y-2">
+                            <li className="flex items-start gap-2 text-sm text-gray-600">
+                                <span className="text-sspai-red mt-0.5">🏆</span>
+                                <span><strong>全员到齐 (Roll Call)：</strong> 使用每一位角色赢得一轮挑战。由于某些成就需要游玩所有角色，请务必在需要时轮换角色。</span>
+                            </li>
+                            <li className="flex items-start gap-2 text-sm text-gray-600">
+                                <span className="text-sspai-red mt-0.5">🏆</span>
+                                <span><strong>艾莉阵营 (Team Ellie)：</strong> 完成所有艾莉阵营的挑战路线。</span>
+                            </li>
+                            <li className="flex items-start gap-2 text-sm text-gray-600">
+                                <span className="text-sspai-red mt-0.5">🏆</span>
+                                <span><strong>埃比阵营 (Team Abby)：</strong> 完成所有埃比阵营的挑战路线。</span>
+                            </li>
+                            <li className="flex items-start gap-2 text-sm text-gray-600">
+                                <span className="text-sspai-red mt-0.5">🏆</span>
+                                <span><strong>生物课 (Biology Lesson)：</strong> 在 No Return 模式中，扮演比尔 (Bill) 使用泵动式霰弹枪击杀一只巨无霸 (Bloater)。<br/><span className="text-xs text-gray-400 italic">(注：原文提及 Bill，但在 TLoU2 No Return 模式中可能指代 Joel 或其他角色，请以游戏内实际描述为准)</span></span>
+                            </li>
+                        </ul>
+                    </div>
+                  </div>
+
+                  {/* Bosses */}
+                  <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 mb-8">
+                    <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                      Boss 战
+                    </h4>
+                    <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                        <p className="text-gray-600 text-sm leading-relaxed mb-2">
+                          在每一轮挑战的最后，你将面对 6 个 Boss 中的一个。你必须击败它们才能解锁新的 Boss。
+                        </p>
+                        <p className="text-gray-600 text-sm leading-relaxed m-0">
+                          对于<strong>“摆脱重负 (Good Riddance)”</strong>奖杯（击败所有 Boss），这会在游玩过程中自然解锁，因此无需刻意去刷。
+                        </p>
+                    </div>
+                  </div>
+
+                  {/* Game Modes */}
+                  <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 mb-8">
+                    <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                      额外游戏模式
+                    </h4>
+                    <p className="text-gray-600 leading-relaxed mb-4">
+                      为了达成成就，你还需要解锁两个额外的模式：
+                    </p>
+                    <div className="space-y-3">
+                      <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors flex items-center justify-between">
+                          <div>
+                            <h5 className="font-bold text-gray-900 mb-1">坚守模式 (Holdout)</h5>
+                            <p className="text-gray-600 text-sm m-0">完成 5 轮挑战后解锁</p>
+                          </div>
+                          <span className="text-xs bg-red-50 text-sspai-red px-2 py-1 rounded border border-red-100 font-medium">成就相关</span>
+                      </div>
+                      <div className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors flex items-center justify-between">
+                          <div>
+                            <h5 className="font-bold text-gray-900 mb-1">占领模式 (Capture)</h5>
+                            <p className="text-gray-600 text-sm m-0">完成 7 轮挑战后解锁</p>
+                          </div>
+                          <span className="text-xs bg-red-50 text-sspai-red px-2 py-1 rounded border border-red-100 font-medium">成就相关</span>
+                      </div>
+                    </div>
+                    <p className="text-gray-600 text-sm mt-4">
+                      这些模式是完成某些成就的先决条件，解锁过程非常直接。
+                    </p>
+                  </div>
+
+                  {/* Achievements Overview */}
+                  <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 mb-8">
+                    <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                      成就总览
+                    </h4>
+                    <p className="text-gray-600 leading-relaxed mb-4">
+                      大多数成就都很简单，可以在“超轻 (Very Light)”难度下完成：
+                    </p>
+                    <div className="grid grid-cols-1 gap-3">
+                        {[
+                          { name: "五花八门 (Mixed Bag)", desc: "在一次突击遭遇战中，使用 5 种不同的武器击杀敌人。" },
+                          { name: "成为猎人 (Become The Hunter)", desc: "在一次被猎杀遭遇战中，击杀 12 名敌人。" },
+                          { name: "背后有我 (Got Your Back)", desc: "在一轮坚守模式中获胜，且你的盟友生命值不低于 70%。" },
+                          { name: "窃贼 (Burglar)", desc: "在不击杀任何敌人的情况下，打开占领遭遇战中的保险箱。" },
+                          { name: "全员到齐 (Roll Call)", desc: "使用每一位角色赢得一轮挑战。" },
+                          { name: "真正实力 (True Strength)", desc: "在一次遭遇战中获得 S 评价。" },
+                          { name: "模组达人 (Modded)", desc: "配合每种模组各完成一次遭遇战。" },
+                          { name: "冒险者 (Risk Taker)", desc: "在一轮挑战中完成 5 个开局目标 (Gambits)。" },
+                          { name: "这让你感到怀念吗？ (This Make You All Nostalgic?)", desc: "完成第一部 (Part I) 的挑战路线。" },
+                          { name: "萤火虫女王 (Queen Firefly)", desc: "在一次遭遇战中，使用玛琳 (Marlene) 的突击步枪击杀 15 名敌人。" },
+                          { name: "生物课 (Biology Lesson)", desc: "扮演比尔 (Bill) 使用泵动式霰弹枪击杀一只巨无霸。" },
+                          { name: "愿你长久生存 (May Your Survival Be Long)", desc: "赢得一次每日挑战。" }
+                        ].map((ach, i) => (
+                          <div key={i} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors flex gap-3">
+                            <span className="text-sspai-red mt-0.5">🏆</span>
+                            <div>
+                              <h5 className="font-bold text-gray-900 text-sm mb-1">{ach.name}</h5>
+                              <p className="text-gray-600 text-xs m-0 leading-relaxed">{ach.desc}</p>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                    <p className="text-gray-600 text-sm mt-6 leading-relaxed">
+                      如果你只想快速解锁成就，“超轻”难度是最佳选择。然而，某些挑战——如获得 S 评价、保持盟友生命值以及不杀人开保险箱——可能仍然需要一定的策略或参考专门的攻略视频。
+                    </p>
+                  </div>
+
+                  {/* May Your Death Be Swift */}
+                  <div className="bg-[#fff1f1] p-6 rounded-lg border border-red-100 mb-10 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-red-50 rounded-full -mr-12 -mt-12 opacity-50"></div>
+                    <h4 className="text-lg font-bold text-red-900 mb-4 flex items-center gap-2 relative z-10">
+                      <span className="flex items-center justify-center w-6 h-6 rounded-full bg-sspai-red text-white text-xs">!</span>
+                      愿你的死亡迅速降临 (May Your Death Be Swift)
+                    </h4>
+                    <div className="relative z-10">
+                        <p className="text-red-800 font-bold mb-3 italic">
+                          在“绝地 (Grounded)”难度下赢得一次 No Return 每日挑战
+                        </p>
+                        <p className="text-red-700 text-sm leading-relaxed mb-4">
+                          这是唯一一个强制要求在“绝地”难度下进行的成就，且每天只有一次尝试机会。
+                        </p>
+                        <div className="bg-white/60 p-4 rounded border border-red-200 shadow-sm">
+                            <h5 className="font-bold text-red-900 text-sm mb-2">💡 专家建议：</h5>
+                            <p className="text-red-800 text-sm m-0 leading-relaxed">
+                              一个非常有效的策略是关注 YouTube 频道 <strong>AnthonyCaliber</strong> —— 他经常进行 No Return 每日挑战的直播或视频更新。在尝试之前先观看他的路线和打法，可以大大提高你的成功率。
+                            </p>
+                        </div>
+                    </div>
+                  </div>
+
+                  <h2 id="section-trophy-list" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
                      <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
-                     八、奖杯总览
+                     五、查看全奖杯列表
                   </h2>
-                  <ul>
-                    <li><strong>白金难度：</strong>2/10</li>
-                    <li><strong>预估时长：</strong>25-30 小时</li>
-                    <li><strong>最少通关次数：</strong>1.5 周目</li>
-                    <li><strong>Missable 奖杯：</strong>无</li>
-                    <li><strong>联机奖杯：</strong>无</li>
-                    <li><strong>已知 Bug：</strong>观光客可能卡杯，重做章节可解决</li>
-                  </ul>
-
-                  <h2 id="section-9" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
-                     <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
-                     九、奖杯详细攻略
-                  </h2>
-                  <p>
-                    以下按奖杯界面显示名称与品级编排，逐条给出获取方式。
-                  </p>
-
-                  <h3 id="section-9-1" className="text-xl mt-8 mb-4 font-bold text-gray-800">9.1 白金与金杯</h3>
-                  <ul>
-                    <li><strong>全数尽收：</strong>获得所有奖杯。完成下列全部奖杯后自动解锁。</li>
-                    <li><strong>我必须做的事：</strong>完成剧情故事。任意难度通关即可。</li>
-                    <li><strong>求生专家：</strong>学会所有玩家升级。集齐训练手册并在新游戏+补足补充品即可。</li>
-                    <li><strong>武器大师：</strong>完全升级所有武器。搜刮零件并在工作台升级，新游戏+补齐。</li>
-                    <li><strong>档案保管员：</strong>找到所有文物与日志条目。按章节选择补齐。</li>
-                    <li><strong>大师套装：</strong>找到所有集换式卡牌。艾莉章节专属收集。</li>
-                    <li><strong>硬币收藏家：</strong>找到所有硬币。艾比章节专属收集。</li>
-                    <li><strong>万全准备：</strong>找到所有工作台。通关后可补漏。</li>
-                  </ul>
-
-                  <h3 id="section-9-2" className="text-xl mt-8 mb-4 font-bold text-gray-800">9.2 银杯</h3>
-                  <ul>
-                    <li><strong>机械师：</strong>完全升级一把武器。建议优先手枪或霰弹枪。</li>
-                    <li><strong>专精行家：</strong>学会一个分支的所有玩家升级。任意技能树点满即可。</li>
-                    <li><strong>保险箱大盗：</strong>打开所有保险箱。密码多在附近墙面或文档。</li>
-                    <li><strong>观光客：</strong>西雅图第1天市中心全部地点都进入并探索。</li>
-                    <li><strong>熟练工：</strong>找到所有训练手册。共 8 本。</li>
-                    <li><strong>求生训练：</strong>学会 25 个玩家升级。正常升级流程必得。</li>
-                    <li><strong>枪械专家：</strong>找到所有武器。通关流程可集齐。</li>
-                    <li><strong>实地备战：</strong>找到 12 个工作台。流程中留意即可。</li>
-                  </ul>
-
-                  <h3 id="section-9-3" className="text-xl mt-8 mb-4 font-bold text-gray-800">9.3 铜杯</h3>
-                  <ul>
-                    <li><strong>谋生工具：</strong>制作每一种物品。需要解锁对应配方。</li>
-                    <li><strong>新手工匠：</strong>升级一把武器。第一次工作台即可解锁。</li>
-                    <li><strong>学徒：</strong>学会一个玩家升级。早期补充品即可完成。</li>
-                    <li><strong>新手套牌：</strong>找到 5 张集换式卡牌。</li>
-                    <li><strong>完好如初：</strong>找到 5 枚硬币。</li>
-                    <li><strong>你戴起来很好看：</strong>博物馆章节给同伴戴帽子。</li>
-                    <li><strong>神枪手：</strong>体育场靶场赢过曼尼的射击比赛。</li>
-                    <li><strong>写上我的名字：</strong>水族馆射箭小游戏至少 11 分。</li>
-                    <li><strong>贤者的遗物：</strong>敌对领土找到奇怪遗物。</li>
-                    <li><strong>小处成就大事：</strong>市中心银行金库中找到刻字戒指。</li>
-                  </ul>
-
-                  <h3 id="section-9-4" className="text-xl mt-8 mb-4 font-bold text-gray-800">9.4 绝地与永久死亡追加</h3>
-                  <ul>
-                    <li><strong>掘墓双人：</strong>以绝地难度完成故事。建议二周目继承后挑战。</li>
-                    <li><strong>势不可挡：</strong>开启永久死亡完成故事，推荐选择按章节保存。</li>
-                  </ul>
-
-                  <h3 id="section-9-5" className="text-xl mt-8 mb-4 font-bold text-gray-800">9.5 No Return 追加</h3>
-                  <ul>
-                    <li><strong>混合袋：</strong>突击遭遇战中用 5 种武器击杀。</li>
-                    <li><strong>成为猎人：</strong>猎杀遭遇战中击杀 12 名敌人。</li>
-                    <li><strong>有我罩你：</strong>坚守模式获胜且盟友血量不低于 70。</li>
-                    <li><strong>入室盗窃：</strong>占领模式中不开杀敌打开保险箱。</li>
-                    <li><strong>点名：</strong>用每个角色完成一次通关。</li>
-                    <li><strong>模改高手：</strong>在 No Return 中完成一次带有所有 Mod 的遭遇战。</li>
-                    <li><strong>冒险主义：</strong>一次征途中完成 5 个赌注。</li>
-                    <li><strong>解脱：</strong>击败所有 Boss。</li>
-                    <li><strong>艾莉战队：</strong>完成艾莉阵营全部挑战轨迹。</li>
-                    <li><strong>艾比战队：</strong>完成艾比阵营全部挑战轨迹。</li>
-                    <li><strong>真正的力量：</strong>单场遭遇获得 S 评级。</li>
-                    <li><strong>愿你长寿：</strong>赢得一次每日挑战。</li>
-                    <li><strong>愿你速死：</strong>绝地难度赢得每日挑战。</li>
-                  </ul>
-
-                  <h3 id="section-9-6" className="text-xl mt-8 mb-4 font-bold text-gray-800">9.6 复刻版额外奖杯</h3>
-                  <ul>
-                    <li><strong>这会让你们怀旧吗：</strong>完成 Part I 挑战轨迹。</li>
-                    <li><strong>生物课：</strong>用比尔的泵动霰弹枪击杀巨无霸。</li>
-                    <li><strong>萤火虫女王：</strong>一次遭遇中用玛琳冲锋枪击杀 15 名敌人。</li>
-                    <li><strong>再来一次：</strong>以时间线顺序通关故事。</li>
-                  </ul>
-
-                  <h2 id="section-10" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
-                     十、版本与DLC说明
-                  </h2>
-                  <ul>
-                    <li><strong>白金仅要求本体奖杯：</strong>No Return 与绝地模式追加奖杯不影响白金。</li>
-                    <li><strong>奖杯名称与条件：</strong>以主机奖杯界面为准，如有更新以官方为准。</li>
-                    <li><strong>攻略来源：</strong>以权威奖杯站与全收集攻略为参考整理。</li>
-                  </ul>
-
                   <div className="my-8 text-black">
                     <p className="mb-6 text-black font-medium">
                       需要逐章节图文路线或奖杯筛选列表，请前往专属奖杯页面查看。
@@ -905,10 +1495,1241 @@ export default function Walkthrough() {
                      className="block w-full text-center py-4 bg-white border-2 border-gray-900 text-gray-900 font-bold uppercase tracking-widest text-sm hover:bg-gray-900 hover:text-white transition-all rounded-sm shadow-sm hover:shadow-md"
                    >
                      查看全奖杯列表
+                  </Link>
+                 </div>
+
+                 <h2 className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                    <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                    更多精彩内容
+                 </h2>
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                   {recommendedGames.map((item, index) => (
+                     <Link 
+                       key={index} 
+                       to={`/${item.slug || item.title.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w\-\u4e00-\u9fa5]+/g, '').replace(/\-\-+/g, '-')}`}
+                       className="group block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-100"
+                     >
+                       <div className="aspect-video w-full overflow-hidden relative">
+                         <img 
+                           src={item.imgUrl} 
+                           alt={item.title} 
+                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                         />
+                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+                       </div>
+                       <div className="p-4">
+                         <h3 className="font-bold text-gray-900 group-hover:text-sspai-red transition-colors truncate">
+                           {item.title}
+                         </h3>
+                         <p className="text-xs text-gray-500 mt-1">{item.author}</p>
+                       </div>
+                     </Link>
+                   ))}
+                 </div>
+                  
+                  <hr className="my-12 border-gray-100" />
+                 </>
+               ) : game.slug === 'baldurs-gate-3' ? (
+                 <>
+                   {/* Baldur's Gate 3 Specific Content */}
+                   <div className="mb-12">
+                     <div className="flex flex-col md:flex-row gap-6 mb-10 items-stretch">
+                        {/* Cover Image & Purchase */}
+                       <div className="w-full md:w-[320px] lg:w-[360px] flex-shrink-0 flex flex-col gap-4">
+                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+                           <h3 className="font-bold text-gray-900 mb-4 text-sm flex items-center gap-2">
+                             <span>🛍️</span> 购买游戏
+                           </h3>
+                           <div className="flex flex-col gap-4">
+                             <div className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-inner border border-gray-100 bg-white mb-2">
+                               <img src={game.imgUrl} alt="Cover" className="absolute inset-0 w-full h-full object-cover p-1" />
+                             </div>
+                             <div className="flex items-center justify-between">
+                               <div className="flex flex-col">
+                                 <span className="text-2xl font-bold text-sspai-red">HK$ 468.00</span>
+                               </div>
+                             </div>
+                             <a 
+                               href="https://store.playstation.com/zh-hans-hk/concept/10007460" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               className="w-full py-3 bg-[#00439c] text-white font-bold rounded-full text-sm hover:bg-[#003087] transition-all flex items-center justify-center gap-2 shadow-sm group"
+                             >
+                               <ShoppingCart size={16} className="group-hover:scale-110 transition-transform" />
+                               <span>前往 PS Store 购买</span>
+                             </a>
+                           </div>
+                         </div>
+                       </div>
+                        
+                        {/* Basic Info Table */}
+                        <div className="flex-1 flex flex-col">
+                          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col h-full">
+                            <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-4">
+                              <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                               <span className="text-2xl">📋</span> 游戏档案
+                             </h3>
+                            </div>
+                            
+                            <div className="flex-1 grid grid-cols-1 content-center gap-1">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🏢</span> 开发商</span>
+                                <span className="font-semibold text-gray-900">Larian Studios</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">📅</span> 发售日期</span>
+                                <span className="font-semibold text-gray-900">2023-09-06 (PS5)</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🎯</span> 游戏类型</span>
+                                <span className="font-semibold text-gray-900">CRPG / 策略 / 冒险</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">💰</span> 参考价格</span>
+                                <span className="font-bold text-sspai-red text-base">HK$ 468.00</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">⭐</span> 媒体评分</span>
+                                <span className="font-bold text-green-600">96/100 (Metacritic)</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                     </div>
+
+                    <h2 id="section-intro" className="text-2xl mt-8 mb-6 flex items-center gap-2 group cursor-pointer text-black">
+                       <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 w-6 text-center font-normal">#</span>
+                       📖 前言与导读
+                    </h2>
+                    <p className="lead text-[17px] text-gray-800 leading-relaxed mb-8">
+                      《博德之门 3》是一款基于《龙与地下城》(D&D) 5E 规则的 CRPG 巨作。游戏提供了极高的自由度，每一个选择都可能引发蝴蝶效应，改变故事的走向。
+                      <br/><br/>
+                      本攻略将为你提供基础的操作指南、战斗技巧以及生存建议，帮助你在费伦大陆的冒险中少走弯路。
+                    </p>
+
+                    <h2 id="section-basics" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                       <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                       一、基础操作与生存技巧
+                    </h2>
+                    
+                    <div className="space-y-8 mt-8 mb-12">
+                       {bg3GuideData.find(c => c.id === 'basics')?.sections.map((section, idx) => (
+                         <div 
+                           key={idx} 
+                           className="bg-gray-50 p-6 rounded-lg border border-gray-100"
+                           style={{
+                             backgroundImage: `url(${bg3Frame})`,
+                             backgroundSize: '100% 100%',
+                             backgroundRepeat: 'no-repeat',
+                             border: 'none',
+                             backgroundColor: 'transparent'
+                           }}
+                         >
+                           <h4 id={`section-basics-${section.id}`} className="text-lg font-bold text-[#e5e7eb] mb-4 flex items-center gap-2">
+                             <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                             {section.title}
+                           </h4>
+                           
+                           <div className="space-y-3">
+                             {section.content.map((item, itemIdx) => (
+                               item.type === 'image' && (item.src === 'bg3CharacterCreation' || item.src === 'bg3PrologueEscape') ? (
+                                  <div key={itemIdx} className="bg-transparent p-0">
+                                    <figure className="my-2 w-full">
+                                      <img 
+                                        src={item.src === 'bg3CharacterCreation' ? bg3CharacterCreation : bg3PrologueEscape} 
+                                        alt={item.src === 'bg3CharacterCreation' ? "Character Creation" : "Escape the Nautiloid"} 
+                                        className="w-full rounded-lg shadow-sm" 
+                                      />
+                                    </figure>
+                                  </div>
+                                ) : (
+                                 <div 
+                                   key={itemIdx} 
+                                   className="p-4 transition-colors relative flex items-center justify-center min-h-[80px]"
+                                   style={{
+                                     backgroundImage: `url(${bg3Button})`,
+                                     backgroundSize: '100% 100%',
+                                     backgroundRepeat: 'no-repeat',
+                                     border: 'none',
+                                     backgroundColor: 'transparent'
+                                   }}
+                                 >
+                                   <p className="text-[#d1d5db] text-sm leading-relaxed m-0 font-medium relative z-10 px-2">
+                                     {item.text}
+                                   </p>
+                                 </div>
+                               )
+                             ))}
+                           </div>
+                         </div>
+                       ))}
+                     </div>
+
+                     <h2 id="section-prologue" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                        <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                        二、序章：逃离螺壳舰
+                     </h2>
+                     <div className="space-y-8 mt-8 mb-12">
+                       {bg3GuideData.find(c => c.id === 'prologue')?.sections.map((section, idx) => (
+                         <div 
+                           key={idx} 
+                           className="bg-gray-50 p-6 rounded-lg border border-gray-100"
+                           style={{
+                             backgroundImage: `url(${bg3Frame})`,
+                             backgroundSize: '100% 100%',
+                             backgroundRepeat: 'no-repeat',
+                             border: 'none',
+                             backgroundColor: 'transparent'
+                           }}
+                         >
+                           <h4 id={`section-prologue-${section.id}`} className="text-lg font-bold text-[#e5e7eb] mb-4 flex items-center gap-2">
+                             <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                             {section.title}
+                           </h4>
+                           
+                           <div className="space-y-3">
+                             {section.content.map((item, itemIdx) => (
+                               item.type === 'image' && (item.src === 'bg3CharacterCreation' || item.src === 'bg3PrologueEscape') ? (
+                                 <div key={itemIdx} className="bg-transparent p-0">
+                                   <figure className="my-2 w-full">
+                                     <img 
+                                       src={item.src === 'bg3CharacterCreation' ? bg3CharacterCreation : bg3PrologueEscape} 
+                                       alt={item.src === 'bg3CharacterCreation' ? "Character Creation" : "Escape the Nautiloid"} 
+                                       className="w-full rounded-lg shadow-sm" 
+                                     />
+                                   </figure>
+                                 </div>
+                               ) : (
+                                 <div 
+                                   key={itemIdx} 
+                                   className="p-4 transition-colors relative flex items-center justify-center min-h-[80px]"
+                                   style={{
+                                     backgroundImage: `url(${bg3Button})`,
+                                     backgroundSize: '100% 100%',
+                                     backgroundRepeat: 'no-repeat',
+                                     border: 'none',
+                                     backgroundColor: 'transparent'
+                                   }}
+                                 >
+                                   <p className="text-[#d1d5db] text-sm leading-relaxed m-0 font-medium relative z-10 px-2">
+                                     {item.text}
+                                   </p>
+                                 </div>
+                               )
+                             ))}
+                           </div>
+                         </div>
+                       ))}
+                     </div>
+ 
+                     <h2 id="section-trophy-list" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                        <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                        三、查看全奖杯列表
+                     </h2>
+                    <div className="my-8 text-black">
+                      <p className="mb-6 text-black font-medium">
+                        本作包含 54 个奖杯，包括极其困难的“荣誉模式”挑战。点击下方按钮查看完整的中文奖杯列表与获取攻略。
+                      </p>
+                      <Link 
+                       to="/baldurs-gate-3/trophies"
+                       className="block w-full text-center py-4 bg-white border-2 border-gray-900 text-gray-900 font-bold uppercase tracking-widest text-sm hover:bg-gray-900 hover:text-white transition-all rounded-sm shadow-sm hover:shadow-md"
+                     >
+                       查看全奖杯列表
+                    </Link>
+                   </div>
+                   
+                   <hr className="my-12 border-gray-100" />
+                  </div>
+                 </>
+               ) : game.slug === 'horizon-forbidden-west' ? (
+                 <>
+                   {/* Horizon Forbidden West Specific Content */}
+                   <div className="mb-12">
+                     <div className="flex flex-col md:flex-row gap-6 mb-10 items-stretch">
+                        {/* Cover Image & Purchase */}
+                       <div className="w-full md:w-[320px] lg:w-[360px] flex-shrink-0 flex flex-col gap-4">
+                         
+                         {/* Purchase Card */}
+                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+                           <h3 className="font-bold text-gray-900 mb-4 text-sm flex items-center gap-2">
+                             <span>🛍️</span> 购买游戏
+                           </h3>
+                           
+                           <div className="flex flex-col gap-4">
+                             <div className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-inner border border-gray-100 bg-white mb-2">
+                               <img src={horizonCover} alt="Horizon Forbidden West Cover" className="absolute inset-0 w-full h-full object-cover p-1" />
+                             </div>
+
+                             <div className="flex items-center justify-between">
+                               <div className="flex flex-col">
+                                 <span className="text-xs text-gray-400 line-through">HK$ 568.00</span>
+                                 <span className="text-2xl font-bold text-sspai-red">HK$ 398.00</span>
+                               </div>
+                               <span className="px-2.5 py-1 bg-red-50 text-sspai-red text-xs font-bold rounded">-30%</span>
+                             </div>
+
+                             <a 
+                               href="https://www.playstation.com/zh-hans-hk/games/horizon-forbidden-west/" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               className="w-full py-3 bg-[#00439c] text-white font-bold rounded-full text-sm hover:bg-[#003087] transition-all flex items-center justify-center gap-2 shadow-sm group"
+                             >
+                               <ShoppingCart size={16} className="group-hover:scale-110 transition-transform" />
+                               <span>前往 PS Store 购买</span>
+                             </a>
+                           </div>
+                         </div>
+                       </div>
+                        
+                        {/* Basic Info Table */}
+                        <div className="flex-1 flex flex-col">
+                          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col h-full">
+                            <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-4">
+                              <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                               <span className="text-2xl">📋</span> 游戏档案
+                             </h3>
+                            </div>
+                            
+                            <div className="flex-1 grid grid-cols-1 content-center gap-1">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🏢</span> 开发商</span>
+                                <span className="font-semibold text-gray-900">Guerrilla Games</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">📦</span> 发行商</span>
+                                <span className="font-semibold text-gray-900">索尼互动娱乐 (SIE)</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">📅</span> 发售日期</span>
+                                <span className="font-semibold text-gray-900">2022-02-18</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🎯</span> 游戏类型</span>
+                                <span className="font-semibold text-gray-900">动作角色扮演 / 开放世界</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🕹️</span> 对应平台</span>
+                                <span className="font-semibold text-gray-900">PS5 / PS4 / PC</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">💰</span> 参考价格</span>
+                                <span className="font-bold text-sspai-red text-base">HK$ 398.00</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">⭐</span> 媒体评分</span>
+                                <span className="font-bold text-green-600">88/100 (Metacritic)</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                     </div>
+
+                    <h2 id="section-intro" className="text-2xl mt-8 mb-6 flex items-center gap-2 group cursor-pointer text-black">
+                       <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 w-6 text-center font-normal">#</span>
+                       📖 游戏简介
+                    </h2>
+                    <p className="lead text-[17px] text-gray-800 leading-relaxed mb-8">
+                      《地平线 西之绝境》（Horizon Forbidden West）是Guerrilla Games开发的动作角色扮演游戏，为《地平线 零之曙光》的续作。故事延续前作，主角埃洛伊（Aloy）为了拯救面临枯萎病威胁的世界，前往危险的西部禁地，探索未知的机械生物与古老遗迹，揭开隐藏在末世背后的惊天秘密。
+                    </p>
+
+                    {/* New Sections: Features, Reference, Ratings, Screenshots */}
+                    <div className="space-y-12 mb-12">
+                      
+                      {/* Core Features */}
+                      <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                         <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                           <span className="text-2xl">🌟</span> 核心特色
+                         </h3>
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                             <div className="text-3xl mb-3">🏔️</div>
+                             <h4 className="font-bold text-gray-900 mb-2">庞大的开放世界</h4>
+                             <p className="text-sm text-gray-600">探索远未来的美国西部，包含森林、沉没城市和高耸山脉。利用新的跑酷动作和抓钩自由穿梭。</p>
+                           </div>
+                           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                             <div className="text-3xl mb-3">🏹</div>
+                             <h4 className="font-bold text-gray-900 mb-2">激烈的机器战斗</h4>
+                             <p className="text-sm text-gray-600">利用各种武器、陷阱和策略对抗巨大的机器生物。针对不同机器的弱点制定战术。</p>
+                           </div>
+                           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                             <div className="text-3xl mb-3">🏊‍♀️</div>
+                             <h4 className="font-bold text-gray-900 mb-2">水下探索</h4>
+                             <p className="text-sm text-gray-600">潜入水下，探索隐藏的秘密和遗迹。全新的潜水面具让你能无限制地在水下活动。</p>
+                           </div>
+                           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                             <div className="text-3xl mb-3">🛠️</div>
+                             <h4 className="font-bold text-gray-900 mb-2">深度RPG系统</h4>
+                             <p className="text-sm text-gray-600">通过六大技能树（战士、陷阱、生存、渗透、猎人、机器大师）自定义埃洛伊的能力。</p>
+                           </div>
+                         </div>
+                      </div>
+
+                      {/* Reference Info */}
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                           <span className="text-2xl">ℹ️</span> 参考信息
+                        </h3>
+                        <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 mb-6">
+                           <p className="text-gray-700 mb-3">
+                             本攻略参考了 Steam 社区的优秀指南，原文链接如下：
+                           </p>
+                           <a 
+                             href="https://steamcommunity.com/sharedfiles/filedetails/?id=3194697969" 
+                             target="_blank" 
+                             rel="noopener noreferrer"
+                             className="text-sspai-red hover:text-red-700 underline break-all"
+                           >
+                             Horizon Forbidden West [+DLC] - 100% Achievement Guide
+                           </a>
+                         </div>
+
+                      </div>
+
+                      {/* Media Ratings */}
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                           <span className="text-2xl">🏆</span> 媒体评分
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                           <div className="bg-[#bf1313] text-white p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+                             <span className="font-bold text-lg mb-2 opacity-90">IGN</span>
+                             <span className="text-5xl font-black mb-4">9<span className="text-2xl opacity-70">/10</span></span>
+                             <p className="text-xs leading-relaxed opacity-90">"令人惊叹的战斗与顶级生物设计的完美结合。"</p>
+                           </div>
+                           <div className="bg-[#ffcc00] text-black p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+                             <span className="font-bold text-lg mb-2 opacity-70">GameSpot</span>
+                             <span className="text-5xl font-black mb-4">8<span className="text-2xl opacity-50">/10</span></span>
+                             <p className="text-xs leading-relaxed opacity-80">"虽然有些瑕疵，但西之绝境在很多方面都做得非常出色。"</p>
+                           </div>
+                           <div className="bg-[#333333] text-white p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+                             <span className="font-bold text-lg mb-2 opacity-90">Metacritic</span>
+                             <span className="text-5xl font-black mb-4 bg-green-600 px-3 py-1 rounded">88</span>
+                             <p className="text-xs leading-relaxed opacity-90">"普遍好评 (Universal Acclaim)"</p>
+                           </div>
+                        </div>
+                      </div>
+
+                      {/* Official Screenshots */}
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                           <span className="text-2xl">📸</span> 官方游戏截图
+                        </h3>
+                        <div className="space-y-8 mb-10">
+                           <figure>
+                             <img 
+                               src={horizonGameplayShot} 
+                               alt="Horizon Forbidden West Gameplay" 
+                               className="w-full rounded-lg shadow-md" 
+                             />
+                             <figcaption className="text-center text-sm text-gray-400 mt-2">
+                               埃洛伊在西部的探索之旅 | 来源: PlayStation 官方
+                             </figcaption>
+                           </figure>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div className="bg-[#fffbfb] border border-[#ffebeb] rounded-lg p-6 my-10 relative overflow-hidden">
+                      <div className="absolute top-0 left-0 w-1 h-full bg-sspai-red"></div>
+                      <h4 id="section-intro" className="font-bold mb-3 text-sspai-red flex items-center gap-2 text-base">
+                         <span>💡</span> 前言与导读
+                      </h4>
+                      <div className="space-y-6">
+                        {horizonForbiddenWestGuideData.find(c => c.id === 'intro')?.sections?.map((section, idx) => (
+                           <div key={idx}>
+                             <h5 className="font-bold text-gray-800 mb-2">{section.title}</h5>
+                             <div className="space-y-3">
+                               {section.content?.map((item, itemIdx) => (
+                                 <div key={itemIdx} className="bg-white p-3 rounded border border-gray-200 text-sm text-gray-600">
+                                   {item.name && <strong className="block mb-1 text-gray-900">{item.name}</strong>}
+                                   {item.text || item.description}
+                                 </div>
+                               ))}
+                             </div>
+                           </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <h2 id="section-main-quests" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                       <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                       一、主线任务流程
+                    </h2>
+                    
+                    <div className="space-y-8 mb-12">
+                      {horizonForbiddenWestGuideData.find(c => c.id === 'main-quests')?.sections?.map((section, idx) => (
+                        <div key={idx} id={`section-main-quests-${['daunt', 'fw', 'sub', 'end'][idx] || idx}`} className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                          <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                            {section.title}
+                          </h4>
+                          
+                          <div className="space-y-3">
+                            {section.content.map((item, itemIdx) => (
+                              <div key={itemIdx} id={item.id} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors scroll-mt-[120px]">
+                                <h5 className="text-gray-900 font-bold text-sm mb-1">{item.name}</h5>
+                                <p className="text-gray-600 text-sm leading-relaxed m-0">{item.description}</p>
+                                {item.details && (
+                                  <div className="mt-4 space-y-4 border-t pt-4 border-gray-100">
+                                    {item.details.map((detail, dIdx) => {
+                                      if (detail.type === 'text') {
+                                         // Check for Boss Tip
+                                         if (detail.content.includes('Boss战提示') || detail.content.includes('Boss Battle Tip')) {
+                                            return (
+                                              <div key={dIdx} className="bg-red-50 border-l-4 border-red-500 p-4 my-4 rounded-r-lg shadow-sm">
+                                                <h6 className="flex items-center gap-2 font-bold text-red-700 mb-2 text-sm uppercase tracking-wide">
+                                                  <Skull size={18} className="stroke-2" />
+                                                  BOSS 战提示
+                                                </h6>
+                                                <div className="text-red-900 text-sm leading-relaxed" dangerouslySetInnerHTML={{__html: detail.content.replace(/<strong>Boss战提示：<\/strong>/g, '')}}></div>
+                                              </div>
+                                            );
+                                         }
+                                         
+                                         // Check for Action Prompt (contains <kbd>)
+                                         if (detail.content.includes('<kbd>')) {
+                                            return (
+                                              <div key={dIdx} className="bg-slate-100 border-l-4 border-slate-400 p-4 my-3 rounded-r-lg flex items-start gap-3 shadow-sm group hover:bg-slate-200 transition-colors">
+                                                 <div className="bg-white p-1.5 rounded-md shadow-sm border border-slate-200 shrink-0 mt-0.5 group-hover:border-slate-300 transition-colors">
+                                                   <Gamepad2 size={18} className="text-slate-600" />
+                                                 </div>
+                                                 <div className="text-slate-700 text-sm leading-relaxed m-0 font-medium" dangerouslySetInnerHTML={{__html: detail.content}}></div>
+                                              </div>
+                                            );
+                                         }
+
+                                         return <p key={dIdx} className="text-gray-600 text-sm leading-relaxed" dangerouslySetInnerHTML={{__html: detail.content}}></p>;
+                                      }
+                                      if (detail.type === 'image') {
+                                         return (
+                                           <div key={dIdx} className="rounded-lg overflow-hidden my-3 shadow-sm border border-gray-100">
+                                             <img src={detail.src} alt={detail.alt || 'Guide Image'} className="w-full h-auto" />
+                                             {detail.caption && <p className="text-xs text-gray-400 mt-1 text-center">{detail.caption}</p>}
+                                           </div>
+                                         );
+                                      }
+                                      if (detail.type === 'header') {
+                                         const content = detail.content || '';
+                                         // Check for Conversation/Dialogue
+                                         if (content.includes('交谈') || content.includes('对话') || content.includes('Talk') || content.includes('Speak')) {
+                                           return (
+                                             <div key={dIdx} className="bg-indigo-50 border border-indigo-100 p-3 my-4 rounded-lg flex items-center gap-3 shadow-sm">
+                                               <div className="bg-white p-1.5 rounded-full shadow-sm text-indigo-600 shrink-0">
+                                                 <MessageCircle size={18} />
+                                               </div>
+                                               <h6 className="text-indigo-900 font-bold text-sm m-0">{content}</h6>
+                                             </div>
+                                           );
+                                         }
+                                         return <h6 key={dIdx} className="text-gray-800 font-bold text-sm mt-4 mb-2 pb-1 border-b border-gray-100">{content}</h6>;
+                                      }
+                                      if (detail.type === 'checklist') {
+                                         return (
+                                           <div key={dIdx} className="bg-emerald-50/80 border border-emerald-100 rounded-lg p-4 my-3">
+                                             <ul className="space-y-3">
+                                               {detail.items.map((li, liIdx) => (
+                                                 <li key={liIdx} className="flex items-start gap-3 text-sm text-gray-700">
+                                                   <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0 mt-0.5" />
+                                                   <span dangerouslySetInnerHTML={{__html: li}}></span>
+                                                 </li>
+                                               ))}
+                                             </ul>
+                                           </div>
+                                         );
+                                      }
+                                      if (detail.type === 'list') {
+                                         return (
+                                           <ul key={dIdx} className="list-disc list-inside text-gray-600 text-sm space-y-1 pl-2">
+                                             {detail.items.map((li, liIdx) => <li key={liIdx} dangerouslySetInnerHTML={{__html: li}}></li>)}
+                                           </ul>
+                                         );
+                                      }
+                                      if (detail.type === 'box') {
+                                        return (
+                                            <div key={dIdx} className="bg-blue-50 p-3 rounded border border-blue-100 text-sm text-blue-800">
+                                                {detail.title && <strong className="block mb-1">{detail.title}</strong>}
+                                                <div dangerouslySetInnerHTML={{__html: detail.content}} />
+                                            </div>
+                                        )
+                                      }
+                                      if (detail.type === 'html') {
+                                         return <div key={dIdx} dangerouslySetInnerHTML={{__html: detail.content}} className="text-sm leading-relaxed" />;
+                                      }
+                                      return null;
+                                    })}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <h2 id="section-side-quests" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                       <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                       二、全支线任务列表
+                    </h2>
+                    
+                    <div className="space-y-8 mb-12">
+                      {horizonForbiddenWestGuideData.find(c => c.id === 'side-quests')?.sections?.map((section, idx) => (
+                        <div key={idx} id={['section-side-quests-early', 'section-side-quests-mid', 'section-side-quests-late', 'section-side-quests-arena'][idx]} className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                          <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                            {section.title}
+                          </h4>
+                          
+                          <div className="space-y-3">
+                            {section.content.map((item, itemIdx) => (
+                              <div key={itemIdx} id={item.id} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors scroll-mt-[120px]">
+                                {item.name && <h5 className="text-gray-900 font-bold text-sm mb-1">{item.name}</h5>}
+                                <p className="text-gray-600 text-sm leading-relaxed m-0">{item.text || item.description}</p>
+                                {item.details && (
+                                  <div className="mt-4 space-y-4 border-t pt-4 border-gray-100">
+                                    {item.details.map((detail, dIdx) => {
+                                      if (detail.type === 'text') {
+                                         if (detail.content.includes('Boss战提示') || detail.content.includes('Boss Battle Tip')) {
+                                            return (
+                                              <div key={dIdx} className="bg-red-50 border-l-4 border-red-500 p-4 my-4 rounded-r-lg shadow-sm">
+                                                <h6 className="flex items-center gap-2 font-bold text-red-700 mb-2 text-sm uppercase tracking-wide">
+                                                  <Skull size={18} className="stroke-2" />
+                                                  BOSS 战提示
+                                                </h6>
+                                                <div className="text-red-900 text-sm leading-relaxed" dangerouslySetInnerHTML={{__html: detail.content.replace(/<strong>Boss战提示：<\/strong>/g, '')}}></div>
+                                              </div>
+                                            );
+                                         }
+                                         
+                                         if (detail.content.includes('<kbd>')) {
+                                            return (
+                                              <div key={dIdx} className="bg-slate-100 border-l-4 border-slate-400 p-4 my-3 rounded-r-lg flex items-start gap-3 shadow-sm group hover:bg-slate-200 transition-colors">
+                                                 <div className="bg-white p-1.5 rounded-md shadow-sm border border-slate-200 shrink-0 mt-0.5 group-hover:border-slate-300 transition-colors">
+                                                   <Gamepad2 size={18} className="text-slate-600" />
+                                                 </div>
+                                                 <div className="text-slate-700 text-sm leading-relaxed m-0 font-medium" dangerouslySetInnerHTML={{__html: detail.content}}></div>
+                                              </div>
+                                            );
+                                         }
+
+                                         return <p key={dIdx} className="text-gray-600 text-sm leading-relaxed" dangerouslySetInnerHTML={{__html: detail.content}}></p>;
+                                      }
+                                      if (detail.type === 'image') {
+                                         return (
+                                           <div key={dIdx} className="rounded-lg overflow-hidden my-3 shadow-sm border border-gray-100">
+                                             <img src={detail.src} alt={detail.alt || 'Guide Image'} className="w-full h-auto" />
+                                             {detail.caption && <p className="text-xs text-gray-400 mt-1 text-center">{detail.caption}</p>}
+                                           </div>
+                                         );
+                                      }
+                                      if (detail.type === 'header') {
+                                         const content = detail.content || '';
+                                         if (content.includes('交谈') || content.includes('对话') || content.includes('Talk') || content.includes('Speak')) {
+                                           return (
+                                             <div key={dIdx} className="bg-indigo-50 border border-indigo-100 p-3 my-4 rounded-lg flex items-center gap-3 shadow-sm">
+                                               <div className="bg-white p-1.5 rounded-full shadow-sm text-indigo-600 shrink-0">
+                                                 <MessageCircle size={18} />
+                                               </div>
+                                               <h6 className="text-indigo-900 font-bold text-sm m-0">{content}</h6>
+                                             </div>
+                                           );
+                                         }
+                                         return <h6 key={dIdx} className="text-gray-800 font-bold text-sm mt-4 mb-2 pb-1 border-b border-gray-100">{content}</h6>;
+                                      }
+                                      if (detail.type === 'checklist') {
+                                         return (
+                                           <div key={dIdx} className="bg-emerald-50/80 border border-emerald-100 rounded-lg p-4 my-3">
+                                             <ul className="space-y-3">
+                                               {detail.items.map((li, liIdx) => (
+                                                 <li key={liIdx} className="flex items-start gap-3 text-sm text-gray-700">
+                                                   <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0 mt-0.5" />
+                                                   <span dangerouslySetInnerHTML={{__html: li}}></span>
+                                                 </li>
+                                               ))}
+                                             </ul>
+                                           </div>
+                                         );
+                                      }
+                                      if (detail.type === 'list') {
+                                         return (
+                                           <ul key={dIdx} className="list-disc list-inside text-gray-600 text-sm space-y-1 pl-2">
+                                             {detail.items.map((li, liIdx) => <li key={liIdx} dangerouslySetInnerHTML={{__html: li}}></li>)}
+                                           </ul>
+                                         );
+                                      }
+                                      if (detail.type === 'box') {
+                                        return (
+                                            <div key={dIdx} className="bg-blue-50 p-3 rounded border border-blue-100 text-sm text-blue-800">
+                                                {detail.title && <strong className="block mb-1">{detail.title}</strong>}
+                                                <div dangerouslySetInnerHTML={{__html: detail.content}} />
+                                            </div>
+                                        )
+                                      }
+                                      if (detail.type === 'html') {
+                                         return <div key={dIdx} dangerouslySetInnerHTML={{__html: detail.content}} className="text-sm leading-relaxed" />;
+                                      }
+                                      return null;
+                                    })}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <h2 id="section-collectibles" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                       <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                       三、全收集品位置
+                    </h2>
+                    
+                    <div className="flex flex-wrap gap-3 mt-2 mb-6 text-xs text-gray-500 font-medium">
+                      <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded">
+                        <MapPin size={12} /> 长颈兽: 6
+                      </span>
+                      <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded">
+                        <Hammer size={12} /> 大坩埚: 6
+                      </span>
+                      <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded">
+                        <Landmark size={12} /> 遗迹: 9
+                      </span>
+                      <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded">
+                        <Box size={12} /> 黑盒子: 12
+                      </span>
+                      <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded">
+                        <Radio size={12} /> 无人机: 10
+                      </span>
+                      <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded">
+                        <Eye size={12} /> 观景点: 9
+                      </span>
+                    </div>
+                    
+                    <div className="space-y-8 mb-12">
+                      {['tallnecks', 'cauldrons', 'relic-ruins', 'black-boxes', 'survey-drones', 'vista-points'].map((typeId, typeIdx) => {
+                         const sectionData = horizonForbiddenWestGuideData.find(c => c.id === typeId);
+                         if (!sectionData) return null;
+                         const idSuffix = ['tallnecks', 'cauldrons', 'relics', 'black-boxes', 'survey-drones', 'vista-points'][typeIdx];
+                         return (
+                           <div key={typeId} id={`section-collectibles-${idSuffix}`} className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                             <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                               <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                               {sectionData.title}
+                             </h4>
+                             <div className="space-y-3">
+                               {sectionData.sections.map((section, secIdx) => (
+                                 <div key={secIdx} className="space-y-3">
+                                   {section.title && <h5 className="font-bold text-gray-800 border-l-4 border-sspai-red pl-2">{section.title}</h5>}
+                                   {section.content.map((item, itemIdx) => {
+                                      if (item.type === 'header') {
+                                        const content = item.content || item.name || item.title || '';
+                                        // Check for Conversation/Dialogue
+                                        if (content.includes('交谈') || content.includes('对话') || content.includes('Talk') || content.includes('Speak')) {
+                                          return (
+                                            <div key={itemIdx} className="bg-indigo-50 border border-indigo-100 p-3 my-4 rounded-lg flex items-center gap-3 shadow-sm">
+                                              <div className="bg-white p-1.5 rounded-full shadow-sm text-indigo-600 shrink-0">
+                                                <MessageCircle size={18} />
+                                              </div>
+                                              <h6 className="text-indigo-900 font-bold text-sm m-0">{content}</h6>
+                                            </div>
+                                          );
+                                        }
+                                        return <h6 key={itemIdx} className="text-gray-900 font-bold text-sm mt-4 mb-1">{content}</h6>;
+                                      }
+                                      if (item.type === 'text') {
+                                        const content = item.content || item.text;
+                                        // Check for Boss Tip
+                                        if (content.includes('Boss战提示') || content.includes('Boss Battle Tip')) {
+                                           return (
+                                             <div key={itemIdx} className="bg-red-50 border-l-4 border-red-500 p-4 my-4 rounded-r-lg shadow-sm">
+                                               <h6 className="flex items-center gap-2 font-bold text-red-700 mb-2 text-sm uppercase tracking-wide">
+                                                 <Skull size={18} className="stroke-2" />
+                                                 BOSS 战提示
+                                               </h6>
+                                               <div className="text-red-900 text-sm leading-relaxed" dangerouslySetInnerHTML={{__html: content.replace(/<strong>Boss战提示：<\/strong>/g, '')}}></div>
+                                             </div>
+                                           );
+                                        }
+                                        
+                                        // Check for Action Prompt (contains <kbd>)
+                                        if (content.includes('<kbd>')) {
+                                           return (
+                                             <div key={itemIdx} className="bg-slate-100 border-l-4 border-slate-400 p-4 my-3 rounded-r-lg flex items-start gap-3 shadow-sm group hover:bg-slate-200 transition-colors">
+                                                <div className="bg-white p-1.5 rounded-md shadow-sm border border-slate-200 shrink-0 mt-0.5 group-hover:border-slate-300 transition-colors">
+                                                  <Gamepad2 size={18} className="text-slate-600" />
+                                                </div>
+                                                <div className="text-slate-700 text-sm leading-relaxed m-0 font-medium" dangerouslySetInnerHTML={{__html: content}}></div>
+                                             </div>
+                                           );
+                                        }
+
+                                        return <p key={itemIdx} className="text-gray-600 text-sm leading-relaxed mb-2" dangerouslySetInnerHTML={{ __html: content }} />;
+                                      }
+                                      return (
+                                     <div key={itemIdx} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                                       {item.name && <h5 className="text-gray-900 font-bold text-sm mb-1">{item.name}</h5>}
+                                       <p className="text-gray-600 text-sm leading-relaxed m-0">{item.text || item.description}</p>
+                                     </div>
+                                   )})}
+                                 </div>
+                               ))}
+                             </div>
+                           </div>
+                         );
+                      })}
+                    </div>
+
+                    <h2 id="section-dlc" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                       <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                       四、炙炎海岸 DLC
+                    </h2>
+                    <div className="space-y-8 mb-12">
+                      {horizonForbiddenWestGuideData.find(c => c.id === 'dlc')?.sections?.map((section, idx) => (
+                        <div key={idx} className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                          <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                            {section.title}
+                          </h4>
+                          
+                          <div className="space-y-3">
+                            {section.content.map((item, itemIdx) => (
+                              <div key={itemIdx} id={item.id} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors scroll-mt-[120px]">
+                                {item.name && <h5 className="text-gray-900 font-bold text-sm mb-1">{item.name}</h5>}
+                                <p className="text-gray-600 text-sm leading-relaxed m-0">{item.text || item.description}</p>
+                                {item.details && (
+                                  <div className="mt-4 space-y-4 border-t pt-4 border-gray-100">
+                                    {item.details.map((detail, dIdx) => {
+                                      if (detail.type === 'text') {
+                                         // Check for Boss Tip
+                                         if (detail.content.includes('Boss战提示') || detail.content.includes('Boss Battle Tip')) {
+                                            return (
+                                              <div key={dIdx} className="bg-red-50 border-l-4 border-red-500 p-4 my-4 rounded-r-lg shadow-sm">
+                                                <h6 className="flex items-center gap-2 font-bold text-red-700 mb-2 text-sm uppercase tracking-wide">
+                                                  <Skull size={18} className="stroke-2" />
+                                                  BOSS 战提示
+                                                </h6>
+                                                <div className="text-red-900 text-sm leading-relaxed" dangerouslySetInnerHTML={{__html: detail.content.replace(/<strong>Boss战提示：<\/strong>/g, '')}}></div>
+                                              </div>
+                                            );
+                                         }
+                                         
+                                         // Check for Action Prompt (contains <kbd>)
+                                         if (detail.content.includes('<kbd>')) {
+                                            return (
+                                              <div key={dIdx} className="bg-slate-100 border-l-4 border-slate-400 p-4 my-3 rounded-r-lg flex items-start gap-3 shadow-sm group hover:bg-slate-200 transition-colors">
+                                                 <div className="bg-white p-1.5 rounded-md shadow-sm border border-slate-200 shrink-0 mt-0.5 group-hover:border-slate-300 transition-colors">
+                                                   <Gamepad2 size={18} className="text-slate-600" />
+                                                 </div>
+                                                 <div className="text-slate-700 text-sm leading-relaxed m-0 font-medium" dangerouslySetInnerHTML={{__html: detail.content}}></div>
+                                              </div>
+                                            );
+                                         }
+
+                                         return <p key={dIdx} className="text-gray-600 text-sm leading-relaxed" dangerouslySetInnerHTML={{__html: detail.content}}></p>;
+                                      }
+                                      if (detail.type === 'image') {
+                                         return (
+                                           <div key={dIdx} className="rounded-lg overflow-hidden my-3 shadow-sm border border-gray-100">
+                                             <img src={detail.src} alt={detail.alt || 'Guide Image'} className="w-full h-auto" />
+                                             {detail.caption && <p className="text-xs text-gray-400 mt-1 text-center">{detail.caption}</p>}
+                                           </div>
+                                         );
+                                      }
+                                      if (detail.type === 'header') {
+                                         const content = detail.content || '';
+                                         // Check for Conversation/Dialogue
+                                         if (content.includes('交谈') || content.includes('对话') || content.includes('Talk') || content.includes('Speak')) {
+                                           return (
+                                             <div key={dIdx} className="bg-indigo-50 border border-indigo-100 p-3 my-4 rounded-lg flex items-center gap-3 shadow-sm">
+                                               <div className="bg-white p-1.5 rounded-full shadow-sm text-indigo-600 shrink-0">
+                                                 <MessageCircle size={18} />
+                                               </div>
+                                               <h6 className="text-indigo-900 font-bold text-sm m-0">{content}</h6>
+                                             </div>
+                                           );
+                                         }
+                                         return <h6 key={dIdx} className="text-gray-800 font-bold text-sm mt-4 mb-2 pb-1 border-b border-gray-100">{content}</h6>;
+                                      }
+                                      if (detail.type === 'checklist') {
+                                         return (
+                                           <div key={dIdx} className="bg-emerald-50/80 border border-emerald-100 rounded-lg p-4 my-3">
+                                             <ul className="space-y-3">
+                                               {detail.items.map((li, liIdx) => (
+                                                 <li key={liIdx} className="flex items-start gap-3 text-sm text-gray-700">
+                                                   <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0 mt-0.5" />
+                                                   <span dangerouslySetInnerHTML={{__html: li}}></span>
+                                                 </li>
+                                               ))}
+                                             </ul>
+                                           </div>
+                                         );
+                                      }
+                                      if (detail.type === 'list') {
+                                         return (
+                                           <ul key={dIdx} className="list-disc list-inside text-gray-600 text-sm space-y-1 pl-2">
+                                             {detail.items.map((li, liIdx) => <li key={liIdx} dangerouslySetInnerHTML={{__html: li}}></li>)}
+                                           </ul>
+                                         );
+                                      }
+                                      if (detail.type === 'box') {
+                                        return (
+                                            <div key={dIdx} className="bg-blue-50 p-3 rounded border border-blue-100 text-sm text-blue-800">
+                                                {detail.title && <strong className="block mb-1">{detail.title}</strong>}
+                                                <div dangerouslySetInnerHTML={{__html: detail.content}} />
+                                            </div>
+                                        )
+                                      }
+                                      if (detail.type === 'html') {
+                                         return <div key={dIdx} dangerouslySetInnerHTML={{__html: detail.content}} className="text-sm leading-relaxed" />;
+                                      }
+                                      return null;
+                                    })}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <h2 id="section-trophies" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                       <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                       五、白金奖杯指南
+                    </h2>
+                    <div className="space-y-6 mt-8 mb-12">
+                      {horizonForbiddenWestGuideData.find(c => c.id === 'trophies')?.sections?.map((section, idx) => (
+                        <div key={idx} className="bg-gray-50 p-5 rounded-lg border border-gray-100">
+                          <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-sspai-red"></span>
+                            {section.title}
+                          </h4>
+                          <div className="space-y-3">
+                            {section.content.map((item, itemIdx) => (
+                              <div key={itemIdx} className="bg-white p-4 rounded border border-gray-200 shadow-sm hover:border-gray-300 transition-colors">
+                                 <h5 className="text-gray-900 font-bold text-sm mb-1">{item.name}</h5>
+                                 <p className="text-gray-600 text-sm leading-relaxed m-0">{item.description}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                   <h2 id="section-trophy-list" className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                      <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                      六、查看全奖杯列表
+                   </h2>
+                   <div className="my-8 text-black">
+                     <p className="mb-6 text-black font-medium">
+                       本作包含 59 个奖杯。点击下方按钮查看完整的中文奖杯列表与获取攻略。
+                     </p>
+                     <Link 
+                      to="/horizon-forbidden-west/trophies"
+                      className="block w-full text-center py-4 bg-white border-2 border-gray-900 text-gray-900 font-bold uppercase tracking-widest text-sm hover:bg-gray-900 hover:text-white transition-all rounded-sm shadow-sm hover:shadow-md"
+                    >
+                      查看全奖杯列表
                    </Link>
                   </div>
                    
                    <hr className="my-12 border-gray-100" />
+                  </div>
+                 </>
+               ) : game.slug === 'the-witcher-3' ? (
+                 <>
+                   {/* The Witcher 3 Specific Content */}
+                   <div className="mb-12">
+                     <div className="flex flex-col md:flex-row gap-6 mb-10 items-stretch">
+                        {/* Cover Image & Purchase */}
+                       <div className="w-full md:w-[320px] lg:w-[360px] flex-shrink-0 flex flex-col gap-4">
+                         
+                         {/* Purchase Card */}
+                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+                           <h3 className="font-bold text-gray-900 mb-4 text-sm flex items-center gap-2">
+                             <span>🛍️</span> 购买游戏
+                           </h3>
+                           
+                           <div className="flex flex-col gap-4">
+                             <div className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-inner border border-gray-100 bg-white mb-2">
+                               <img src={game.imgUrl} alt="The Witcher 3 Cover" className="absolute inset-0 w-full h-full object-cover p-1" />
+                             </div>
+
+                             <div className="flex items-center justify-between">
+                               <div className="flex flex-col">
+                                 <span className="text-2xl font-bold text-sspai-red">HK$ 308.00</span>
+                               </div>
+                             </div>
+
+                             <a 
+                               href="https://store.playstation.com/zh-hant-hk/product/EP4497-PPSA05701_00-0000000000000004" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               className="w-full py-3 bg-[#00439c] text-white font-bold rounded-full text-sm hover:bg-[#003087] transition-all flex items-center justify-center gap-2 shadow-sm group"
+                             >
+                               <ShoppingCart size={16} className="group-hover:scale-110 transition-transform" />
+                               <span>前往 PS Store 购买</span>
+                             </a>
+                           </div>
+                         </div>
+                       </div>
+                        
+                        {/* Basic Info Table */}
+                        <div className="flex-1 flex flex-col">
+                          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col h-full">
+                            <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-4">
+                              <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                               <span className="text-2xl">📋</span> 游戏档案
+                             </h3>
+                            </div>
+                            
+                            <div className="flex-1 grid grid-cols-1 content-center gap-1">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🏢</span> 开发商</span>
+                                <span className="font-semibold text-gray-900">CD PROJEKT RED</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">📦</span> 发行商</span>
+                                <span className="font-semibold text-gray-900">CD PROJEKT RED</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">📅</span> 发售日期</span>
+                                <span className="font-semibold text-gray-900">2015-05-19 (PS5版 2022-12-14)</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🎯</span> 游戏类型</span>
+                                <span className="font-semibold text-gray-900">动作角色扮演 / 开放世界</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🕹️</span> 对应平台</span>
+                                <span className="font-semibold text-gray-900">PS5 / PS4 / PC / Xbox / Switch</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border-b border-gray-50/50 last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">💰</span> 参考价格</span>
+                                <span className="font-bold text-sspai-red text-base">HK$ 308.00</span>
+                              </div>
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors last:border-0">
+                                <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">⭐</span> 媒体评分</span>
+                                <span className="font-bold text-green-600">92/100 (Metacritic)</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                     </div>
+
+                    <h2 id="section-intro" className="text-2xl mt-8 mb-6 flex items-center gap-2 group cursor-pointer text-black">
+                       <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 w-6 text-center font-normal">#</span>
+                       📖 游戏简介
+                    </h2>
+                    <p className="lead text-[17px] text-gray-800 leading-relaxed mb-8">
+                      《巫师 3：狂猎》（The Witcher 3: Wild Hunt）是一款由CD PROJEKT RED开发并发行的一款角色扮演游戏。玩家将扮演职业怪物杀手“白狼”杰洛特，在一个庞大且充满道德模糊选择的开放世界中，寻找被称为“预言之子”的养女希里。游戏以其深刻的叙事、复杂的角色和引人入胜的世界构建而闻名。
+                    </p>
+
+                    <div className="space-y-12 mb-12">
+                      
+                      {/* Core Features */}
+                      <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                         <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                           <span className="text-2xl">🌟</span> 核心特色
+                         </h3>
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                             <div className="text-3xl mb-3">🗺️</div>
+                             <h4 className="font-bold text-gray-900 mb-2">庞大的奇幻开放世界</h4>
+                             <p className="text-sm text-gray-600">探索饱受战火蹂躏的威伦、繁华的自由之城诺维格瑞以及史凯利杰群岛的严寒地带。</p>
+                           </div>
+                           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                             <div className="text-3xl mb-3">⚔️</div>
+                             <h4 className="font-bold text-gray-900 mb-2">专业的怪物猎人</h4>
+                             <p className="text-sm text-gray-600">利用各种升级的武器、变种药剂、战斗法印以及陷阱，猎杀各种奇异的怪物。</p>
+                           </div>
+                           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                             <div className="text-3xl mb-3">⚖️</div>
+                             <h4 className="font-bold text-gray-900 mb-2">道德模糊的选择</h4>
+                             <p className="text-sm text-gray-600">每一个选择都有其后果。你的决定将影响故事的走向、角色的命运甚至整个世界的格局。</p>
+                           </div>
+                           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                             <div className="text-3xl mb-3">🃏</div>
+                             <h4 className="font-bold text-gray-900 mb-2">昆特牌</h4>
+                             <p className="text-sm text-gray-600">内置了一款极具深度的卡牌游戏，收集卡牌、构建卡组，在酒馆中与全大陆的对手一决高下。</p>
+                           </div>
+                         </div>
+                      </div>
+
+                      {/* Media Ratings */}
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                           <span className="text-2xl">🏆</span> 媒体评分
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                           <div className="bg-[#bf1313] text-white p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+                             <span className="font-bold text-lg mb-2 opacity-90">IGN</span>
+                             <span className="text-5xl font-black mb-4">9.3<span className="text-2xl opacity-70">/10</span></span>
+                             <p className="text-xs leading-relaxed opacity-90">"《巫师3》规模宏大且细节丰富，标志着RPG游戏的一个新高度。"</p>
+                           </div>
+                           <div className="bg-[#ffcc00] text-black p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+                             <span className="font-bold text-lg mb-2 opacity-70">GameSpot</span>
+                             <span className="text-5xl font-black mb-4">10<span className="text-2xl opacity-50">/10</span></span>
+                             <p className="text-xs leading-relaxed opacity-80">"在这个美丽的世界上，每一步探索都充满了意义。"</p>
+                           </div>
+                           <div className="bg-[#333333] text-white p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+                             <span className="font-bold text-lg mb-2 opacity-90">Metacritic</span>
+                             <span className="text-5xl font-black mb-4 bg-green-600 px-3 py-1 rounded">92</span>
+                             <p className="text-xs leading-relaxed opacity-90">"普遍好评 (Universal Acclaim) - 世代最佳RPG之一"</p>
+                           </div>
+                        </div>
+                      </div>
+
+                      {/* Official Screenshots */}
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                           <span className="text-2xl">📸</span> 官方游戏截图
+                        </h3>
+                        <div className="space-y-8 mb-10">
+                           <figure>
+                             <img 
+                               src={game.imgUrl} 
+                               alt="The Witcher 3 Gameplay" 
+                               className="w-full rounded-lg shadow-md" 
+                             />
+                             <figcaption className="text-center text-sm text-gray-400 mt-2">
+                               杰洛特的猎魔之旅 | 来源: CD PROJEKT RED 官方
+                             </figcaption>
+                           </figure>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Guide Content */}
+                    <div className="bg-gradient-to-r from-stone-900 to-slate-800 rounded-xl p-8 my-12 relative overflow-hidden shadow-lg border border-stone-700">
+                      <div className="absolute top-0 left-0 w-1.5 h-full bg-red-600"></div>
+                      <div className="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+                         <Skull size={160} className="text-white" />
+                      </div>
+                      <div className="relative z-10">
+                        <h4 id="section-intro" className="font-bold mb-4 text-red-500 flex items-center gap-3 text-lg tracking-wide uppercase">
+                           <span className="bg-red-500/20 p-2 rounded-lg"><BookOpen size={20} className="text-red-500" /></span> 
+                           攻略导读
+                        </h4>
+                        <p className="text-slate-300 text-[15px] m-0 leading-relaxed font-medium">
+                          本攻略将引导你从白果园的初次狩猎，一直到与狂猎的最终决战。包含所有的主线任务、重要的支线任务抉择、战斗技巧，以及详细的昆特牌收集指南。
+                        </p>
+                      </div>
+                    </div>
+
+                     {witcher3GuideData.map((chapter) => (
+                       <div key={chapter.id} className="mb-14 relative">
+                         {/* Chapter Header */}
+                         <div className="flex items-center gap-4 mb-8 group cursor-pointer">
+                           <h2 id={`section-${chapter.id}`} className="text-2xl md:text-3xl font-bold text-gray-900 m-0 flex items-center gap-3">
+                             <span className="text-red-600 opacity-0 group-hover:opacity-100 transition-opacity absolute -ml-8 text-xl">#</span>
+                             {chapter.title}
+                           </h2>
+                           <div className="flex-1 h-[1px] bg-gradient-to-r from-red-600/50 to-transparent ml-4"></div>
+                         </div>
+                         
+                         <div className="space-y-8 mt-6">
+                           {chapter.sections.map((section, idx) => {
+                             // Determine icon and color based on section id/title
+                             let Icon = ChevronRight;
+                             let colorClass = "text-slate-700";
+                             let bgClass = "bg-slate-100";
+                             
+                             if (section.id.includes('combat') || section.id.includes('attack')) {
+                               Icon = Skull; colorClass = "text-red-600"; bgClass = "bg-red-100";
+                             } else if (section.id.includes('sign') || section.id.includes('magic')) {
+                               Icon = Eye; colorClass = "text-purple-600"; bgClass = "bg-purple-100";
+                             } else if (section.id.includes('alchemy') || section.id.includes('potion')) {
+                               Icon = Box; colorClass = "text-emerald-600"; bgClass = "bg-emerald-100";
+                             } else if (section.id.includes('gwent')) {
+                               Icon = Landmark; colorClass = "text-amber-600"; bgClass = "bg-amber-100";
+                             }
+
+                             return (
+                             <div key={idx} className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+                               {/* Decorative accent */}
+                               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-gray-200 to-transparent group-hover:from-red-500 transition-colors"></div>
+                               
+                               <h4 id={`section-${chapter.id}-${section.id}`} className="text-lg font-bold text-gray-900 mb-5 flex items-center gap-3 scroll-mt-[100px]">
+                                 <div className={`p-2 rounded-lg ${bgClass}`}>
+                                   <Icon size={18} className={colorClass} />
+                                 </div>
+                                 {section.title}
+                               </h4>
+                               
+                               <div className="space-y-3 pl-2 border-l-2 border-gray-100 ml-4">
+                                 {section.content.map((item, itemIdx) => {
+                                    // Highlight key terms in text
+                                    const formattedText = item.text
+                                      .replace(/杰洛特/g, '<span class="font-bold text-gray-900">杰洛特</span>')
+                                      .replace(/希里/g, '<span class="font-bold text-gray-900">希里</span>')
+                                      .replace(/叶奈法/g, '<span class="font-bold text-gray-900">叶奈法</span>')
+                                      .replace(/特莉丝/g, '<span class="font-bold text-gray-900">特莉丝</span>')
+                                      .replace(/阿尔德|亚克席|伊格尼|昆恩|亚登/g, '<span class="font-bold text-purple-600">$&</span>')
+                                      .replace(/银剑|钢剑|十字弓/g, '<span class="font-bold text-slate-700">$&</span>');
+
+                                    return (
+                                     <div key={itemIdx} className="bg-gray-50/50 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                                       <p 
+                                         className="text-gray-600 text-[14.5px] leading-relaxed m-0"
+                                         dangerouslySetInnerHTML={{ __html: formattedText }}
+                                       />
+                                     </div>
+                                   )
+                                 })}
+                               </div>
+                             </div>
+                           )})}
+                         </div>
+                       </div>
+                     ))}
+                     
+                     <h2 id="section-trophy-list" className="text-3xl mt-16 mb-8 group cursor-pointer text-black border-b pb-4 flex items-center gap-2">
+                        <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                        🏆 查看全奖杯列表 (Trophy List)
+                     </h2>
+                     <div className="my-8 text-black">
+                       <p className="mb-6 text-black font-medium">
+                         本作包含丰富的成就系统与收集挑战。点击下方按钮查看完整的中文奖杯列表与获取攻略。
+                       </p>
+                       <Link 
+                        to="/the-witcher-3/trophies"
+                        className="block w-full text-center py-4 bg-white border-2 border-gray-900 text-gray-900 font-bold uppercase tracking-widest text-sm hover:bg-gray-900 hover:text-white transition-all rounded-sm shadow-sm hover:shadow-md"
+                      >
+                        查看全奖杯列表
+                     </Link>
+                    </div>
+
+                    <h2 className="text-2xl mt-12 mb-6 group cursor-pointer text-black">
+                       <span className="text-sspai-red opacity-0 group-hover:opacity-100 transition-opacity -ml-6 absolute w-6 text-center font-normal">#</span>
+                       推荐阅读的其他攻略
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                      {recommendedGames.map((item, index) => (
+                        <Link 
+                          key={index} 
+                          to={`/${item.slug || item.title.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w\-\u4e00-\u9fa5]+/g, '').replace(/\-\-+/g, '-')}`}
+                          className="group block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-100"
+                        >
+                          <div className="aspect-video w-full overflow-hidden relative">
+                            <img 
+                              src={item.imgUrl} 
+                              alt={item.title} 
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+                          </div>
+                          <div className="p-4">
+                            <h3 className="font-bold text-gray-900 group-hover:text-sspai-red transition-colors truncate">
+                              {item.title}
+                            </h3>
+                            <p className="text-xs text-gray-500 mt-1">{item.author}</p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+
+                     <hr className="my-12 border-gray-100" />
+                  </div>
                  </>
                ) : (
                  // Generic content for other games
@@ -1024,7 +2845,7 @@ export default function Walkthrough() {
                  </div>
                </div>
                <a 
-                 href="https://www.naughtydog.com/"
+                 href={game.slug === 'horizon-forbidden-west' ? "https://www.guerrilla-games.com/" : "https://www.naughtydog.com/"}
                  target="_blank"
                  rel="noopener noreferrer"
                  className="w-full py-2 bg-white border border-sspai-red text-sspai-red font-bold rounded-full text-sm hover:bg-sspai-red hover:text-white transition-all flex items-center justify-center gap-2 shadow-sm"
@@ -1034,155 +2855,421 @@ export default function Walkthrough() {
              </div>
 
              {/* TOC */}
-             <div className="bg-white rounded-lg p-6 shadow-sspai border border-gray-100 sticky top-4">
-               <h3 className="font-bold text-gray-900 mb-4 pl-1 text-[15px] flex items-center justify-between">
-                 目录
-                 <span className="text-xs font-bold text-white bg-sspai-red px-2 py-0.5 rounded-full shadow-sm">{readingProgress}%</span>
-               </h3>
-               <nav className="space-y-1 relative">
+              <div className="bg-white rounded-lg p-6 shadow-sspai border border-gray-100 sticky top-4 flex flex-col max-h-[calc(100vh-2rem)]">
+                <h3 className="font-bold text-gray-900 mb-4 pl-1 text-[15px] flex items-center justify-between shrink-0">
+                  目录
+                  <span className="text-xs font-bold text-white bg-sspai-red px-2 py-0.5 rounded-full shadow-sm">{readingProgress}%</span>
+                </h3>
+                
+                <nav className="space-y-1 relative pr-2 flex-1 overflow-y-auto custom-scrollbar">
                  <div className="absolute left-[7px] top-2 bottom-2 w-[2px] bg-gray-100"></div>
-                 {tocItems.map((item) => {
-                   const isActive = activeSection === item.id;
+                 
+                 {tocTree.map((parent) => {
+                   const isParentActive = activeSection === parent.id;
+                   const hasChildren = parent.children && parent.children.length > 0;
+                   const isChildActive = parent.children ? parent.children.some(child => child.id === activeSection) : false;
+                   
+                   // Determine if expanded: manual toggle > active state > collapsed default
+                   const isExpanded = expandedSections[parent.id] !== undefined 
+                     ? expandedSections[parent.id] 
+                     : (isParentActive || isChildActive);
+                   
                    return (
-                     <a 
-                       key={item.id}
-                       href={`#${item.id}`}
-                       onClick={(e) => scrollToSection(e, item.id)}
-                       className={`
-                         block py-2 pr-3 transition-all relative z-10 rounded-r border-l-[3px]
-                         ${item.level === 1 ? 'pl-6 text-[14px]' : 'pl-9 text-[13px]'}
-                         ${isActive 
-                           ? 'text-sspai-red font-bold bg-red-50/80 border-sspai-red shadow-sm' 
-                           : 'text-gray-500 hover:text-sspai-red hover:bg-gray-50 border-transparent hover:border-gray-200 font-medium'}
-                       `}
-                     >
-                       {item.title}
-                     </a>
+                     <div key={parent.id} className="relative">
+                       <div className="flex items-center group relative">
+                         <a 
+                           href={`#${parent.id}`}
+                           onClick={(e) => scrollToSection(e, parent.id)}
+                           className={`
+                             flex-1 block py-2 pr-10 transition-all relative z-10 rounded-r border-l-[3px] pl-6 text-[14px] flex items-center justify-between
+                             ${(isParentActive || isChildActive)
+                               ? 'text-sspai-red font-bold bg-red-50/80 border-sspai-red shadow-sm' 
+                               : 'text-gray-500 hover:text-sspai-red hover:bg-gray-50 border-transparent hover:border-gray-200 font-medium'}
+                           `}
+                         >
+                           <span className="truncate">{parent.title}</span>
+                         </a>
+
+                         {hasChildren && (
+                           <button
+                             onClick={(e) => toggleSection(e, parent.id, !isExpanded)}
+                             className={`absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-md transition-colors z-20 
+                               ${(isParentActive || isChildActive) 
+                                 ? 'text-sspai-red hover:bg-red-100' 
+                                 : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'}`}
+                           >
+                             {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                           </button>
+                         )}
+                       </div>
+
+                       {/* Children */}
+                       {hasChildren && isExpanded && (
+                         <div className="space-y-1 mt-1 transition-all duration-300 ease-in-out">
+                           {parent.children.map(child => {
+                             const isCurrentChildActive = activeSection === child.id;
+                             const isGrandChildActive = child.children && child.children.some(gc => gc.id === activeSection);
+                             const isChildExpanded = isCurrentChildActive || isGrandChildActive || expandedSections[child.id];
+
+                             return (
+                               <div key={child.id}>
+                                   <div className="flex items-center group relative">
+                                       <a 
+                                         href={`#${child.id}`}
+                                         onClick={(e) => scrollToSection(e, child.id)}
+                                         className={`
+                                           flex-1 block py-1.5 pr-8 transition-all relative z-10 rounded-r border-l-[3px] pl-9 text-[13px]
+                                           ${(isCurrentChildActive || isGrandChildActive)
+                                             ? 'text-sspai-red font-bold bg-red-50/50 border-sspai-red' 
+                                             : 'text-gray-500 hover:text-sspai-red hover:bg-gray-50 border-transparent hover:border-gray-200'}
+                                         `}
+                                       >
+                                         {child.title}
+                                       </a>
+                                       {child.children && child.children.length > 0 && (
+                                            <button
+                                                onClick={(e) => toggleSection(e, child.id, !isChildExpanded)}
+                                                className={`absolute right-1 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-gray-200 text-gray-400 z-20 transition-transform ${isChildExpanded ? 'rotate-180' : ''}`}
+                                            >
+                                                <ChevronDown size={14} />
+                                            </button>
+                                       )}
+                                   </div>
+
+                                   {/* Grandchildren (Level 3) */}
+                                   {child.children && child.children.length > 0 && isChildExpanded && (
+                                       <div className="space-y-1 mt-1 ml-4 border-l border-gray-100">
+                                           {child.children.map(grandChild => {
+                                               const isGrandChildCurrent = activeSection === grandChild.id;
+                                               return (
+                                                   <a
+                                                       key={grandChild.id}
+                                                       href={`#${grandChild.id}`}
+                                                       onClick={(e) => scrollToSection(e, grandChild.id)}
+                                                       className={`
+                                                           block py-1 pr-2 pl-4 text-[12px] transition-all rounded-r border-l-[3px]
+                                                           ${isGrandChildCurrent
+                                                               ? 'text-sspai-red font-bold border-sspai-red bg-red-50/30'
+                                                               : 'text-gray-500 hover:text-sspai-red border-transparent hover:border-gray-200'}
+                                                       `}
+                                                   >
+                                                       {grandChild.title}
+                                                   </a>
+                                               )
+                                           })}
+                                       </div>
+                                   )}
+                               </div>
+                             );
+                           })}
+                         </div>
+                       )}
+                     </div>
                    );
                  })}
                </nav>
              </div>
-
-             {/* Game Purchase Card */}
-             <div className="bg-white rounded-lg p-6 shadow-sspai border border-gray-100">
-               <h3 className="font-bold text-gray-900 mb-4 text-[15px] flex items-center gap-2">
-                 <span>🛍️</span> 购买游戏
-               </h3>
-               <div className="flex flex-col gap-4">
-                 <div className="aspect-[16/9] rounded-lg overflow-hidden border border-gray-100 relative group">
-                   <img src={game.imgUrl} alt={game.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
-                     <span className="text-white font-bold text-sm">{game.title}</span>
-                   </div>
-                 </div>
-                 
-                 <div className="flex items-center justify-between">
-                   <div className="flex flex-col">
-                     <span className="text-xs text-gray-500 line-through">HK$ 568.00</span>
-                     <span className="text-lg font-bold text-sspai-red">HK$ 398.00</span>
-                   </div>
-                   <span className="px-2 py-1 bg-red-50 text-sspai-red text-xs font-bold rounded">-30%</span>
-                 </div>
-
-                 <a 
-                   href="https://store.playstation.com/zh-hans-hk/product/HP9000-PPSA07644_00-THELASTOFUSPART1" 
-                   target="_blank" 
-                   rel="noopener noreferrer"
-                   className="w-full py-2.5 bg-[#00439c] text-white font-bold rounded-full text-sm hover:bg-[#003087] transition-all flex items-center justify-center gap-2 shadow-sm group"
-                 >
-                   <ShoppingCart size={16} className="group-hover:scale-110 transition-transform" />
-                   <span>前往 PS Store 购买</span>
-                 </a>
-                 
-                 <p className="text-[10px] text-gray-400 text-center">
-                   *价格仅供参考，请以商店实际价格为准
-                 </p>
-               </div>
-             </div>
-             
           </aside>
        </main>
        
+       {/* Mobile Bottom Floating Bar */}
+       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] bg-white/95 backdrop-blur-md border border-gray-200 shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-full z-40 lg:hidden px-6 py-3 flex items-center justify-between">
+         <div className="flex items-center gap-8">
+           <button 
+             onClick={() => setIsShareOpen(true)}
+             className="flex flex-col items-center justify-center text-gray-700 hover:text-black transition-colors"
+           >
+             <Share2 size={22} />
+           </button>
+           <button 
+             onClick={handleLike}
+             className="flex flex-col items-center justify-center transition-colors relative"
+           >
+             <div className="relative">
+               <Heart 
+                 size={22} 
+                 className={`transition-colors duration-300 ${isLiked ? 'fill-red-500 text-red-500' : 'text-gray-700 hover:text-black'}`}
+               />
+               <span className="absolute -top-2 -right-3 text-[10px] font-bold text-yellow-500 leading-none">
+                 {likes > 99 ? '99+' : likes}
+               </span>
+             </div>
+           </button>
+         </div>
+         <button 
+           onClick={() => setIsTocOpen(true)}
+           className="flex items-center justify-center text-gray-700 hover:text-black transition-colors"
+         >
+           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+         </button>
+       </div>
+
+       {/* Mobile TOC Bottom Sheet */}
+       {isTocOpen && (
+         <div className="fixed inset-0 z-50 lg:hidden flex flex-col justify-end">
+           {/* Backdrop */}
+           <div 
+             className="absolute inset-0 bg-black/50 transition-opacity"
+             onClick={() => setIsTocOpen(false)}
+           />
+           
+           {/* Sheet */}
+           <div className="relative bg-white w-full max-h-[80vh] rounded-t-2xl shadow-xl flex flex-col animate-slide-up">
+             {/* Handle */}
+             <div className="flex justify-center pt-3 pb-2 cursor-pointer" onClick={() => setIsTocOpen(false)}>
+               <div className="w-12 h-1.5 bg-gray-300 rounded-full"></div>
+             </div>
+             
+             {/* Header */}
+             <div className="px-6 pb-4 border-b border-gray-100 flex items-center justify-between">
+               <h3 className="font-bold text-gray-900 text-lg flex items-center gap-2">
+                 <BookOpen size={18} className="text-sspai-red" />
+                 目录
+               </h3>
+               <div className="flex items-center gap-3">
+                 <span className="text-xs font-bold text-white bg-sspai-red px-2 py-0.5 rounded-full shadow-sm">{readingProgress}%</span>
+                 <button onClick={() => setIsTocOpen(false)} className="text-gray-400 hover:text-gray-600">
+                   <X size={20} />
+                 </button>
+               </div>
+             </div>
+             
+             {/* TOC Content */}
+             <div className="overflow-y-auto p-4 pb-12 custom-scrollbar">
+               <nav className="space-y-1 relative pr-2 flex-1">
+                 <div className="absolute left-[7px] top-2 bottom-2 w-[2px] bg-gray-100"></div>
+                 
+                 {tocTree.map((parent) => {
+                   const isParentActive = activeSection === parent.id;
+                   const hasChildren = parent.children && parent.children.length > 0;
+                   const isChildActive = parent.children ? parent.children.some(child => child.id === activeSection) : false;
+                   
+                   const isExpanded = expandedSections[parent.id] !== undefined 
+                     ? expandedSections[parent.id] 
+                     : (isParentActive || isChildActive);
+                   
+                   return (
+                     <div key={parent.id} className="relative">
+                       <div className="flex items-center group relative">
+                         <a 
+                           href={`#${parent.id}`}
+                           onClick={(e) => {
+                             scrollToSection(e, parent.id);
+                             setIsTocOpen(false);
+                           }}
+                           className={`
+                             flex-1 block py-3 pr-10 transition-all relative z-10 rounded-r border-l-[3px] pl-6 text-[15px] flex items-center justify-between
+                             ${(isParentActive || isChildActive)
+                               ? 'text-sspai-red font-bold bg-red-50/80 border-sspai-red shadow-sm' 
+                               : 'text-gray-500 hover:text-sspai-red hover:bg-gray-50 border-transparent hover:border-gray-200 font-medium'}
+                           `}
+                         >
+                           <span className="truncate">{parent.title}</span>
+                         </a>
+
+                         {hasChildren && (
+                           <button
+                             onClick={(e) => toggleSection(e, parent.id, !isExpanded)}
+                             className={`absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-md transition-colors z-20 
+                               ${(isParentActive || isChildActive) 
+                                 ? 'text-sspai-red hover:bg-red-100' 
+                                 : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'}`}
+                           >
+                             {isExpanded ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+                           </button>
+                         )}
+                       </div>
+
+                       {hasChildren && isExpanded && (
+                         <div className="space-y-1 mt-1 transition-all duration-300 ease-in-out">
+                           {parent.children.map(child => {
+                             const isCurrentChildActive = activeSection === child.id;
+                             const isGrandChildActive = child.children && child.children.some(gc => gc.id === activeSection);
+                             const isChildExpanded = isCurrentChildActive || isGrandChildActive || expandedSections[child.id];
+
+                             return (
+                               <div key={child.id}>
+                                   <div className="flex items-center group relative">
+                                       <a 
+                                         href={`#${child.id}`}
+                                         onClick={(e) => {
+                                           scrollToSection(e, child.id);
+                                           setIsTocOpen(false);
+                                         }}
+                                         className={`
+                                           flex-1 block py-2 pr-8 transition-all relative z-10 rounded-r border-l-[3px] pl-9 text-[14px]
+                                           ${(isCurrentChildActive || isGrandChildActive)
+                                             ? 'text-sspai-red font-bold bg-red-50/50 border-sspai-red' 
+                                             : 'text-gray-500 hover:text-sspai-red hover:bg-gray-50 border-transparent hover:border-gray-200'}
+                                         `}
+                                       >
+                                         {child.title}
+                                       </a>
+                                       {child.children && child.children.length > 0 && (
+                                            <button
+                                                onClick={(e) => toggleSection(e, child.id, !isChildExpanded)}
+                                                className={`absolute right-1 top-1/2 -translate-y-1/2 p-2 rounded hover:bg-gray-200 text-gray-400 z-20 transition-transform ${isChildExpanded ? 'rotate-180' : ''}`}
+                                            >
+                                                <ChevronDown size={20} />
+                                            </button>
+                                       )}
+                                   </div>
+
+                                   {/* Grandchildren (Level 3) */}
+                                   {child.children && child.children.length > 0 && isChildExpanded && (
+                                       <div className="space-y-1 mt-1 ml-4 border-l border-gray-100">
+                                           {child.children.map(grandChild => {
+                                               const isGrandChildCurrent = activeSection === grandChild.id;
+                                               return (
+                                                   <a
+                                                       key={grandChild.id}
+                                                       href={`#${grandChild.id}`}
+                                                       onClick={(e) => {
+                                                         scrollToSection(e, grandChild.id);
+                                                         setIsTocOpen(false);
+                                                       }}
+                                                       className={`
+                                                           block py-2 pr-2 pl-6 text-[13px] transition-all rounded-r border-l-[3px]
+                                                           ${isGrandChildCurrent
+                                                               ? 'text-sspai-red font-bold border-sspai-red bg-red-50/30'
+                                                               : 'text-gray-500 hover:text-sspai-red border-transparent hover:border-gray-200'}
+                                                       `}
+                                                   >
+                                                       {grandChild.title}
+                                                   </a>
+                                               )
+                                           })}
+                                       </div>
+                                   )}
+                               </div>
+                             );
+                           })}
+                         </div>
+                       )}
+                     </div>
+                   );
+                 })}
+               </nav>
+             </div>
+           </div>
+         </div>
+       )}
+
+       {/* Mobile Share Bottom Sheet */}
+       {isShareOpen && (
+         <div className="fixed inset-0 z-50 lg:hidden flex flex-col justify-end">
+           {/* Backdrop */}
+           <div 
+             className="absolute inset-0 bg-black/50 transition-opacity"
+             onClick={() => setIsShareOpen(false)}
+           />
+           
+           {/* Sheet */}
+           <div className="relative bg-gray-50 w-full rounded-t-2xl shadow-xl flex flex-col animate-slide-up pb-safe">
+             {/* Header Card */}
+             <div className="bg-white rounded-t-2xl p-4 shadow-sm relative">
+               <button 
+                 onClick={() => setIsShareOpen(false)} 
+                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+               >
+                 <X size={24} />
+               </button>
+               
+               <div className="flex items-center gap-3 pr-10">
+                 <div className="w-10 h-10 rounded-lg overflow-hidden border border-gray-100 shadow-sm shrink-0">
+                   <img src={game?.imgUrl || tlou2Ps5Cover} alt={`${game?.title || 'Game'} Cover`} className="w-full h-full object-cover" />
+                 </div>
+                 <div className="flex-1 min-w-0">
+                   <h3 className="font-bold text-gray-900 text-[15px] truncate">
+                     {game?.title || '最后生还者 第二部'} 终极攻略指南
+                   </h3>
+                   <p className="text-gray-500 text-xs truncate mt-0.5">
+                     {getShareUrl()}
+                   </p>
+                 </div>
+               </div>
+             </div>
+             
+             {/* Share Options Grid */}
+             <div className="p-6">
+               <div className="grid grid-cols-4 gap-y-6 gap-x-4 mb-6">
+                 {/* Row 1 */}
+                 <button 
+                   onClick={handleWechatShare}
+                   className="flex flex-col items-center gap-2 group"
+                 >
+                   <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                     <svg viewBox="0 0 24 24" width="32" height="32" className="text-[#07C160]" fill="currentColor">
+                       <path d="M8.2,16.5C3.7,16.5,0,13.2,0,9.1C0,5.1,4.1,1.8,8.8,1.8c4.6,0,8.4,3.3,8.4,7.4C17.2,13.2,13.2,16.5,8.2,16.5z M5.4,6.1 c-0.6,0-1,0.5-1,1c0,0.6,0.5,1,1,1c0.6,0,1-0.5,1-1C6.4,6.5,5.9,6.1,5.4,6.1z M11.5,6.1c-0.6,0-1,0.5-1,1c0,0.6,0.5,1,1,1 c0.6,0,1-0.5,1-1C12.6,6.5,12.1,6.1,11.5,6.1z"/>
+                       <path d="M24,13.6c0-3.3-3.2-5.9-7.1-5.9c-0.3,0-0.6,0-0.9,0.1c0.8,0.8,1.2,1.8,1.2,2.8c0,3.7-3.4,6.6-7.5,6.6 c-0.5,0-0.9-0.1-1.4-0.2c1.1,2.5,4.3,4.2,7.7,4.2C20.4,21.1,24,17.7,24,13.6z M15.1,11.3c-0.5,0-0.8,0.4-0.8,0.8 c0,0.5,0.4,0.8,0.8,0.8c0.5,0,0.8-0.4,0.8-0.8C15.9,11.7,15.6,11.3,15.1,11.3z M19.9,11.3c-0.5,0-0.8,0.4-0.8,0.8 c0,0.5,0.4,0.8,0.8,0.8c0.5,0,0.8-0.4,0.8-0.8C20.7,11.7,20.3,11.3,19.9,11.3z"/>
+                     </svg>
+                   </div>
+                   <span className="text-[11px] text-gray-600">微信</span>
+                 </button>
+                 <button 
+                   onClick={handleWechatShare}
+                   className="flex flex-col items-center gap-2 group"
+                 >
+                   <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                     <div className="relative w-8 h-8 rounded-full border-[3px] border-[#07C160] border-t-[#FCBE22] border-r-[#FCBE22] rotate-45 flex items-center justify-center">
+                        <div className="w-3 h-3 rounded-full bg-[#FA5151]"></div>
+                     </div>
+                   </div>
+                   <span className="text-[11px] text-gray-600">朋友圈</span>
+                 </button>
+                 <button 
+                   onClick={handleWeiboShare}
+                   className="flex flex-col items-center gap-2 group"
+                 >
+                   <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                     <svg viewBox="0 0 24 24" width="32" height="32" className="text-[#E6162D]" fill="currentColor">
+                       <path d="M21.2,10.6c-0.7-1.4-2.1-2.4-3.6-2.6c-0.3-0.1-0.6-0.1-1-0.1c0.2-0.5,0.3-1,0.3-1.6c0-1.8-1.5-3.3-3.3-3.3 c-1.2,0-2.3,0.7-2.9,1.7c-0.3-0.3-0.8-0.5-1.2-0.5c-1,0-1.9,0.8-1.9,1.9c0,0.3,0.1,0.6,0.2,0.9C7.4,6.7,7,6.6,6.5,6.6 c-2.4,0-4.3,2-4.3,4.4c0,1,0.3,1.9,0.9,2.6c-0.5,0.7-0.7,1.5-0.7,2.4c0,2.4,2,4.4,4.4,4.4c1.1,0,2.1-0.4,2.9-1 c0.8,0.7,1.9,1.2,3.1,1.2c2.7,0,4.9-2.2,4.9-4.9c0-0.4-0.1-0.8-0.2-1.2C20.1,14,21.8,12.5,21.2,10.6z M17.6,15.7 c-0.6,1.4-1.9,2.4-3.4,2.7c-1.3,0.3-2.6,0-3.6-0.6c-0.4-0.2-0.8-0.5-1.1-0.8c-0.4,0.4-1,0.6-1.6,0.6c-1.4,0-2.6-1.1-2.6-2.6 c0-0.7,0.3-1.4,0.8-1.8c0.2-0.2,0.5-0.4,0.8-0.5C5.8,11.9,5,10.5,5,8.9c0-1.8,1.5-3.3,3.3-3.3c1,0,1.8,0.4,2.5,1.1 c0.3-0.5,0.8-0.8,1.4-0.8c0.9,0,1.6,0.7,1.6,1.6c0,0.2-0.1,0.4-0.2,0.6C14.7,7.8,15.6,8.8,15.6,10c0,0.5-0.1,0.9-0.3,1.3 c1.5-0.1,2.8,0.8,3.3,2.1C19.1,14.3,18.5,15.2,17.6,15.7z"/>
+                     </svg>
+                   </div>
+                   <span className="text-[11px] text-gray-600">微博</span>
+                 </button>
+                 <div className="hidden sm:block"></div> {/* Spacer for alignment if needed, or 4th item */}
+                 
+                 {/* Row 2 */}
+                 <button 
+                   onClick={handleSaveImage}
+                   className="flex flex-col items-center gap-2 group"
+                 >
+                   <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform text-gray-800">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                   </div>
+                   <span className="text-[11px] text-gray-600">保存图片</span>
+                 </button>
+                 <button 
+                   onClick={handleCopyLink}
+                   className="flex flex-col items-center gap-2 group"
+                 >
+                   <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform text-gray-800 relative">
+                     {copySuccess ? (
+                       <span className="text-green-500 font-bold text-sm">已复制</span>
+                     ) : (
+                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                     )}
+                   </div>
+                   <span className="text-[11px] text-gray-600">复制链接</span>
+                 </button>
+                 <button 
+                   onClick={handleSystemShare}
+                   className="flex flex-col items-center gap-2 group"
+                 >
+                   <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform text-gray-800">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                   </div>
+                   <span className="text-[11px] text-gray-600">系统分享</span>
+                 </button>
+               </div>
+             </div>
+           </div>
+         </div>
+       )}
+
        {/* Footer */}
-       <footer className="site-footer">
-        <div className="site-footer__inner">
-          <div className="site-footer__top">
-            <div className="site-footer__logo">GameStation</div>
-          </div>
-          <div className="site-footer__grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
-            <div className="site-footer__col">
-              <div className="site-footer__title">关于</div>
-              <Link className="site-footer__link" to="/about">关于 Intensea</Link>
-            </div>
-            <div className="site-footer__col">
-              <div className="site-footer__title">支持</div>
-              <Link className="site-footer__link" to="/about">联系开发者</Link>
-            </div>
-            <div className="site-footer__col">
-              <div className="site-footer__title">资源</div>
-              <a className="site-footer__link" href="https://www.playstation.com/zh-hans-cn/" target="_blank" rel="noopener noreferrer">PS官网</a>
-
-            </div>
-            <div className="site-footer__col">
-                <div className="site-footer__title">请我喝奶茶</div>
-                <a className="site-footer__link" href="#" onClick={(e) => { e.preventDefault(); setIsDonateOpen(true); }}>买奶茶</a>
-              </div>
-          </div>
-          <div className="site-footer__divider"></div>
-          <div className="site-footer__bottom">
-            <div className="site-footer__sponsor">
-              <div className="site-footer__sponsor-mark">◆</div>
-              <div className="site-footer__sponsor-text">Intensea Interactive<br />Entertainment</div>
-            </div>
-            <div className="site-footer__legal">
-              <div>© 2026 Intensea Interactive Entertainment LLC</div>
-              <div>所有内容均受著作权保护。版权所有。</div>
-            </div>
-            <div className="site-footer__region">中国大陆（简体中文）</div>
-          </div>
-        </div>
-      </footer>
-
-      {/* 捐赠弹窗 */}
-      {isDonateOpen && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsDonateOpen(false)}></div>
-          <div className="relative bg-white rounded-xl p-6 md:p-8 max-w-2xl w-full shadow-2xl animate-in fade-in zoom-in duration-200">
-            <button 
-              onClick={() => setIsDonateOpen(false)}
-              className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
-            >
-              <X size={24} />
-            </button>
-            
-            <h3 className="text-2xl font-bold text-gray-800 text-center mb-8">请我喝杯奶茶 🧋</h3>
-            
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-full aspect-[3/4] rounded-lg overflow-hidden bg-gray-50 border border-gray-100 shadow-sm">
-                  <img src={alipayImage} alt="支付宝付款码" className="w-full h-full object-contain" />
-                </div>
-                <span className="font-medium text-blue-500 flex items-center gap-2">
-                  支付宝 Alipay
-                </span>
-              </div>
-              
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-full aspect-[3/4] rounded-lg overflow-hidden bg-gray-50 border border-gray-100 shadow-sm">
-                  <img src={wechatImage} alt="微信付款码" className="w-full h-full object-contain" />
-                </div>
-                <span className="font-medium text-green-500 flex items-center gap-2">
-                  微信支付 WeChat Pay
-                </span>
-              </div>
-            </div>
-            
-            <p className="text-center text-gray-500 mt-8 text-sm">
-              感谢您的支持！您的鼓励是我持续更新的动力。
-            </p>
-          </div>
-        </div>
-      )}
+       <Footer />
     </div>
   );
 }

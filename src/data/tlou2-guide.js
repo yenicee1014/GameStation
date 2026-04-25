@@ -127,19 +127,27 @@ export const tlou2GuideData = [
         stats: { artifacts: 1, tradingCards: 2 },
         content: [
           {
+            type: 'text',
+            text: '时间来到4年后，我们醒来并开始操控艾莉。在艾莉应答杰西的敲门后，我们可以自由活动并开始寻找收集品，第一个收集品是一张卡牌。'
+          },
+          {
             type: 'collectible',
             name: '卡牌 1/2 (Seismicayla)',
-            description: '离开温室到达主街道后，左转到画廊，沿着阳台走到挂着“Help Wanted”的板子处。'
+            description: '离开温室到达主街道后，左转到达“Main Street Gallery”（主街画廊），沿着阳台绕行到墙上挂着“Help Wanted”的布告栏处。卡牌就在布告栏上。'
           },
           {
             type: 'collectible',
             name: '文物 1/1 (Volunteer Request)',
-            description: '沿着主街道走，在Tipsy Bison酒吧前，看街道对面有一个铁匠铺。在木制人行道尽头的红梯子旁。'
+            description: '沿着主街道走，直到杰西在“Tipsy Bison”酒吧处向左分开。此时看向街道对面，有一家铁匠铺。在木制人行道的尽头，红色梯子旁的板条箱上有一张便条。'
           },
           {
             type: 'collectible',
             name: '卡牌 2/2 (The Keene Twins)',
-            description: '在酒吧与Seth和Maria交谈后，绕到酒吧另一头，飞镖盘左侧的桶上。'
+            description: '在酒吧与顽固的老头（塞斯）和玛丽亚交谈后，继续深入酒吧内部，绕过吧台。在另一端，飞镖盘左侧的桶上有一张卡牌。这是本章节的最后一个收集品。'
+          },
+          {
+            type: 'text',
+            text: '正如之前所说，成就只与我们拾取的收集品有关，与可选对话无关。所以你不需要为了任何东西去赢下雪球大战，尽情享受游戏乐趣即可。'
           }
         ]
       },
@@ -256,55 +264,55 @@ export const tlou2GuideData = [
         title: '大门 (The Gate)',
         stats: { artifacts: 6, tradingCards: 4, journalEntries: 1 },
         content: [
-          { type: 'collectible', name: '卡牌 1/4 (Motivator)', description: '巴士站右侧墙上。' },
-          { type: 'collectible', name: '卡牌 2/4 (The Starfire Kids)', description: '公路左侧的建筑工地拖车内，软木板上。' },
-          { type: 'collectible', name: '文物 1/6 (Map of Seattle)', description: '建筑工地拖车里屋的抽屉内。' },
-          { type: 'collectible', name: '日志 1/1 (WLF Gate Entry)', description: '大门墙上的标语“TRESPASSERS KILLED ON SIGHT”。' },
-          { type: 'collectible', name: '文物 2/6 (Refugee Note)', description: '大门左侧军用拖车内。' },
-          { type: 'collectible', name: '文物 3/6 (Infected Infographic)', description: '大门区域另一侧的军用拖车内。' },
-          { type: 'collectible', name: '卡牌 3/4 (Chessmaster)', description: '爬上瞭望塔顶层，桌子上。' },
-          { type: 'collectible', name: '文物 4/6 (Isaac’s Orders)', description: '瞭望塔顶层，转身左侧箱子上。' },
-          { type: 'collectible', name: '文物 5/6 (Checkpoint Gate Codes)', description: '砸碎玻璃进入大门控制室，桌子抽屉里。' },
-          { type: 'collectible', name: '卡牌 4/4 (Oozer)', description: '用发电机电缆扔过控制室屋顶，爬上去，椅子旁边。' },
-          { type: 'collectible', name: '文物 6/6 (Rooftop Note)', description: '控制室屋顶的椅子上。' }
+          { type: 'collectible', name: '卡牌 1/4 (Motivator)', description: '章节开始后不久，迪娜和艾莉会经过一片有几辆废弃汽车和杂草丛生巴士站的空地。下马检查巴士站的侧面，卡牌就在那里。' },
+          { type: 'collectible', name: '卡牌 2/4 (The Starfire Kids)', description: '沿着长满杂草的高速公路向西雅图前进，穿过一座桥后，在路左侧找到一辆小型建筑拖车。进去后在软木板上找到卡牌。' },
+          { type: 'collectible', name: '文物 1/6 (Map of Seattle)', description: '在同一个建筑拖车里，进入里屋，在一个破窗户旁的抽屉里找到西雅图地图。' },
+          { type: 'collectible', name: '日志 1/1 (WLF Gate Entry)', description: '当到达巨大的西雅图隔离区大门时，走近大门上的“TRESPASSERS KILLED ON SIGHT”（擅入者格杀勿论）标语，出现提示后在日记中记录。' },
+          { type: 'collectible', name: '文物 2/6 (Refugee Note)', description: '在大门左侧的FEDRA军事拖车里，桌子上有一张难民的便条。' },
+          { type: 'collectible', name: '文物 3/6 (Infected Infographic)', description: '在同一个区域，靠近后墙的另一个军事拖车里，桌子上有一张关于感染阶段的图表。' },
+          { type: 'collectible', name: '卡牌 3/4 (Chessmaster)', description: '穿过隔离区大门并上楼后，爬梯子上去之前，在瞭望塔顶部的桌子上找到卡牌。' },
+          { type: 'collectible', name: '文物 4/6 (Isaac’s Orders)', description: '在同一个瞭望塔顶部，转身在左侧的箱子上找到这份文件。' },
+          { type: 'collectible', name: '文物 5/6 (Checkpoint Gate Codes)', description: '通过大门并从瞭望塔下来后，砸碎玻璃进入左侧的大门控制室，在桌子抽屉里找到大门密码文件。' },
+          { type: 'collectible', name: '卡牌 4/4 (Oozer)', description: '在控制室外，用发电机电缆扔过屋顶的标志，然后从另一侧爬上去。卡牌在椅子旁边。' },
+          { type: 'collectible', name: '文物 6/6 (Rooftop Note)', description: '在同一个控制室屋顶上，椅子上放着这份文件。' }
         ]
       },
       {
         title: '市中心 (Downtown)',
         stats: { artifacts: 18, tradingCards: 5, journalEntries: 2, workbenches: 1, safes: 3, weapons: 1, trainingManuals: 1 },
         content: [
-          { type: 'collectible', name: '文物 1/18 (FEDRA Census Document)', description: '发电机前的门卫室抽屉里。' },
-          { type: 'collectible', name: '文物 2/18 (Bank Heist Plans)', description: '西湖银行 (Westlake Bank) 金库房间，尸体旁的包里。' },
+          { type: 'collectible', name: '文物 1/18 (FEDRA Census Document)', description: '在看到Serevena酒店后左转，进入门卫室，在抽屉里找到。' },
+          { type: 'collectible', name: '文物 2/18 (Bank Heist Plans)', description: '在西湖银行 (Westlake Bank) 的金库房间里，尸体旁的包里。' },
           { type: 'collectible', name: '保险箱 1/3 (Bank Vault)', description: '银行金库大门。密码：60-23-06。' },
-          { type: 'collectible', name: '武器 1/1 (Pump Shotgun)', description: '金库内尸体上。' },
-          { type: 'collectible', name: '文物 3/18 (Bank Robber Letter)', description: '金库内桌子上。' },
-          { type: 'collectible', name: '文物 4/18 (Antique Ring)', description: '金库角落的保险柜里 (奖杯: So Great and Small)。' },
-          { type: 'collectible', name: '文物 5/18 (Cache Hunter Note)', description: '银行外的废墟建筑，包里的尸体旁。' },
-          { type: 'collectible', name: '文物 6/18 (Letter from Isaac)', description: '坦克附近的废墟角落，骷髅旁的包里。' },
-          { type: 'collectible', name: '卡牌 1/5 (Doctor Uckmann)', description: '坦克附近的废墟顶层。' },
-          { type: 'collectible', name: '卡牌 2/5 (Das Wort)', description: 'Valiant Music Shop (乐器店) 柜台后。' },
-          { type: 'collectible', name: '文物 7/18 (Street Drawing)', description: '乐器店二楼过桥到哨站，抽屉里。' },
-          { type: 'collectible', name: '日志 1/2 (Street Drawing Entry)', description: '哨站处绘制。' },
-          { type: 'collectible', name: '工作台 1/1', description: '哨站桥对面的草地帐篷里。' },
-          { type: 'collectible', name: '保险箱 2/3 (Gate West 2)', description: '麦迪逊街 (Madison St) 附近的西2门 (Gate West 2)。密码：04-51。' },
-          { type: 'collectible', name: '卡牌 3/5 (Flo)', description: '西2门保险箱内。' },
-          { type: 'collectible', name: '文物 8/18 (WLF Community Supply Chest Note)', description: '建筑楼梯上的补给箱里。' },
-          { type: 'collectible', name: '文物 9/18 (WLF Safe House Supply Note)', description: 'Ruston Coffee (咖啡店) 柜台上。' },
-          { type: 'collectible', name: '卡牌 4/5 (Big Blue)', description: '咖啡店柜台后抽屉。' },
-          { type: 'collectible', name: '文物 10/18 (Pet Store Keys)', description: '咖啡店厕所换尿布台上 (这是宠物店钥匙)。' },
-          { type: 'collectible', name: '文物 11/18 (Join WLF Note)', description: 'Barkos Pet Shop (宠物店) 入口打印机上 (需钥匙)。' },
-          { type: 'collectible', name: '装备 (Long Gun Holster)', description: '宠物店柜台桌上。' },
-          { type: 'collectible', name: '手册 1/2 (Crafting)', description: '公路断桥上的消防车内，需用绳索荡过去。' },
-          { type: 'collectible', name: '文物 12/18 (Note to Informant)', description: '瀑布下的FEDRA卡车内。' },
-          { type: 'collectible', name: '文物 13/18 (Emergency Protocols Memo)', description: '犹太教堂 (Synagogue) 外的哨站梯子上或教堂内。' },
-          { type: 'collectible', name: '日志 2/2 (Hebrew Calendar)', description: '犹太教堂二楼拉比办公室的日历。' },
-          { type: 'collectible', name: '文物 14/18 (Rabbi Saunder’s Letter)', description: '拉比办公室抽屉。' },
-          { type: 'collectible', name: '文物 15/18 (Plea to a Friend)', description: '法院 (Courthouse) 大厅尽头尸体旁。' },
-          { type: 'collectible', name: '文物 16/18 (Lt. Torres’ Final Memorandum)', description: '法院办公室，拔出尸体上的砍刀获得。' },
-          { type: 'collectible', name: '文物 17/18 (List of Known WLF Agitators)', description: '法院办公室文件柜。' },
-          { type: 'collectible', name: '保险箱 3/3 (Courthouse)', description: '法院办公室窗户下。密码：86-07-22 (白板上)。' },
-          { type: 'collectible', name: '文物 18/18 (WLF Recruiter Journal)', description: 'Serevena Hotel (旅馆) 二楼房间抽屉。' },
-          { type: 'collectible', name: '卡牌 5/5 (Know It All)', description: '同一房间两床之间的床头柜。' }
+          { type: 'collectible', name: '武器 1/1 (Pump Shotgun)', description: '在金库内，从尸体上拾取泵动式霰弹枪。' },
+          { type: 'collectible', name: '文物 3/18 (Bank Robber Letter)', description: '在金库内的桌子上。' },
+          { type: 'collectible', name: '文物 4/18 (Antique Ring)', description: '在金库角落的保险柜抽屉里 (奖杯: So Great and Small)。' },
+          { type: 'collectible', name: '文物 5/18 (Cache Hunter Note)', description: '在银行外的废墟建筑中，一个包里的尸体旁。' },
+          { type: 'collectible', name: '文物 6/18 (Letter from Isaac)', description: '在坦克附近的废墟角落，骷髅旁的包里。' },
+          { type: 'collectible', name: '卡牌 1/5 (Doctor Uckmann)', description: '在坦克附近的废墟顶层，小心爬上去。' },
+          { type: 'collectible', name: '卡牌 2/5 (Das Wort)', description: '在Valiant Music Shop (乐器店) 的柜台抽屉里。' },
+          { type: 'collectible', name: '文物 7/18 (Street Drawing)', description: '乐器店二楼过桥到达哨站，在抽屉里。' },
+          { type: 'collectible', name: '日志 1/2 (Street Drawing Entry)', description: '在哨站处，艾莉会绘制周围环境的草图。' },
+          { type: 'collectible', name: '工作台 1/1', description: '在哨站桥对面的草地帐篷里。' },
+          { type: 'collectible', name: '保险箱 2/3 (Gate West 2)', description: '麦迪逊街 (Madison St) 附近的西2门。密码：04-51。' },
+          { type: 'collectible', name: '卡牌 3/5 (Flo)', description: '在西2门保险箱内。' },
+          { type: 'collectible', name: '文物 8/18 (WLF Community Supply Chest Note)', description: '在Valiant Music Shop东边，楼梯上的补给箱里。' },
+          { type: 'collectible', name: '文物 9/18 (WLF Safe House Supply Note)', description: '在Ruston Coffee (咖啡店) 的柜台上。' },
+          { type: 'collectible', name: '卡牌 4/5 (Big Blue)', description: '咖啡店柜台后的抽屉里。' },
+          { type: 'collectible', name: '文物 10/18 (Pet Store Keys)', description: '咖啡店厕所的换尿布台上 (这是Barkos宠物店的钥匙)。' },
+          { type: 'collectible', name: '文物 11/18 (Join WLF Note)', description: '在Barkos Pet Shop (宠物店) 入口的打印机上 (需要先拿到钥匙)。' },
+          { type: 'collectible', name: '装备 (Long Gun Holster)', description: '宠物店柜台的桌子上。' },
+          { type: 'collectible', name: '手册 1/2 (Crafting)', description: '在公路断桥上的消防车内，需要用绳索荡过去。' },
+          { type: 'collectible', name: '文物 12/18 (Note to Informant)', description: '在瀑布下的FEDRA卡车内。' },
+          { type: 'collectible', name: '文物 13/18 (Emergency Protocols Memo)', description: '犹太教堂 (Synagogue) 外的哨站梯子上，或者教堂内。' },
+          { type: 'collectible', name: '日志 2/2 (Hebrew Calendar)', description: '犹太教堂二楼拉比办公室的墙上日历。' },
+          { type: 'collectible', name: '文物 14/18 (Rabbi Saunder’s Letter)', description: '拉比办公室的抽屉里。' },
+          { type: 'collectible', name: '文物 15/18 (Plea to a Friend)', description: '法院 (Courthouse) 大厅尽头，尸体旁。' },
+          { type: 'collectible', name: '文物 16/18 (Lt. Torres’ Final Memorandum)', description: '法院一楼办公室，拔出尸体上的砍刀获得。' },
+          { type: 'collectible', name: '文物 17/18 (List of Known WLF Agitators)', description: '法院办公室的文件柜里。' },
+          { type: 'collectible', name: '保险箱 3/3 (Courthouse)', description: '法院办公室窗户下。密码：86-07-22 (写在白板上)。' },
+          { type: 'collectible', name: '文物 18/18 (WLF Recruiter Journal)', description: 'Serevena Hotel (旅馆) 二楼房间的抽屉里。' },
+          { type: 'collectible', name: '卡牌 5/5 (Know It All)', description: '同一个房间，两床之间的床头柜里。' }
         ]
       },
       {
@@ -312,30 +320,30 @@ export const tlou2GuideData = [
         stats: { artifacts: 3, tradingCards: 1 },
         content: [
           { type: 'collectible', name: '文物 1 & 2 (Leah’s Note & Photo)', description: '剧情自动获得。' },
-          { type: 'collectible', name: '文物 3/3 (Isaac’s Mandate)', description: '屋顶离开时的房间桌上。' },
-          { type: 'collectible', name: '卡牌 1/1 (Cardio)', description: '跳到公寓卧室，床边抽屉。' }
+          { type: 'collectible', name: '文物 3/3 (Isaac’s Mandate)', description: '在屋顶遭遇战后，离开时的房间桌上。' },
+          { type: 'collectible', name: '卡牌 1/1 (Cardio)', description: '跳到公寓卧室，在床边的床头柜里。' }
         ]
       },
       {
         title: '国会山 (Capitol Hill)',
         stats: { artifacts: 7, tradingCards: 6, workbenches: 2, safes: 1, trainingManuals: 1 },
         content: [
-          { type: 'collectible', name: '卡牌 1/6 (Kinnard, Esq.)', description: '3号房子一楼小桌。' },
-          { type: 'collectible', name: '文物 1/7 (Chevy’s Apology)', description: '6号公寓楼上卧室床上。' },
-          { type: 'collectible', name: '卡牌 2/6 (Rockafella)', description: '汽车旅馆 (Capitol Inn) 3号房外垃圾桶旁。' },
-          { type: 'collectible', name: '文物 2/7 (Raul’s Olive Branch)', description: '推垃圾箱爬上公寓阳台，厨房抽屉。' },
+          { type: 'collectible', name: '卡牌 1/6 (Kinnard, Esq.)', description: '在3号房子的一楼小桌上。' },
+          { type: 'collectible', name: '文物 1/7 (Chevy’s Apology)', description: '6号公寓楼上卧室的床上。' },
+          { type: 'collectible', name: '卡牌 2/6 (Rockafella)', description: '汽车旅馆 (Capitol Inn) 3号房外的垃圾桶旁。' },
+          { type: 'collectible', name: '文物 2/7 (Raul’s Olive Branch)', description: '推垃圾箱爬上公寓阳台，在厨房抽屉里。' },
           { type: 'collectible', name: '工作台 1/2', description: '加油站车库内。' },
           { type: 'collectible', name: '文物 3/7 (Rebecca’s Tip Off)', description: '书店内的咖啡屋，咖啡机旁。' },
-          { type: 'collectible', name: '手册 1/1 (Stealth)', description: '同一咖啡屋，角落桌上。' },
-          { type: 'collectible', name: '卡牌 3/6 (Doctor Stern)', description: '书店里屋，红箱子上。' },
-          { type: 'collectible', name: '卡牌 4/6 (Sergeant Frost)', description: 'Olive Street Market (杂货店) 后屋储物柜。' },
+          { type: 'collectible', name: '手册 1/1 (Stealth)', description: '同一个咖啡屋，角落的桌子上。' },
+          { type: 'collectible', name: '卡牌 3/6 (Doctor Stern)', description: '书店里屋，红色箱子上。' },
+          { type: 'collectible', name: '卡牌 4/6 (Sergeant Frost)', description: 'Olive Street Market (杂货店) 后屋的储物柜里。' },
           { type: 'collectible', name: '卡牌 5/6 (Candelabra)', description: '陷阱爆炸后的商店内，ATM机旁。' },
           { type: 'collectible', name: '文物 4/7 (Tower Doodles)', description: '爬梯子上的哨站。' },
           { type: 'collectible', name: '文物 5/7 (Raul’s Account)', description: '河边卡车后车厢。' },
-          { type: 'collectible', name: '文物 6/7 (Fran’s Refusal)', description: '武术馆 (Martial Arts Dojo) 软木板上。' },
+          { type: 'collectible', name: '文物 6/7 (Fran’s Refusal)', description: '武术馆 (Martial Arts Dojo) 的软木板上。' },
           { type: 'collectible', name: '工作台 2/2', description: '武术馆后方房间。' },
-          { type: 'collectible', name: '卡牌 6/6 (Blizzarebra)', description: '二手店 (Thrift Store) 书架上。' },
-          { type: 'collectible', name: '文物 7/7 (Thrift Store Reminder)', description: '二手店后屋墙上。' },
+          { type: 'collectible', name: '卡牌 6/6 (Blizzarebra)', description: '二手店 (Thrift Store) 的书架上。' },
+          { type: 'collectible', name: '文物 7/7 (Thrift Store Reminder)', description: '二手店后屋的墙上。' },
           { type: 'collectible', name: '保险箱 1/1 (Thrift Store)', description: '二手店后屋。密码：55-01-33。' }
         ]
       },
@@ -380,10 +388,10 @@ export const tlou2GuideData = [
         title: '生日礼物 (The Birthday Gift)',
         stats: { artifacts: 1, tradingCards: 2, journalEntries: 2 },
         content: [
-          { type: 'collectible', name: '日志 1/2 (T-Rex Entry)', description: '霸王龙标志处。' },
-          { type: 'collectible', name: '卡牌 1/2 (The Nighthawk)', description: '恐龙展区右侧长椅。' },
+          { type: 'collectible', name: '日志 1/2 (T-Rex Entry)', description: '在霸王龙标志处记录。' },
+          { type: 'collectible', name: '卡牌 1/2 (The Nighthawk)', description: '恐龙展区右侧的长椅上。' },
           { type: 'collectible', name: '奖杯 (Looks Good on You)', description: '给艾莉戴帽子，再给两只恐龙戴，最后给乔尔戴。' },
-          { type: 'collectible', name: '日志 2/2 (Space Capsule Entry)', description: '太空展区长椅处。' },
+          { type: 'collectible', name: '日志 2/2 (Space Capsule Entry)', description: '太空展区长椅处记录。' },
           { type: 'collectible', name: '卡牌 2/2 (Saura)', description: '博物馆二区，麋鹿雕像右侧长椅下。' },
           { type: 'collectible', name: '文物 1/1 (Suicide Note)', description: '黑暗展区尸体旁。' }
         ]
@@ -398,37 +406,37 @@ export const tlou2GuideData = [
         title: '希尔克雷斯特 (Hillcrest)',
         stats: { artifacts: 10, tradingCards: 5, journalEntries: 1, workbenches: 2, safes: 1, trainingManuals: 1 },
         content: [
-          { type: 'collectible', name: '卡牌 1/5 (Wachumero)', description: '开局身后卡车窗户内。' },
-          { type: 'collectible', name: '文物 1/10 (Join WLF Note)', description: '洗衣店后屋。' },
-          { type: 'collectible', name: '工作台 1/2', description: '服装店地下室。' },
-          { type: 'collectible', name: '文物 2/10 (Boris’ Daughter’s Drawing)', description: '地下室桌上。' },
-          { type: 'collectible', name: '日志 1/2 (WLF Entry)', description: '爬过卡车后，横幅涂鸦处。' },
-          { type: 'collectible', name: '文物 3/10 (Yolanda’s Note)', description: '书店柜台后。' },
-          { type: 'collectible', name: '文物 4/10 (Need a Plan)', description: 'Caroline Paper Co 店内。' },
-          { type: 'collectible', name: '卡牌 2/5 (Sahir the Sorcerer)', description: 'Caroline Paper Co 柜台后盒子。' },
-          { type: 'collectible', name: '工作台 2/2', description: '自行车修理店。' },
-          { type: 'collectible', name: '卡牌 3/5 (Naledi the Youthful)', description: '自行车店角落。' },
-          { type: 'collectible', name: '文物 5/10 (Condolence Note)', description: '自行车店隔壁房间。' },
-          { type: 'collectible', name: '手册 1/1 (Precision)', description: '酒店地下室或书店儿童区。' },
-          { type: 'collectible', name: '文物 6/10 (Note in Tattoo Parlor)', description: '纹身店后屋。' },
-          { type: 'collectible', name: '保险箱 1/1 (Auto Parts)', description: '纹身店后门对面的修车厂。密码：30-82-65。' },
-          { type: 'collectible', name: '装备 (Short Gun Holster)', description: '保险箱内。' },
-          { type: 'collectible', name: '文物 7/10 (Turn in Boris Note)', description: '宠物店后屋。' },
-          { type: 'collectible', name: '文物 8/10 (Dale’s Combo)', description: '酒吧厨房。' },
-          { type: 'collectible', name: '卡牌 4/5 (Brainstorm)', description: '爆炸后的儿童游乐屋旁。' },
-          { type: 'collectible', name: '文物 9/10 (Boris’ Confession)', description: '房子茶几上。' },
-          { type: 'collectible', name: '文物 10/10 (Rosemont’s Flyer)', description: '房子门口桌上。' },
-          { type: 'collectible', name: '武器 (Bow)', description: '房子车库感染者身上。' },
-          { type: 'collectible', name: '卡牌 5/5 (Reverb)', description: '最后一栋大房子二楼床下。' }
+          { type: 'collectible', name: '卡牌 1/5 (Wachumero)', description: '刚控制艾莉时，向后转180度，跳进沟渠，爬上卡车后部。打破窗户，集换式卡牌就在后座上。' },
+          { type: 'collectible', name: '文物 1/10 (Join WLF Note)', description: '继续沿路前进，打破窗户进入左手边的第二栋建筑（Majestic Laundromat 洗衣店）。在后方办公室里可以找到这张字条。' },
+          { type: 'collectible', name: '工作台 1/2', description: '进入洗衣店对面的服装店（Rosemont）。下楼到地下室，工作台就在楼梯正前方。' },
+          { type: 'collectible', name: '文物 2/10 (Boris’ Daughter’s Drawing)', description: '还在地下室时，左转，后方的桌子上放着这幅画。' },
+          { type: 'collectible', name: '日志 1/2 (WLF Entry)', description: '翻过卡车看着WLF士兵开车离开后，正前方两家商店之间，检查横幅上的“♥♥♥♥ the WLF”涂鸦以获得新的日志条目。' },
+          { type: 'collectible', name: '文物 3/10 (Yolanda’s Note)', description: '横幅左侧是一家名为“Used & Rare Books”的书店。里面的收银台后面有一张字条。' },
+          { type: 'collectible', name: '文物 4/10 (Need a Plan)', description: '沿着路一直走到尽头的沟渠。然后跳上垃圾箱，进入上方的“Caroline Paper Co”文具店。字条在店铺中间。' },
+          { type: 'collectible', name: '卡牌 2/5 (Sahir the Sorcerer)', description: '在同一栋建筑内，柜台后面的一些盒子里藏着这张卡牌。' },
+          { type: 'collectible', name: '工作台 2/2', description: '继续前进，你需要爬上移动的垃圾箱才能继续。穿过墙洞后你会进入一家自行车店的修理间。工作台就在正前方，很难错过。' },
+          { type: 'collectible', name: '卡牌 3/5 (Naledi the Youthful)', description: '就在右侧有自行车的角落里。' },
+          { type: 'collectible', name: '文物 5/10 (Condolence Note)', description: '从自行车处进入右侧的相邻房间，搜寻左侧的桌子。' },
+          { type: 'collectible', name: '手册 1/1 (Precision)', description: '这本手册也可以在酒类商店下方的地下室找到。那里有一些感染者，请小心。在另一端有一个洞，爬过去会进入一家儿童书店，手册就在一具变异尸体旁。' },
+          { type: 'collectible', name: '文物 6/10 (Note in Tattoo Parlor)', description: '从窗户离开，进入马路对面的“Velvet Tattoo”纹身店。前往柜台后面的房间找到字条。' },
+          { type: 'collectible', name: '保险箱 1/1 (Auto Parts)', description: '从后门离开纹身店，右转，移动垃圾箱进入左侧的小建筑（汽修店）。里面有保险箱。密码是 30-82-65。' },
+          { type: 'collectible', name: '装备 (Short Gun Holster)', description: '保险箱内可以找到短枪枪套。' },
+          { type: 'collectible', name: '文物 7/10 (Turn in Boris Note)', description: '回到有酒类商店的开阔区域，进入左侧的宠物店。在宠物店的后屋桌子上可以找到字条。' },
+          { type: 'collectible', name: '文物 8/10 (Dale’s Combo)', description: '穿过宠物店的破墙进入酒吧，前往后面的厨房。进门左手边就是字条。' },
+          { type: 'collectible', name: '卡牌 4/5 (Brainstorm)', description: '看到神秘爆炸的烟雾后，避开奔跑者，翻过围栏进入一个后院，那里有一个小热水浴缸和左侧的儿童游戏屋。绕到游戏屋后面可以找到卡牌。' },
+          { type: 'collectible', name: '文物 9/10 (Boris’ Confession)', description: '进入房子，右侧的茶几上放着这张字条。' },
+          { type: 'collectible', name: '文物 10/10 (Rosemont’s Flyer)', description: '在我们进来的门左侧的桌子上还有一张字条。' },
+          { type: 'collectible', name: '武器 (Bow)', description: '很难错过，进入车库会触发战斗。从感染者的尸体上捡起弓。' },
+          { type: 'collectible', name: '卡牌 5/5 (Reverb)', description: '在希尔克雷斯特章节末尾的大型遭遇战区域后，上楼进入那栋两层的大房子，沿着楼梯走，进入左手边的第二扇门。卡牌在那间卧室的床底下。' }
         ]
       },
       {
         title: '寻找琴弦 (Finding Strings)',
         stats: { artifacts: 1, tradingCards: 1, journalEntries: 1 },
         content: [
-          { type: 'collectible', name: '日志 1/1 (Scenic Woods)', description: '开局悬崖边。' },
-          { type: 'collectible', name: '卡牌 1/1 (The Austringer)', description: '酒店前的沟渠里的车内。' },
-          { type: 'collectible', name: '文物 1/1 (Tara’s Invitation)', description: '酒店107房间。' }
+          { type: 'collectible', name: '日志 1/1 (Scenic Woods)', description: '关卡一开始，右侧悬崖边有绝佳的景色，走过去按提示记录。' },
+          { type: 'collectible', name: '卡牌 1/1 (The Austringer)', description: '和乔尔骑马下山进城，下马后跟随他走向乐器店，直到前方道路被阻断。当他建议穿过酒店时，爬上卡车，下到积水的小水坑处，查看边缘的一辆白色轿车，里面有一本书夹着卡牌。' },
+          { type: 'collectible', name: '文物 1/1 (Tara’s Invitation)', description: '和乔尔进入酒店后，跟随他直到你需要翻过墙洞。进入走廊对面的107号房间。在房间内的梳妆台上找到字条。' }
         ]
       },
       {
@@ -468,16 +476,16 @@ export const tlou2GuideData = [
         title: '通往水族馆的路 (Road to the Aquarium)',
         stats: { artifacts: 3, tradingCards: 4, journalEntries: 1, workbenches: 2 },
         content: [
-          { type: 'collectible', name: '卡牌 1/4 (Esquire)', description: '剧院红幕布左侧。' },
-          { type: 'collectible', name: '工作台 1/2', description: 'WPL建筑后方房间。' },
-          { type: 'collectible', name: '卡牌 2/4 (Tormentra)', description: '工作台对面。' },
-          { type: 'collectible', name: '文物 1/3 (Garage Note)', description: '停车库一层尸体旁。' },
-          { type: 'collectible', name: '卡牌 3/4 (Tanager)', description: '书店底层爬行空间。' },
-          { type: 'collectible', name: '日志 1/1 (Mushrooms)', description: '书店儿童区蘑菇壁画。' },
-          { type: 'collectible', name: '文物 2/3 (Bookstore Note)', description: '书店儿童区桌上。' },
-          { type: 'collectible', name: '文物 3/3 (Textile Note)', description: '纺织店二楼窗户间。' },
-          { type: 'collectible', name: '工作台 2/2', description: '服装店二楼。' },
-          { type: 'collectible', name: '卡牌 4/4 (Tatuaje)', description: '废墟建筑爬过架子后。' }
+          { type: 'collectible', name: '卡牌 1/4 (Esquire)', description: '在穿过红色幕布离开剧院舞台之前，向幕布左侧看，在一堆旅行箱中间可以找到 Esquire 收集卡牌。' },
+          { type: 'collectible', name: '工作台 1/2', description: '离开剧院后，你会和杰西一起穿过一栋名为 WPL 的黑暗建筑。走到后面，进入左侧开着的门。爬过倒塌的文件柜下方，工作台就在左侧。' },
+          { type: 'collectible', name: '卡牌 2/4 (Tormentra)', description: '在同一个房间里，转身180度，你会发现桌子上有一张 Tormentra 卡牌。' },
+          { type: 'collectible', name: '文物 1/3 (Garage Note)', description: '和杰西一起游过被淹没的区域后，向左急转进入一个满是循声者（Clickers）的停车库。在第一层，靠近车库入口处的一具尸体旁，你会找到这张便条。' },
+          { type: 'collectible', name: '卡牌 3/4 (Tanager)', description: '爬进窗户后我们到达一家书店。如果在刚进来的地方正前方跳下去，落到这个小平台上，就在下方，穿过爬行空间，左边就是卡牌。或者如果迷路了，就在收银台区域的正前方。' },
+          { type: 'collectible', name: '日志 1/1 (Mushrooms)', description: '在大书店的底层，找到左后方的儿童区，那里装饰着《爱丽丝梦游仙境》的壁画和蘑菇道具。与蘑菇互动，触发艾莉记录日志。' },
+          { type: 'collectible', name: '文物 2/3 (Bookstore Note)', description: '就在蘑菇的右边，你会发现这张便条放在桌子上的一些书中。' },
+          { type: 'collectible', name: '文物 3/3 (Textile Note)', description: '目睹有人被狗袭击后，你会遇到一栋标有“Rachel\'s Fabrics”的建筑，外面有脚手架。上到二楼，在两扇窗户之间找到纺织品笔记。' },
+          { type: 'collectible', name: '工作台 2/2', description: '游过一辆公交车下方后，出现在一家破旧的美容店附近，里面有人体模型。爬上去之后，不要穿过墙洞，而是向左走继续向上，在商店尽头找到第二个工作台。' },
+          { type: 'collectible', name: '卡牌 4/4 (Tatuaje)', description: '发现那艘船并跟随进入附近的建筑后，你会掉进一个充满废墟的狭窄区域。向左走，右边有一个我们可以翻过的架子，卡牌就在架子的另一边。' }
         ]
       },
       {
@@ -515,9 +523,10 @@ export const tlou2GuideData = [
         title: '追踪课 (Tracking Lesson)',
         stats: { artifacts: 3, coins: 1 },
         content: [
-          { type: 'collectible', name: '文物 1 & 2', description: '自动获得。' },
-          { type: 'collectible', name: '文物 3/3 (Zoo Holiday Brochure)', description: '凉亭长椅上。' },
-          { type: 'collectible', name: '硬币 1/1 (Virginia)', description: '厕所窗户外垃圾箱上。' }
+          { type: 'collectible', name: '文物 1/3 (Thank You Card from Mel)', description: '梅尔的感谢卡：剧情相关。章节开始时自动出现在埃比的背包中。' },
+          { type: 'collectible', name: '文物 2/3 (Owen’s Drawing of Abby)', description: '欧文画的艾比：剧情相关。同上，已经收集在背包中。' },
+          { type: 'collectible', name: '文物 3/3 (Zoo Holiday Brochure)', description: '动物园假日手册：穿过公园时，你会看到右边有一个凉亭。在里面的长椅上可以找到这本手册。' },
+          { type: 'collectible', name: '硬币 1/1 (Virginia)', description: '弗吉尼亚州25分硬币：在厕所遇到一只打翻垃圾桶的松鼠后，打破水槽上方的窗户，翻进栅栏围起来的区域。爬过去，右边的垃圾箱上有一枚硬币。' }
         ]
       }
     ]
@@ -530,10 +539,10 @@ export const tlou2GuideData = [
         title: '体育场 (The Stadium)',
         stats: { coins: 4 },
         content: [
-          { type: 'collectible', name: '硬币 1/4 (Alaska)', description: '房间出来左转地上。' },
-          { type: 'collectible', name: '硬币 2/4 (Maine)', description: '洗衣区长椅上。' },
-          { type: 'collectible', name: '硬币 3/4 (New Jersey)', description: '隧道壁画下。' },
-          { type: 'collectible', name: '硬币 4/4 (Vermont)', description: '靶场旁架子上。' }
+          { type: 'collectible', name: '硬币 1/4 (Alaska)', description: '章节开始时，离开艾比俯瞰体育场的房间后，走到楼梯左侧一点，硬币就在左侧的地板上。' },
+          { type: 'collectible', name: '硬币 2/4 (Maine)', description: '跟随两人经过食品市场后，你会来到人们洗衣服的地方。继续向前走，不要上楼梯，就在左侧那张可以俯瞰体育场的空长椅上，你会找到这枚硬币。' },
+          { type: 'collectible', name: '硬币 3/4 (New Jersey)', description: '当你到达体育场底层，和狗玩耍（或者无视它/把球扔过围栏）之后，继续跟随两人直到进入隧道，查看右侧墙壁，在 WLF 壁画下方捡起这枚硬币。' },
+          { type: 'collectible', name: '硬币 4/4 (Vermont)', description: '到达靶场并拿到枪后，进入下一个房间左转，检查靠墙的金属架子，找到这枚硬币。' }
         ]
       },
       {
@@ -618,11 +627,11 @@ export const tlou2GuideData = [
         title: '捷径 (The Shortcut)',
         stats: { artifacts: 6, coins: 2, workbenches: 2, safes: 1 },
         content: [
-          { type: 'collectible', name: '文物 1/6', description: '自动获得。' },
-          { type: 'collectible', name: '硬币 1/2 (Nevada)', description: '理发店收银台。' },
-          { type: 'collectible', name: '文物 2/6 (Survivor Plea)', description: '二楼公寓地上。' },
-          { type: 'collectible', name: '文物 3/6 (Neighbor Exchange)', description: '蓝色公寓白板前。' },
-          { type: 'collectible', name: '保险箱 1/1 (Apartment)', description: '卧室。密码：30-23-04。' },
+          { type: 'collectible', name: '文物 1/6 (Amputation Supplies)', description: '剧情相关。章节开始时自动添加到你的背包中。' },
+          { type: 'collectible', name: '硬币 1/2 (Nevada)', description: '当勒夫指出我们需要攀爬的高楼后，进入该区域右侧的理发店 (Barber Shop)。在收银台后面可以找到这枚硬币。' },
+          { type: 'collectible', name: '文物 2/6 (Survivor Plea)', description: '沿着混凝土板穿过水域到达对面的建筑后，上楼进入右侧的公寓。进门后右转，你会发现地上有一张便条。' },
+          { type: 'collectible', name: '文物 3/6 (Neighbor Exchange)', description: '在跳入急流之前，左转跳到附近蓝色建筑的阳台上。打破窗户进入公寓。在里面，找到厨房附近有白板的桌子。那里有一张便条，提供了保险箱密码的线索。' },
+          { type: 'collectible', name: '保险箱 1/1 (Apartment Bedroom Safe)', description: '就在你身后或白板前方是一间有保险箱的卧室。密码：30-23-04。' },
           { type: 'collectible', name: '工作台 1/2', description: '手机店 (Interbay Wireless) 角落。' },
           { type: 'collectible', name: '文物 4/6 (Scavenging List)', description: '手机店尸体旁。' },
           { type: 'collectible', name: '硬币 2/2 (Colorado)', description: '眼镜店 (Westport Optix) 窗外窗台上。' },
@@ -633,7 +642,7 @@ export const tlou2GuideData = [
       },
       {
         title: '下降 (The Descent)',
-        stats: { artifacts: 3, coins: 5, safes: 1 },
+        stats: { artifacts: 3, coins: 5, safes: 1, weapons: 1 },
         content: [
           { type: 'collectible', name: '硬币 1/5 (Illinois)', description: '泳池底部。' },
           { type: 'collectible', name: '文物 1/3 (Gym Safe Combo)', description: '果汁吧厨房。' },

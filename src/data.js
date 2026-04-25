@@ -1,9 +1,9 @@
 import tlou1Cover from '../picture/page1-game-cover/The_Last_of_Us_Part_I_cover.jpg';
 import tlou2Cover from '../picture/page1-game-cover/TLOU_P2_Box_Art_2.png';
 import gowCover from '../picture/page1-game-cover/God_of_War_Ragnarok_cover.jpg';
-import horizonCover from '../picture/page1-game-cover/Horizon_Forbidden_West_cover_art.jpg';
+import horizonCover from '../picture/page1-game-walkthrough/forbidden-west/xizhijuejing.jpeg';
 import bloodborneCover from '../picture/page1-game-cover/Bloodborne_Cover_Wallpaper.jpg';
-import ghostOfTsushimaCover from '../picture/page1-game-cover/Ghost_of_Tsushima.jpg';
+import witcher3Cover from '../picture/page1-game-cover/Witcher_3_cover_art.jpg';
 import ff7RemakeCover from '../picture/page1-game-cover/FFVIIRemake.png';
 import uncharted4Cover from '../picture/page1-game-cover/Uncharted_4_box_artwork.jpg';
 import demonsSoulsCover from '../picture/page1-game-cover/Demons_Souls_remake_cover_art.jpg';
@@ -19,8 +19,20 @@ import stellarBladeCover from '../picture/page1-game-cover/Stellar_Blade_Pre_Ord
 import riseOfTheRoninCover from '../picture/page1-game-cover/Rise_of_the_Ronin_Key_Art.jpg';
 import helldivers2Cover from '../picture/page1-game-cover/Helldivers2cover.png';
 import returnalCover from '../picture/page1-game-cover/Returnal_cover_art.jpg';
+import re9Cover from '../picture/page1-game-cover/Resident_Evil_Requiem.jpg';
 
 const baseGames = [
+  {
+    title: "生化危机 9",
+    author: "Capcom",
+    imgUrl: re9Cover,
+    volume: "PS5",
+    tag: "9.9",
+    progress: "敬请期待",
+    category: "恐怖",
+    description: "传闻中的系列新作，带你进入更加恐怖深邃的未知领域，揭开生化危机宇宙的终极谜团。",
+    slug: "resident-evil-9"
+  },
   {
     title: "最后生还者 1",
     author: "Naughty Dog",
@@ -45,6 +57,17 @@ const baseGames = [
     slug: "the-last-of-us-part-2"
   },
   {
+    title: "地平线：西之绝境",
+    author: "Guerrilla Games",
+    imgUrl: horizonCover,
+    volume: "PS5",
+    tag: "9.6",
+    progress: null,
+    category: "冒险",
+    description: "在壮丽的遥远未来世界，机械巨兽在大地上徘徊。跟随埃洛伊探索危险的西部禁地，揭开世界濒临毁灭的惊天谜团。",
+    slug: "horizon-forbidden-west"
+  },
+  {
     title: "博德之门 3",
     author: "Larian Studios",
     imgUrl: baldursGate3Cover,
@@ -52,17 +75,8 @@ const baseGames = [
     tag: "9.6",
     progress: "年度最佳",
     category: "角色扮演",
-    description: "召集你的队伍，回到被遗忘的国度，开启一段记载着友谊与背叛、牺牲与生存、以及至上力量诱惑的传奇故事。"
-  },
-  {
-    title: "地平线：西之绝境",
-    author: "Guerrilla Games",
-    imgUrl: horizonCover,
-    volume: "PS5",
-    tag: "9.0",
-    progress: null,
-    category: "冒险",
-    description: "在壮丽的遥远未来世界，机械巨兽在大地上徘徊。跟随埃洛伊探索危险的西部禁地，揭开世界濒临毁灭的惊天谜团。"
+    description: "召集你的队伍，回到被遗忘的国度，开启一段记载着友谊与背叛、牺牲与生存、以及至上力量诱惑的传奇故事。",
+    slug: "baldurs-gate-3"
   },
   {
     title: "血源诅咒",
@@ -72,17 +86,19 @@ const baseGames = [
     tag: "9.8",
     progress: "老猎人 DLC",
     category: "角色扮演",
-    description: "在饱受神秘瘟疫摧残的古都雅南，扮演猎人探索阴暗的街巷，面对恐怖的兽化病人和克苏鲁式宇宙神祇，在绝望中寻找鲜血与真相。"
+    description: "在饱受神秘瘟疫摧残的古都雅南，扮演猎人探索阴暗的街巷，面对恐怖的兽化病人和克苏鲁式宇宙神祇，在绝望中寻找鲜血与真相。",
+    slug: "bloodborne"
   },
   {
-    title: "对马岛之魂",
-    author: "Sucker Punch",
-    imgUrl: ghostOfTsushimaCover,
+    title: "巫师 3: 狂猎",
+    author: "CD PROJEKT RED",
+    imgUrl: witcher3Cover,
     volume: "PS5",
-    tag: "9.3",
-    progress: "导演剪辑版",
-    category: "动作",
-    description: "13世纪末，蒙古帝国入侵对马岛。武士境井仁必须舍弃荣誉，化身为“战鬼”，为了保卫家园和人民展开一场史诗般的复仇与抗争。"
+    tag: "9.8",
+    progress: "完全版",
+    category: "角色扮演",
+    description: "化身职业怪物杀手利维亚的杰洛特，探索饱受战火蹂躏的广袤大陆。追踪预言之子希里，体验扣人心弦的非线性叙事，在道德模糊的世界中做出艰难抉择。",
+    slug: "the-witcher-3"
   },
   {
     title: "最终幻想7 重制版",
@@ -92,7 +108,8 @@ const baseGames = [
     tag: "9.0",
     progress: "INTERgrade",
     category: "角色扮演",
-    description: "克劳德一行人反抗榨取星球生命的神罗公司，在赛博朋克都市米德加展开冒险。重制的经典带来极致视听盛宴与全新的战斗体验。"
+    description: "克劳德一行人反抗榨取星球生命的神罗公司，在赛博朋克都市米德加展开冒险。重制的经典带来极致视听盛宴与全新的战斗体验。",
+    slug: "final-fantasy-7-remake"
   },
   {
     title: "神秘海域4：盗贼末路",
@@ -102,7 +119,8 @@ const baseGames = [
     tag: "9.5",
     progress: null,
     category: "冒险",
-    description: "内森·德雷克被迫重操旧业，与失散多年的哥哥山姆踏上寻找传奇海盗宝藏的环球探险，这不仅是财富的追寻，更是对亲情与羁绊的终极考验。"
+    description: "内森·德雷克被迫重操旧业，与失散多年的哥哥山姆踏上寻找传奇海盗宝藏的环球探险，这不仅是财富的追寻，更是对亲情与羁绊的终极考验。",
+    slug: "uncharted-4"
   },
   {
     title: "恶魔之魂 重制版",
@@ -112,7 +130,8 @@ const baseGames = [
     tag: "9.2",
     progress: null,
     category: "角色扮演",
-    description: "回到浓雾笼罩的柏雷塔尼亚王国，面对无尽的死亡与压迫感。在这款魂系开山之作的次世代完全重制版中，体验惊人的画面与经典的受苦之旅。"
+    description: "回到浓雾笼罩的柏雷塔尼亚王国，面对无尽的死亡与压迫感。在这款魂系开山之作的次世代完全重制版中，体验惊人的画面与经典的受苦之旅。",
+    slug: "demons-souls"
   },
   {
     title: "瑞奇与叮当",
@@ -122,7 +141,8 @@ const baseGames = [
     tag: "9.0",
     progress: "时空跳转",
     category: "家庭",
-    description: "利用PS5超高速SSD实现瞬间无缝的维度穿梭，在这个充满奇思妙想的科幻卡通宇宙里，与新伙伴蕾薇特一起对抗邪恶的尼法利斯博士。"
+    description: "利用PS5超高速SSD实现瞬间无缝的维度穿梭，在这个充满奇思妙想的科幻卡通宇宙里，与新伙伴蕾薇特一起对抗邪恶的尼法利斯博士。",
+    slug: "ratchet-and-clank"
   },
   {
     title: "死亡搁浅",
@@ -132,7 +152,8 @@ const baseGames = [
     tag: "9.4",
     progress: "导演剪辑版",
     category: "冒险",
-    description: "在这个因“死亡搁浅”而支离破碎的世界里，扮演山姆·波特·布桥斯，背负着全人类的希望，一步步重新连接美国，跨越生与死的界限。"
+    description: "在这个因“死亡搁浅”而支离破碎的世界里，扮演山姆·波特·布桥斯，背负着全人类的希望，一步步重新连接美国，跨越生与死的界限。",
+    slug: "death-stranding"
   },
   {
     title: "宇宙机器人",
@@ -142,7 +163,8 @@ const baseGames = [
     tag: "9.6",
     progress: null,
     category: "家庭",
-    description: "一场完美展现DualSense手柄特性的奇妙冒险！跟随可爱的Astro Bot穿越各个星系，拯救失散的船员，充满对PlayStation三十年历史的致敬。"
+    description: "一场完美展现DualSense手柄特性的奇妙冒险！跟随可爱的Astro Bot穿越各个星系，拯救失散的船员，充满对PlayStation三十年历史的致敬。",
+    slug: "astro-bot"
   },
   {
     title: "漫威蜘蛛侠2",
@@ -152,7 +174,8 @@ const baseGames = [
     tag: "9.3",
     progress: null,
     category: "动作",
-    description: "彼得与迈尔斯双蛛合璧，面对狂暴的毒液与猎人克莱文。在面积翻倍的纽约市中，体验更加迅猛的摆荡与震撼的超级英雄战斗。"
+    description: "彼得与迈尔斯双蛛合璧，面对狂暴的毒液与猎人克莱文。在面积翻倍的纽约市中，体验更加迅猛的摆荡与震撼的超级英雄战斗。",
+    slug: "marvels-spider-man-2"
   },
   {
     title: "最终幻想16",
@@ -162,7 +185,8 @@ const baseGames = [
     tag: "8.8",
     progress: "沧海恸哭",
     category: "角色扮演",
-    description: "踏入瓦利斯泽亚的黑暗奇幻世界，跟随克莱夫展开复仇与寻找命运真相的壮丽旅程。召唤兽之间毁天灭地的史诗级碰撞将带给你极致震撼。"
+    description: "踏入瓦利斯泽亚的黑暗奇幻世界，跟随克莱夫展开复仇与寻找命运真相的壮丽旅程。召唤兽之间毁天灭地的史诗级碰撞将带给你极致震撼。",
+    slug: "final-fantasy-16"
   },
   {
     title: "往日不再",
@@ -172,7 +196,8 @@ const baseGames = [
     tag: "8.5",
     progress: null,
     category: "动作",
-    description: "驾驶重型机车穿梭于危机四伏的俄勒冈州荒野，面对成百上千的异变者尸海。赏金猎人迪肯在这个无情的末世中努力寻找失散的妻子与活下去的理由。"
+    description: "驾驶重型机车穿梭于危机四伏的俄勒冈州荒野，面对成百上千的异变者尸海。赏金猎人迪肯在这个无情的末世中努力寻找失散的妻子与活下去的理由。",
+    slug: "days-gone"
   },
   {
     title: "跑车浪漫旅 7",
@@ -182,7 +207,8 @@ const baseGames = [
     tag: "9.0",
     progress: "V1.49",
     category: "竞速",
-    description: "赛车游戏爱好者的终极殿堂。收集、改装并驾驶数百辆令人惊叹的授权赛车，感受极致真实的驾驶模拟与令人叹为观止的次世代光追画面。"
+    description: "赛车游戏爱好者的终极殿堂。收集、改装并驾驶数百辆令人惊叹的授权赛车，感受极致真实的驾驶模拟与令人叹为观止的次世代光追画面。",
+    slug: "gran-turismo-7"
   },
   {
     title: "剑星",
@@ -192,7 +218,8 @@ const baseGames = [
     tag: "8.7",
     progress: "照相模式",
     category: "动作",
-    description: "在夺回地球的末世废土中，扮演第七空降小队成员伊芙，以华丽高速的剑术对抗神秘生物“孽奇拔”。在这款动作RPG中寻找人类文明的真相。"
+    description: "在夺回地球的末世废土中，扮演第七空降小队成员伊芙，以华丽高速的剑术对抗神秘生物“孽奇拔”。在这款动作RPG中寻找人类文明的真相。",
+    slug: "stellar-blade"
   },
   {
     title: "浪人崛起",
@@ -202,7 +229,8 @@ const baseGames = [
     tag: "8.5",
     progress: null,
     category: "动作",
-    description: "回到19世纪的幕末时代，化身无主浪人，在西方列强与幕府交锋的动荡年代中左右历史进程。体验硬核的刀剑对决与开放世界的自由探索。"
+    description: "回到19世纪的幕末时代，化身无主浪人，在西方列强与幕府交锋的动荡年代中左右历史进程。体验硬核的刀剑对决与开放世界的自由探索。",
+    slug: "rise-of-the-ronin"
   },
   {
     title: "绝地潜兵2",
@@ -212,7 +240,8 @@ const baseGames = [
     tag: "9.1",
     progress: "新主要指令",
     category: "射击",
-    description: "为了超级地球的民主与自由！在这个火爆的星系战争中，与好友组队空降虫族与机器人占领的星球，使用毁灭性武器体验最欢乐的合作射击。"
+    description: "为了超级地球的民主与自由！在这个火爆的星系战争中，与好友组队空降虫族与机器人占领的星球，使用毁灭性武器体验最欢乐的合作射击。",
+    slug: "helldivers-2"
   },
   {
     title: "死亡回归",
@@ -222,7 +251,8 @@ const baseGames = [
     tag: "8.8",
     progress: null,
     category: "射击",
-    description: "迫降在不断变化的异星阿特罗波斯上，每一次死亡都会重置这个危机四伏的世界。结合了弹幕射击与Roguelike元素的硬核次世代科幻生存战。"
+    description: "迫降在不断变化的异星阿特罗波斯上，每一次死亡都会重置这个危机四伏的世界。结合了弹幕射击与Roguelike元素的硬核次世代科幻生存战。",
+    slug: "returnal"
   }
 ];
 

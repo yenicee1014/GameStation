@@ -1,0 +1,14 @@
+# Tasks
+- [x] Task 1: 初始化提取脚本项目：创建一个 Node.js 脚本用于网页抓取和处理。
+  - [x] SubTask 1.1: 编写 `package.json`，安装必要的依赖（`cheerio`, `axios`, `turndown`）。
+- [x] Task 2: 编写网页获取与解析逻辑。
+  - [x] SubTask 2.1: 请求目标 URL，获取网页的 HTML 源码。
+  - [x] SubTask 2.2: 定位攻略正文的 HTML 容器（如 `#faqtext` 或主内容区）。
+- [x] Task 3: 处理图片下载与链接替换。
+  - [x] SubTask 3.1: 提取正文中的所有 `<img>` 标签，获取真实的图片源地址（如果相对路径则补全域名 `https://gamefaqs.gamespot.com`）。
+  - [x] SubTask 3.2: 将图片异步下载到本地 `ff7_walkthrough/images/` 目录。
+  - [x] SubTask 3.3: 将 HTML 或 Markdown 中的图片链接替换为 `./images/图片名`。
+- [x] Task 4: 转换为 Markdown 并排版。
+  - [x] SubTask 4.1: 将清理和替换链接后的 HTML 转换为标准 Markdown 格式。
+  - [x] SubTask 4.2: 在 Markdown 顶部添加 Frontmatter（如 title, date, tags），以支持网站的一键导入。
+  - [x] SubTask 4.3: 将最终的 Markdown 保存为 `ff7_walkthrough/chapter-1.md`。

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Briefcase, Mail, Phone, Globe, MessageCircle, Facebook, PenTool, Layout, Users, MessageSquare, Image, Video, Monitor, Pen } from 'lucide-react';
+import Footer from './components/Footer';
 import avatar from '../picture/avatar.JPG';
 
 const About = () => {
@@ -69,7 +70,7 @@ const About = () => {
             <section>
               <h2 className="text-3xl font-bold mb-6 text-gray-800 tracking-tight">关于我</h2>
               <p className="text-gray-600 leading-relaxed text-lg mb-8 max-w-2xl">
-                致力于通过探索新理念和设计移动端与Web端的用户界面来提升自我。结合我的图形与视觉设计技能，创造整体卓越的体验。
+                没有艺术细胞。 可以通过以下方式联系我
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -125,6 +126,7 @@ const About = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

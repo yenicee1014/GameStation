@@ -1,12 +1,364 @@
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Oswald:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Permanent+Marker&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Teko:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
+
+
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 html {
   scrollbar-gutter: stable;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   overflow-y: scroll;
   overflow-x: hidden;
+}
+
+/* Custom Scrollbar for specific containers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 20px;
+}
+
+@media (max-width: 768px) {
+  .perspective-modal {
+    perspective: none;
+    align-items: flex-start;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  .giant-open-book {
+    transform: none !important;
+    position: relative !important;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    min-height: auto;
+  }
+  
+  .giant-open-book.is-opened {
+    transform: none !important;
+  }
+
+  .cover-assembly {
+    transform: none !important;
+    position: relative !important;
+    width: 75% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1.28;
+    margin: 0 auto 20px auto;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5) !important;
+    border-radius: 8px !important;
+    z-index: 20 !important;
+    flex-shrink: 0;
+    order: 1;
+  }
+  
+  .giant-open-book.is-opened .cover-assembly {
+    transform: none !important;
+  }
+
+  .cover-back {
+    display: none !important;
+  }
+  
+  .book-right-side {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 60vh;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
+    overflow: hidden !important;
+    flex-shrink: 0;
+    order: 2;
+  }
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #d1d5db;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+/* Resident Evil Theme Overrides */
+
+.re-font-title {
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.re-font-horror {
+  font-family: 'Creepster', cursive;
+  letter-spacing: 4px;
+}
+
+.re-blood-border {
+  border-image: linear-gradient(to bottom, #8a0303, transparent) 1;
+  border-width: 2px;
+  border-style: solid;
+}
+
+.re-blood-shadow {
+  box-shadow: inset 0 0 40px rgba(138, 3, 3, 0.2), 0 0 20px rgba(138, 3, 3, 0.3);
+}
+
+.re-noise-bg {
+  position: relative;
+}
+.re-noise-bg::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.re-scanline {
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+  background-size: 100% 4px;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+
+/* The Last of Us Theme Overrides */
+
+.tlou-font-title {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 3px;
+}
+
+.tlou-font-grunge {
+  font-family: 'Special Elite', cursive;
+}
+
+.tlou-spore-bg {
+  position: relative;
+}
+.tlou-spore-bg::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(circle at 50% 50%, rgba(90, 110, 80, 0.1) 0%, transparent 80%), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tlou-particles {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(rgba(200, 220, 180, 0.3) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 10;
+  animation: drift 30s linear infinite;
+}
+
+@keyframes drift {
+  0% { background-position: 0 0; }
+  100% { background-position: 120px 120px; }
+}
+
+
+/* The Last of Us Part 2 Theme Overrides */
+
+.tlou2-font-title {
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.tlou2-font-journal {
+  font-family: 'Permanent Marker', cursive;
+  letter-spacing: 1px;
+}
+
+.tlou2-grunge-bg {
+  position: relative;
+  background-color: #030303;
+}
+.tlou2-grunge-bg::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tlou2-blood-splatter {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(139, 0, 0, 0.15) 0%, transparent 40%),
+              radial-gradient(circle at 10% 90%, rgba(139, 0, 0, 0.1) 0%, transparent 30%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tlou2-blood-border {
+  border-bottom: 2px solid rgba(139, 0, 0, 0.6);
+  box-shadow: 0 2px 10px rgba(139, 0, 0, 0.2);
+}
+
+
+/* Horizon Forbidden West Theme Overrides */
+
+.hfw-font-title {
+  font-family: 'Teko', sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.hfw-font-tech {
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 1px;
+}
+
+.hfw-hud-bg {
+  position: relative;
+  background-color: #020a12;
+}
+.hfw-hud-bg::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hfw-hex-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='103.923' viewBox='0 0 60 103.923' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 103.923L0 86.602V51.961L30 34.641l30 17.32v34.641L30 103.923zm0-103.923L0 17.32V-17.32l30-17.32l30 17.32V17.32L30 0z' fill='rgba(0, 240, 255, 0.02)' fill-rule='evenodd'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hfw-neon-glow {
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2), inset 0 0 10px rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+}
+
+.hfw-tribal-glow {
+  box-shadow: 0 0 20px rgba(255, 106, 0, 0.3), inset 0 0 10px rgba(255, 106, 0, 0.1);
+  border: 1px solid rgba(255, 106, 0, 0.4);
+}
+
+.hfw-focus-ring {
+  position: relative;
+  overflow: hidden;
+}
+.hfw-focus-ring::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.05) 0%, transparent 60%);
+  animation: pulse 4s infinite alternate;
+  pointer-events: none;
+}
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.5; }
+  100% { transform: scale(1.05); opacity: 1; }
+}
+
+
+/* Bloodborne Theme Overrides */
+
+.bb-font-title {
+  font-family: 'Cinzel Decorative', serif;
+  letter-spacing: 2px;
+}
+
+.bb-font-body {
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 0.5px;
+}
+
+.bb-gothic-bg {
+  position: relative;
+  background-color: #070707;
+}
+.bb-gothic-bg::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bb-fog-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at center, rgba(138, 3, 3, 0.05) 0%, transparent 80%),
+              radial-gradient(ellipse at top right, rgba(200, 200, 200, 0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bb-blood-glow {
+  box-shadow: 0 0 20px rgba(138, 3, 3, 0.3), inset 0 0 10px rgba(138, 3, 3, 0.1);
+  border: 1px solid rgba(138, 3, 3, 0.4);
+}
+
+.bb-gold-border {
+  border-bottom: 1px solid rgba(184, 151, 74, 0.5);
+  box-shadow: 0 2px 10px rgba(184, 151, 74, 0.1);
+}
+
+.bb-blood-splatter {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at 70% 30%, rgba(138, 3, 3, 0.2) 0%, transparent 50%),
+              radial-gradient(circle at 20% 80%, rgba(138, 3, 3, 0.1) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 1;
 }

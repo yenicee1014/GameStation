@@ -1,0 +1,13 @@
+// vite.config.js
+import { defineConfig } from "file:///Volumes/SanDisk/trae%E7%9A%84%E9%A1%B9%E7%9B%AE/gamestation/node_modules/vite/dist/node/index.js";
+import react from "file:///Volumes/SanDisk/trae%E7%9A%84%E9%A1%B9%E7%9B%AE/gamestation/node_modules/@vitejs/plugin-react/dist/index.js";
+var vite_config_default = defineConfig({
+  plugins: [
+    react()
+  ],
+  assetsInclude: ["**/*.JPG", "**/*.zip"]
+});
+export {
+  vite_config_default as default
+};
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidml0ZS5jb25maWcuanMiXSwKICAic291cmNlc0NvbnRlbnQiOiBbImNvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9kaXJuYW1lID0gXCIvVm9sdW1lcy9TYW5EaXNrL3RyYWVcdTc2ODRcdTk4NzlcdTc2RUUvZ2FtZXN0YXRpb25cIjtjb25zdCBfX3ZpdGVfaW5qZWN0ZWRfb3JpZ2luYWxfZmlsZW5hbWUgPSBcIi9Wb2x1bWVzL1NhbkRpc2svdHJhZVx1NzY4NFx1OTg3OVx1NzZFRS9nYW1lc3RhdGlvbi92aXRlLmNvbmZpZy5qc1wiO2NvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9pbXBvcnRfbWV0YV91cmwgPSBcImZpbGU6Ly8vVm9sdW1lcy9TYW5EaXNrL3RyYWUlRTclOUElODQlRTklQTElQjklRTclOUIlQUUvZ2FtZXN0YXRpb24vdml0ZS5jb25maWcuanNcIjtpbXBvcnQgeyBkZWZpbmVDb25maWcgfSBmcm9tICd2aXRlJ1xuaW1wb3J0IHJlYWN0IGZyb20gJ0B2aXRlanMvcGx1Z2luLXJlYWN0J1xuXG4vLyBodHRwczovL3ZpdGUuZGV2L2NvbmZpZy9cbmV4cG9ydCBkZWZhdWx0IGRlZmluZUNvbmZpZyh7XG4gIHBsdWdpbnM6IFtcbiAgICByZWFjdCgpXG4gIF0sXG4gIGFzc2V0c0luY2x1ZGU6IFsnKiovKi5KUEcnLCAnKiovKi56aXAnXVxufSlcbiJdLAogICJtYXBwaW5ncyI6ICI7QUFBc1QsU0FBUyxvQkFBb0I7QUFDblYsT0FBTyxXQUFXO0FBR2xCLElBQU8sc0JBQVEsYUFBYTtBQUFBLEVBQzFCLFNBQVM7QUFBQSxJQUNQLE1BQU07QUFBQSxFQUNSO0FBQUEsRUFDQSxlQUFlLENBQUMsWUFBWSxVQUFVO0FBQ3hDLENBQUM7IiwKICAibmFtZXMiOiBbXQp9Cg==
