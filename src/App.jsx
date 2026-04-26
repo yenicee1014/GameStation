@@ -10,6 +10,7 @@ import WalkthroughBloodborne from './WalkthroughBloodborne';
 import WalkthroughHFW from './WalkthroughHFW';
 import WalkthroughFF7R from './WalkthroughFF7R';
 import WalkthroughTlou2 from './WalkthroughTlou2';
+import WalkthroughUncharted4 from './WalkthroughUncharted4';
 import Tlou2TrophyPage from './Tlou2TrophyPage';
 import Tlou1TrophyPage from './Tlou1TrophyPage';
 import FF7RTrophyPage from './FF7RTrophyPage';
@@ -43,6 +44,8 @@ export default function App() {
         <Route path="/the-last-of-us-part-2-walkthrough" element={<WalkthroughTlou2 />} />
         <Route path="/the-last-of-us-part-1" element={<WalkthroughTlou1 />} />
         <Route path="/the-last-of-us-part-1-walkthrough" element={<WalkthroughTlou1 />} />
+        <Route path="/uncharted-4" element={<WalkthroughUncharted4 />} />
+        <Route path="/uncharted-4-walkthrough" element={<WalkthroughUncharted4 />} />
         <Route path="/horizon-forbidden-west" element={<WalkthroughHFW />} />
         <Route path="/horizon-forbidden-west-walkthrough" element={<WalkthroughHFW />} />
         <Route path="/bloodborne-walkthrough" element={<WalkthroughBloodborne />} />

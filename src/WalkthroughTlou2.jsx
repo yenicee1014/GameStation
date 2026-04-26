@@ -546,55 +546,55 @@ export default function WalkthroughTlou2() {
                              </div>
                              
                              <div className="flex-1 grid grid-cols-1 content-center gap-1">
-                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                  <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
                                    <span className="w-5 text-center">🏢</span> 开发商
                                  </span>
                                  <span className="font-semibold text-[#e5e7eb]">顽皮狗 (Naughty Dog)</span>
                                </div>
-                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                  <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
                                    <span className="w-5 text-center">📦</span> 发行商
                                  </span>
                                  <span className="font-semibold text-[#e5e7eb]">索尼互动娱乐 (SIE)</span>
                                </div>
-                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                  <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
                                    <span className="w-5 text-center">📅</span> 发售日期
                                  </span>
                                  <span className="font-semibold text-[#e5e7eb]">2020-06-19</span>
                                </div>
-                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                  <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
                                    <span className="w-5 text-center">🎯</span> 游戏类型
                                  </span>
                                  <span className="font-semibold text-[#e5e7eb]">动作冒险 / 生存恐怖</span>
                                </div>
-                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                  <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
                                    <span className="w-5 text-center">🕹️</span> 对应平台
                                  </span>
                                  <span className="font-semibold text-[#e5e7eb]">PS5 / PS4</span>
                                </div>
-                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                  <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
                                    <span className="w-5 text-center">👥</span> 游玩人数
                                  </span>
                                  <span className="font-semibold text-[#e5e7eb]">1人</span>
                                </div>
-                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                  <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
                                    <span className="w-5 text-center">💰</span> 参考价格
                                  </span>
                                  <span className="font-bold text-[#a31515] text-base">HK$ 398.00</span>
                                </div>
-                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                  <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
                                    <span className="w-5 text-center">🌐</span> 语言支持
                                  </span>
                                  <span className="font-semibold text-[#e5e7eb] text-right max-w-[50%] leading-tight">简繁中字 / 英文语音</span>
                                </div>
-                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors last:border-0">
+                               <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors last:border-0">
                                  <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm">
                                    <span className="w-5 text-center">⭐</span> 年龄分级
                                  </span>
@@ -1574,23 +1574,23 @@ export default function WalkthroughTlou2() {
                             </div>
                             
                             <div className="flex-1 grid grid-cols-1 content-center gap-1">
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🏢</span> 开发商</span>
                                 <span className="font-semibold text-[#e5e7eb]">Larian Studios</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">📅</span> 发售日期</span>
                                 <span className="font-semibold text-[#e5e7eb]">2023-09-06 (PS5)</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🎯</span> 游戏类型</span>
                                 <span className="font-semibold text-[#e5e7eb]">CRPG / 策略 / 冒险</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">💰</span> 参考价格</span>
                                 <span className="font-bold text-[#a31515] text-base">HK$ 468.00</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">⭐</span> 媒体评分</span>
                                 <span className="font-bold text-green-600">96/100 (Metacritic)</span>
                               </div>
@@ -1793,31 +1793,31 @@ export default function WalkthroughTlou2() {
                             </div>
                             
                             <div className="flex-1 grid grid-cols-1 content-center gap-1">
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🏢</span> 开发商</span>
                                 <span className="font-semibold text-[#e5e7eb]">Guerrilla Games</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">📦</span> 发行商</span>
                                 <span className="font-semibold text-[#e5e7eb]">索尼互动娱乐 (SIE)</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">📅</span> 发售日期</span>
                                 <span className="font-semibold text-[#e5e7eb]">2022-02-18</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🎯</span> 游戏类型</span>
                                 <span className="font-semibold text-[#e5e7eb]">动作角色扮演 / 开放世界</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🕹️</span> 对应平台</span>
                                 <span className="font-semibold text-[#e5e7eb]">PS5 / PS4 / PC</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">💰</span> 参考价格</span>
                                 <span className="font-bold text-[#a31515] text-base">HK$ 398.00</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">⭐</span> 媒体评分</span>
                                 <span className="font-bold text-green-600">88/100 (Metacritic)</span>
                               </div>
@@ -2485,31 +2485,31 @@ export default function WalkthroughTlou2() {
                             </div>
                             
                             <div className="flex-1 grid grid-cols-1 content-center gap-1">
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🏢</span> 开发商</span>
                                 <span className="font-semibold text-[#e5e7eb]">CD PROJEKT RED</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">📦</span> 发行商</span>
                                 <span className="font-semibold text-[#e5e7eb]">CD PROJEKT RED</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">📅</span> 发售日期</span>
                                 <span className="font-semibold text-[#e5e7eb]">2015-05-19 (PS5版 2022-12-14)</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🎯</span> 游戏类型</span>
                                 <span className="font-semibold text-[#e5e7eb]">动作角色扮演 / 开放世界</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">🕹️</span> 对应平台</span>
                                 <span className="font-semibold text-[#e5e7eb]">PS5 / PS4 / PC / Xbox / Switch</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors border-b border-[#333333]/50 last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors border-b border-[#333333]/50 last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">💰</span> 参考价格</span>
                                 <span className="font-bold text-[#a31515] text-base">HK$ 308.00</span>
                               </div>
-                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors last:border-0">
+                              <div className="group flex items-center justify-between p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors last:border-0">
                                 <span className="text-gray-500 font-medium flex items-center gap-2.5 text-sm"><span className="w-5 text-center">⭐</span> 媒体评分</span>
                                 <span className="font-bold text-green-600">92/100 (Metacritic)</span>
                               </div>
@@ -2670,7 +2670,7 @@ export default function WalkthroughTlou2() {
                                       .replace(/银剑|钢剑|十字弓/g, '<span class="font-bold text-slate-700">$&</span>');
 
                                     return (
-                                     <div key={itemIdx} className="bg-[#1a1a1a]/50 p-3 rounded-lg hover:bg-[#1a1a1a] transition-colors">
+                                     <div key={itemIdx} className="bg-[#1a1a1a]/50 p-3 rounded-lg hover:bg-[#8B4513]/10 transition-colors">
                                        <p 
                                          className="text-[#9ca3af] text-[14.5px] leading-relaxed m-0"
                                          dangerouslySetInnerHTML={{ __html: formattedText }}
@@ -2886,7 +2886,7 @@ export default function WalkthroughTlou2() {
                              flex-1 block py-2 pr-10 transition-all relative z-10 rounded-r border-l-[3px] pl-6 text-[14px] flex items-center justify-between
                              ${(isParentActive || isChildActive)
                                ? 'text-[#a31515] font-bold bg-[#8b0000]/30/80 border-[#8b0000] shadow-sm' 
-                               : 'text-gray-500 hover:text-[#a31515] hover:bg-[#1a1a1a] border-transparent hover:border-[#444444] font-medium'}
+                               : 'text-gray-500 hover:text-[#a31515] hover:bg-[#8B4513]/10 border-transparent hover:border-[#444444] font-medium'}
                            `}
                          >
                            <span className="truncate">{parent.title}</span>
@@ -2923,7 +2923,7 @@ export default function WalkthroughTlou2() {
                                            flex-1 block py-1.5 pr-8 transition-all relative z-10 rounded-r border-l-[3px] pl-9 text-[13px]
                                            ${(isCurrentChildActive || isGrandChildActive)
                                              ? 'text-[#a31515] font-bold bg-[#a31515]/10 border-[#8b0000]' 
-                                             : 'text-gray-500 hover:text-[#a31515] hover:bg-[#1a1a1a] border-transparent hover:border-[#444444]'}
+                                             : 'text-gray-500 hover:text-[#a31515] hover:bg-[#8B4513]/10 border-transparent hover:border-[#444444]'}
                                          `}
                                        >
                                          {child.title}
@@ -3063,7 +3063,7 @@ export default function WalkthroughTlou2() {
                              flex-1 block py-3 pr-10 transition-all relative z-10 rounded-r border-l-[3px] pl-6 text-[15px] flex items-center justify-between
                              ${(isParentActive || isChildActive)
                                ? 'text-[#a31515] font-bold bg-[#8b0000]/30/80 border-[#8b0000] shadow-sm' 
-                               : 'text-gray-500 hover:text-[#a31515] hover:bg-[#1a1a1a] border-transparent hover:border-[#444444] font-medium'}
+                               : 'text-gray-500 hover:text-[#a31515] hover:bg-[#8B4513]/10 border-transparent hover:border-[#444444] font-medium'}
                            `}
                          >
                            <span className="truncate">{parent.title}</span>
@@ -3102,7 +3102,7 @@ export default function WalkthroughTlou2() {
                                            flex-1 block py-2 pr-8 transition-all relative z-10 rounded-r border-l-[3px] pl-9 text-[14px]
                                            ${(isCurrentChildActive || isGrandChildActive)
                                              ? 'text-[#a31515] font-bold bg-[#a31515]/10 border-[#8b0000]' 
-                                             : 'text-gray-500 hover:text-[#a31515] hover:bg-[#1a1a1a] border-transparent hover:border-[#444444]'}
+                                             : 'text-gray-500 hover:text-[#a31515] hover:bg-[#8B4513]/10 border-transparent hover:border-[#444444]'}
                                          `}
                                        >
                                          {child.title}

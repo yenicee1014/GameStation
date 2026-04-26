@@ -24,7 +24,7 @@ const Footer = () => {
             </div>
             <div className="site-footer__col">
               <div className="site-footer__title">支持</div>
-              <Link className="site-footer__link" to="/about">联系开发者</Link>
+              <a className="site-footer__link" href="https://centurypaw.com">联系开发者</a>
             </div>
             <div className="site-footer__col">
               <div className="site-footer__title">资源</div>

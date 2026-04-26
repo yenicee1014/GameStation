@@ -9,7 +9,9 @@ import {
   Star,
   X,
   Heart,
-  Menu
+  Menu,
+  Github,
+  GitFork
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Footer from './components/Footer';
@@ -296,6 +298,28 @@ export default function Gallery() {
   const [aiReview, setAiReview] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [aiError, setAiError] = useState(null);
+
+  // --- GitHub 状态 ---
+  const [githubStats, setGithubStats] = useState({ stars: 0, forks: 0 });
+
+  useEffect(() => {
+    // 异步获取 GitHub 仓库信息
+    const fetchGitHubStats = async () => {
+      try {
+        const res = await fetch('https://api.github.com/repos/yenicee1014/GameStation');
+        if (res.ok) {
+          const data = await res.json();
+          setGithubStats({
+            stars: data.stargazers_count || 0,
+            forks: data.forks_count || 0
+          });
+        }
+      } catch (error) {
+        console.error('Failed to fetch GitHub stats', error);
+      }
+    };
+    fetchGitHubStats();
+  }, []);
   
   const filteredBooks = booksData.filter((book) => {
     // 1. 分类筛选
@@ -596,22 +620,63 @@ export default function Gallery() {
           
           {/* 热门游戏板块 (仅在首页且无搜索/筛选时显示) */}
           {activeCategory === "全部" && searchQuery === "" && (
-            <div className="max-w-[1400px] mx-auto mb-16 bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-xl">
-              <div className="flex items-center gap-2 mb-8 border-b border-gray-300 pb-4">
-                <Flame className="text-orange-600" size={24} />
-                <h2 className="text-2xl font-bold text-black tracking-wider">热门游戏</h2>
+            <>
+              <div className="max-w-[1400px] mx-auto mb-8 flex justify-center">
+                <div className="flex items-center bg-black/40 backdrop-blur-md rounded-full border border-white/20 shadow-md hover:shadow-lg transition-all group">
+                  <a 
+                    href="https://github.com/yenicee1014/GameStation" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 px-6 py-3.5 hover:bg-white/10 rounded-l-full text-white text-lg font-bold transition-colors"
+                  >
+                    <Github size={24} className="group-hover:scale-110 transition-transform" />
+                    <span className="tracking-widest">贡献网站</span>
+                  </a>
+                  
+                  {/* GitHub Stats Divider */}
+                  <div className="w-[1px] h-8 bg-white/20 mx-2"></div>
+                  
+                  <div className="flex items-center gap-4 px-6 py-3.5 text-white/90">
+                    <a 
+                      href="https://github.com/yenicee1014/GameStation/stargazers" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 hover:text-yellow-400 transition-colors"
+                      title="Stars"
+                    >
+                      <Star size={18} className="fill-current" />
+                      <span className="font-mono font-bold">{githubStats.stars}</span>
+                    </a>
+                    <a 
+                      href="https://github.com/yenicee1014/GameStation/network/members" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 hover:text-blue-400 transition-colors"
+                      title="Forks"
+                    >
+                      <GitFork size={18} />
+                      <span className="font-mono font-bold">{githubStats.forks}</span>
+                    </a>
+                  </div>
+                </div>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-x-12 gap-y-16">
-                {popularBooks.map((book) => (
-                  <BookCardItem 
-                    key={`popular-${book.id}`} 
-                    book={book} 
-                    isSelected={selectedBook?.id === book.id}
-                    onClick={handleBookClick} 
-                  />
-                ))}
+              <div className="max-w-[1400px] mx-auto mb-16 bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-xl">
+                <div className="flex items-center gap-2 mb-8 border-b border-gray-300 pb-4">
+                  <Flame className="text-orange-600" size={24} />
+                  <h2 className="text-2xl font-bold text-black tracking-wider">热门游戏</h2>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-x-12 gap-y-16">
+                  {popularBooks.map((book) => (
+                    <BookCardItem 
+                      key={`popular-${book.id}`} 
+                      book={book} 
+                      isSelected={selectedBook?.id === book.id}
+                      onClick={handleBookClick} 
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
+            </>
           )}
 
           <div className="max-w-[1400px] mx-auto bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-xl">

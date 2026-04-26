@@ -288,12 +288,12 @@ const Changelog = () => {
                       <h2 className="text-2xl md:text-3xl font-bold text-black group-hover:text-blue-600 transition-colors">
                         {update.title}
                       </h2>
-                      <Link 
-                        to="/about"
+                      <a 
+                        href="https://centurypaw.com"
                         className="w-8 h-8 md:w-9 md:h-9 rounded-full overflow-hidden border-2 border-white/50 shadow-sm flex-shrink-0 hover:border-blue-500 transition-colors cursor-pointer"
                       >
                         <img src={avatar} alt="Avatar" className="w-full h-full object-cover" />
-                      </Link>
+                      </a>
                     </div>
                     
                     <div className="flex flex-wrap gap-2 mb-6">

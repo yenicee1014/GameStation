@@ -8956,7 +8956,7 @@ export default function WalkthroughBloodborne() {
                             className={`absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-md transition-colors z-20 
                               ${(isParentActive || isChildActive) 
                                 ? 'text-[#8a0303] hover:bg-[#8a0303]/20' 
-                                : 'text-[#8a8a8a] hover:text-[#e0e0e0] hover:bg-[#1a1a1a]'}`}
+                                : 'text-[#8a8a8a] hover:text-[#e0e0e0] hover:bg-[#8B4513]/10'}`}
                           >
                             {isExpanded ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
                           </button>

@@ -25,13 +25,13 @@ const About = () => {
             
             {/* Avatar Section */}
             <div className="flex flex-col gap-6">
-              <div className="w-full aspect-square rounded-[40px] overflow-hidden shadow-sm border border-gray-100">
+              <a href="https://centurypaw.com" className="w-full aspect-square rounded-[40px] overflow-hidden shadow-sm border border-gray-100 block hover:opacity-90 transition-opacity">
                 <img 
                   src={avatar} 
                   alt="Avatar" 
                   className="w-full h-full object-cover"
                 />
-              </div>
+              </a>
               <h1 className="text-xl font-medium text-gray-800">
                 百年内无人能懂猫
               </h1>
